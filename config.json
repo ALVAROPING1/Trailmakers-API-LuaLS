@@ -1,0 +1,17 @@
+{
+    "$schema": "https://raw.githubusercontent.com/LuaLS/LLS-Addons/main/schemas/addon_config.schema.json",
+    "name": "Trailmakers Modding API Addon",
+    "files": ["main.lua"],
+    "settings": {
+        // Mods are single file, so the global environment is local to the respective mod's file
+        // Some API methods require functions to be in the global environment, so functions are commonly defined there
+        "Lua.diagnostics.disable": ["lowercase-global"],
+        "Lua.runtime.builtin": {
+            "os": "disable",
+            "io": "disable",
+            "debug": "disable",
+        },
+        "Lua.runtime.nonstandardSymbol": ["!="],
+        "Lua.runtime.version": "Lua 5.2",
+    }
+}
