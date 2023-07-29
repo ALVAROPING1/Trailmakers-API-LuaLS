@@ -7,9 +7,12 @@
         // Some API methods require functions to be in the global environment, so functions are commonly defined there
         "Lua.diagnostics.disable": ["lowercase-global"],
         "Lua.runtime.builtin": {
+            // Modules partially/completely disabled. Non-disabled elements in partially disabled modules are redefined in `std-disabled.lua`
             "os": "disable",
             "io": "disable",
             "debug": "disable",
+            "package": "disable",
+            "basic": "disable",
         },
         "Lua.runtime.nonstandardSymbol": ["!="],
         "Lua.runtime.version": "Lua 5.2",
