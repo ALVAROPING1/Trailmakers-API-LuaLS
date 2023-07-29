@@ -4,6 +4,7 @@
 -- Further updated by Vajdani
 -- Improved formatting, fixed types, added missing descriptions to parameters, and converted into an addon to remove disabled lua modules by ALVAROPING1
 
+--- Modding API Module
 tm = {}
 
 --------------------- OS ---------------------
@@ -30,11 +31,11 @@ function tm.os.ReadAllText_Dynamic(path) end
 function tm.os.WriteAllText_Dynamic(path, stringToWrite) end
 
 --- Emit a log message
----@param message string | number | boolean | nil Message to log
+---@param message string | number | boolean | nil | ModVector3 Message to log
 ---@return nil
 function tm.os.Log(message) end
 
---- Get time game has been playing in seconds
+--- Get time game has been playing in seconds. Doesn't update within a single mod update cycle
 ---@return number
 function tm.os.GetTime() end
 
@@ -60,33 +61,33 @@ function tm.os.GetModTargetDeltaTime() end
 --- Everything that can effect physics, like gravity, spawing obejcts, and importing meshes
 tm.physics = {}
 
---- Set the physics timescale relative to the default speed
+--- Set the physics timescale relative to the default speed (acts as a multiplier of the normal time speed)
 ---@param speed number
 ---@return nil
 function tm.physics.SetTimeScale(speed) end
 
---- Get the physics timescale relative to the default speed
+--- Get the physics timescale relative to the default speed (acts as a multiplier of the normal time speed)
 ---@return number
 function tm.physics.GetTimeScale() end
 
---- Set the physics gravity in the down direction. Units are m/s^2, default is 14 m/s^2
+--- Set the physics gravity in the down direction. Units are `m/s²`, default is `14 m/s²`
 ---@param strength number
 ---@return nil
 function tm.physics.SetGravity(strength) end
 
---- Set the physics gravity as per the provided vector. Units are m/s^2, default is 14 m/s^2 downwards
+--- Set the physics gravity as per the provided vector. Units are `m/s²`, default is `(0, -14, 0) m/s²`
 ---@param gravity ModVector3
 ---@return nil
 function tm.physics.SetGravity(gravity) end
 
---- Get the physics gravity. Units are m/s^2, default is 14 m/s^2 downwards
+--- Get the physics gravity. Units are `m/s²`, default is `(0, 14, 0) m/s²`
 ---@return ModVector3
 function tm.physics.GetGravity() end
 
 --- Spawn a spawnable at the position, e.g. PFB_Barrel
----@param position ModVector3
----@param name string
----@return ModGameObject
+---@param position ModVector3 Position of the object
+---@param name string Name of the object. Can only be a default asset name (from the list returned by `tm.physics.SpawnableNames()`)
+---@return ModGameObject object Game object spawned
 function tm.physics.SpawnObject(position, name) end
 
 --- Despawn all spawned objects from this mod
@@ -115,30 +116,30 @@ function tm.physics.AddTexture(filename, resourceName) end
 ---@param textureName string The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
 ---@param isKinematic boolean Whether the object will be affected by physics or not
 ---@param mass number The mass of the object. Units are `5kg`
----@return ModGameObject
+---@return ModGameObject object Game object spawned
 function tm.physics.SpawnCustomObjectRigidbody(position, meshName, textureName, isKinematic, mass) end
 
 --- Spawn a custom object (Mesh and texture must be created with `.AddMesh()` and `.AddTexture()` first)
 ---@param position ModVector3 The position to spawn the object at
 ---@param meshName string The name of the mesh that the object will use (Has to be added with `tm.physics.AddMesh()` first)
 ---@param textureName string The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
----@return ModGameObject
+---@return ModGameObject object Game object spawned
 function tm.physics.SpawnCustomObject(position, meshName, textureName) end
 
 --- Spawn a custom object with concave collision support (Mesh and texture must be created with `.AddMesh()` and `.AddTexture()` first)
 ---@param position ModVector3 The position to spawn the object at
 ---@param meshName string The name of the mesh that the object will use (Has to be added with `tm.physics.AddMesh()` first)
 ---@param textureName string The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
----@return ModGameObject
+---@return ModGameObject object Game object spawned
 function tm.physics.SpawnCustomObjectConcave(position, meshName, textureName) end
 
 --- Spawn a box trigger that will detect overlap but will not interact with physics
 ---@param position ModVector3 The position to spawn the Box Trigger at
 ---@param size ModVector3 The Box Trigger' size
----@return ModGameObject
+---@return ModGameObject object Game object spawned
 function tm.physics.SpawnBoxTrigger(position, size) end
 
---- Sets the build complexity value. Default value is 700 and values above it can make the game unstable
+--- Sets the build complexity value. Default value is `700` and values above it can make the game unstable
 ---@param value integer
 ---@return nil
 function tm.physics.SetBuildComplexity(value) end
@@ -155,13 +156,12 @@ function tm.physics.RegisterFunctionToCollisionEnterCallback(targetObject, funct
 ---@return nil
 function tm.physics.RegisterFunctionToCollisionExitCallback(targetObject, functionName) end
 
--- TODO: test and descrive parameters
 --- Returns a bool if raycast hit something. Hit argument gets overwritten with raycast data
----@param origin ModVector3
----@param direction ModVector3
----@param hitPositionOut ModVector3
----@param maxDistance number
----@return boolean
+---@param origin ModVector3 Origin of the raycast
+---@param direction ModVector3 Direction of the raycast in euler angles
+---@param hitPositionOut ModVector3 Reference to the vector in which the hit position will be stored (only modified if the raycast hit an object)
+---@param maxDistance number Max distance from the origin to check for hits
+---@return boolean hit Whether an object has been hit
 function tm.physics.Raycast(origin, direction, hitPositionOut, maxDistance) end
 
 --- Returns the internal name for the current map
@@ -220,7 +220,7 @@ function tm.players.CurrentPlayers() end
 ---@return nil
 function tm.players.Kick(playerId) end
 
---- Get the transform of a player
+--- Get the Transform of a player
 ---@param playerId integer
 ---@return ModTransform
 function tm.players.GetPlayerTransform(playerId) end
@@ -441,13 +441,13 @@ function tm.vector3.op_Addition(first, second) end
 ---@return ModVector3
 function tm.vector3.op_Subtraction(first, second) end
 
---- Multiplies the vector by the scalar
+--- Multiplies the vector by the scalar (can be done with the normal `*` operator)
 ---@param vector3 ModVector3
 ---@param scalar number
 ---@return ModVector3
 function tm.vector3.op_Multiply(vector3, scalar) end
 
---- Divides the vector by the divisor
+--- Divides the vector by the divisor (can be done with the normal `/` operator)
 ---@param vector3 ModVector3
 ---@param divisor number
 ---@return ModVector3
@@ -546,14 +546,14 @@ function tm.GetDocs() end
 
 ---@class ModGameObject GameObject type
 ---@field Despawn fun(): nil Despawns the object. This can not be done on players
----@field GetTransform fun(): ModTransform Returns the gameObject's transform
----@field SetIsVisible fun(isVisible: boolean): nil Sets visibility of the gameObject
----@field GetIsVisible fun(): boolean Gets the visibility of the gameObject
----@field GetIsRigidbody fun(): boolean Returns true if the gameObject or any of its children are rigidbodies
----@field SetIsStatic fun(isStatic: boolean): nil Sets the gameObject's and its children's rigidbodies to be static or not
----@field GetIsStatic fun(): boolean Returns true if the gameObject and all of its children are static
----@field SetIsTrigger fun(isTrigger: boolean): nil Determines whether the gameObject lets other gameobjects pass through its colliders or not
----@field Exists fun(): boolean Returns true if the gameObject exists
+---@field GetTransform fun(): ModTransform Returns the GameObject's Transform
+---@field SetIsVisible fun(isVisible: boolean): nil Sets visibility of the GameObject
+---@field GetIsVisible fun(): boolean Gets the visibility of the GameObject
+---@field GetIsRigidbody fun(): boolean Returns true if the GameObject or any of its children are rigidbodies
+---@field SetIsStatic fun(isStatic: boolean): nil Sets the GameObject's and its children's rigidbodies to be static or not
+---@field GetIsStatic fun(): boolean Returns true if the GameObject and all of its children are static
+---@field SetIsTrigger fun(isTrigger: boolean): nil Determines whether the GameObject lets other GameObjects pass through its colliders or not
+---@field Exists fun(): boolean Returns true if the GameObject exists
 
 --#endregion
 
@@ -562,13 +562,13 @@ function tm.GetDocs() end
 --#region
 
 ---@class ModTransform Transform type
----@field SetPosition (fun(position: ModVector3): nil) | (fun(x: number, y: number, z: number): nil) Sets the position of the transform
----@field GetPosition fun(): ModVector3 Gets the position of the transform
----@field SetRotation (fun(rotation: ModVector3): nil) | (fun(x: number, y: number, z: number): nil) | (fun(rotation: ModQuaternion): nil) Sets the rotation of the transform
----@field GetRotation fun(): ModVector3 Gets the rotation of the transform
----@field GetRotationQuaternion fun(): ModQuaternion Gets the rotation quaternion of the transform
----@field SetScale (fun(scaleVector: ModVector3): nil) | (fun(x: number, y: number, z: number): nil) | (fun(scale: number): nil) Sets the scale of the transform. Setting a non-uniform scale may, among other things, break the objects physics
----@field GetScale fun(): ModVector3 Gets the scale of the transform
+---@field SetPosition (fun(position: ModVector3): nil) | (fun(x: number, y: number, z: number): nil) Sets the position of the Transform
+---@field GetPosition fun(): ModVector3 Gets the position of the Transform
+---@field SetRotation (fun(rotation: ModVector3): nil) | (fun(x: number, y: number, z: number): nil) | (fun(rotation: ModQuaternion): nil) Sets the rotation of the Transform
+---@field GetRotation fun(): ModVector3 Gets the rotation of the Transform
+---@field GetRotationQuaternion fun(): ModQuaternion Gets the rotation quaternion of the Transform
+---@field SetScale (fun(scaleVector: ModVector3): nil) | (fun(x: number, y: number, z: number): nil) | (fun(scale: number): nil) Sets the scale of the Transform. Setting a non-uniform scale may, among other things, break the objects physics
+---@field GetScale fun(): ModVector3 Gets the scale of the Transform
 ---@field TransformPoint fun(point: ModVector3): ModVector3 Returns the point's position in world space (Adds the current pos with input vector)
 ---@field TransformDirection fun(direction: ModVector3): ModVector3 Returns the direction's world space direction
 
@@ -590,7 +590,7 @@ function tm.GetDocs() end
 ---@field GetCurrentHealth fun(): number Get the block's current health
 ---@field GetName fun(): string Get the name of the block's type
 ---@field SetDragAll fun(f: number, b: number, u: number, d: number, l: number, r: number): nil Set the drag value in all directions, front, back, up, down, left, right
----@field AddForce fun(x: number, y: number, z: number): nil Add a force to the given block as an impulse. Units are `5kg * m/s^2`
+---@field AddForce fun(x: number, y: number, z: number): nil Add a force to the given block as an impulse. Units are `5kg * m/s²`
 ---@field AddTorque fun(x: number, y: number, z: number): nil Add a torque to the given block as an impulse
 ---@field SetEnginePower fun(power: number): nil Sets Engine power (only works on engine blocks)
 ---@field GetEnginePower fun(): number Gets Engine power (only works on engine blocks)
@@ -607,6 +607,6 @@ function tm.GetDocs() end
 ---@class ModStructure ModStructure type
 ---@field Destroy fun(): nil Destroy the structure
 ---@field GetBlocks fun(): ModBlock[] Gets all blocks in the structure
----@field AddForce fun(x: number, y: number, z: number): nil Add a force to the given structure as an impulse. Units are `5kg * m/s^2`
+---@field AddForce fun(x: number, y: number, z: number): nil Add a force to the given structure as an impulse. Units are `5kg * m/s²`
 
 --#endregion
