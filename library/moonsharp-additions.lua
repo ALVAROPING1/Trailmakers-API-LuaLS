@@ -59,18 +59,21 @@ function string.unicode(string, i, j) end
 ---@param str1 string
 ---@param str2 string
 ---@return boolean
+---@nodiscard
 function string.contains(str1, str2) end
 
 --- Returns whether str1 starts with str2
 ---@param str1 string
 ---@param str2 string
 ---@return boolean
+---@nodiscard
 function string.startsWith(str1, str2) end
 
 --- Returns whether str1 ends with str2
 ---@param str1 string
 ---@param str2 string
 ---@return boolean
+---@nodiscard
 function string.endsWith(str1, str2) end
 
 --#endregion
@@ -89,6 +92,7 @@ dynamic = {}
 --- **Warning**: parsing a `string` expression has a significant performance cost over normal lua code. It's advised to use normal code where possible, and, if this expression will be evaluated several times, it's recommended to transform the `string` into a `ExpressionObject` with `dynamic.prepare()` once beforehand and reuse that as necessary
 ---@param expression string | ExpressionObject Expression to evaluate
 ---@return any Result The result of evaluating the expression
+---@nodiscard
 function dynamic.eval(expression) end
 
 --- Creates a prepared `ExpressionObject` for faster execution when passed to `dynamic.eval()` than using the `string` directly
@@ -96,6 +100,7 @@ function dynamic.eval(expression) end
 --- Note: `dynamic.eval(dynamic.prepare(<expression>))` is equivalent in performance to `dynamic.eval(<expression>)`. Only use if you are going to cache the result
 ---@param expression string Expression to parse
 ---@return ExpressionObject Result Prepared expression
+---@nodiscard
 function dynamic.prepare(expression) end
 
 --#endregion
@@ -112,11 +117,13 @@ json = {}
 --- Parses a JSON string and returns it as a lua table
 ---@param json string
 ---@return table
+---@nodiscard
 function json.parse(json) end
 
 --- Serializes a lua table to a JSON string
 ---@param table table
 ---@return string
+---@nodiscard
 function json.serialize(table) end
 
 -- This function appears in the moonsharp documentation, but isn't functional in game
@@ -127,6 +134,7 @@ function json.serialize(table) end
 
 --- Returns a special value which represents a Null in a JSON
 ---@return JSONNull
+---@nodiscard
 function json.null() end
 
 --#endregion

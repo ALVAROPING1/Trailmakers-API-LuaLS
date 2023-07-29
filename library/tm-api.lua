@@ -17,11 +17,13 @@ tm.os = {}
 --- Read all text of a file in the mods static data directory. Files in the static data directory can only be read and NOT written to
 ---@param path string Relative file path
 ---@return string Content Content of the file
+---@nodiscard
 function tm.os.ReadAllText_Static(path) end
 
 --- Read all text of a file in the mods dynamic data directory. Files in the dynamic data directory can be both read and written to. The dynamic data directory will NOT be uploaded to the steam workshop when you upload your mod. When a mod is run through the steam workshop, the dynamic data, unlike static data, is not located in the steam workshop directory but is located in the steam user data directory instead
 ---@param path string Relative file path
 ---@return string Content Content of the file
+---@nodiscard
 function tm.os.ReadAllText_Dynamic(path) end
 
 --- Create or overwrite a file in the mods dynamic data directory. Files in the dynamic data directory can be both read and written to. The dynamic data directory will NOT be uploaded to the steam workshop when you upload your mod. When a mod is run through the steam workshop, the dynamic data, unlike static data, is not located in the steam workshop directory but is located in the steam user data directory instead
@@ -37,10 +39,12 @@ function tm.os.Log(message) end
 
 --- Get time game has been playing in seconds. Doesn't update within a single mod update cycle
 ---@return number
+---@nodiscard
 function tm.os.GetTime() end
 
 --- Get the time since last update
 ---@return number
+---@nodiscard
 function tm.os.GetModDeltaTime() end
 
 --- Determines how often the mod gets updated. `1/60` means 60 times per second. Can't update faster than the game (maximum is 60 times per second)
@@ -50,6 +54,7 @@ function tm.os.SetModTargetDeltaTime(targetDeltaTime) end
 
 --- Returns the target delta time for the mod
 ---@return number
+---@nodiscard
 function tm.os.GetModTargetDeltaTime() end
 
 --#endregion
@@ -68,6 +73,7 @@ function tm.physics.SetTimeScale(speed) end
 
 --- Get the physics timescale relative to the default speed (acts as a multiplier of the normal time speed)
 ---@return number
+---@nodiscard
 function tm.physics.GetTimeScale() end
 
 --- Set the physics gravity in the down direction. Units are `m/s²`, default is `14 m/s²`
@@ -82,6 +88,7 @@ function tm.physics.SetGravity(gravity) end
 
 --- Get the physics gravity. Units are `m/s²`, default is `(0, 14, 0) m/s²`
 ---@return ModVector3
+---@nodiscard
 function tm.physics.GetGravity() end
 
 --- Spawn a spawnable at the position, e.g. PFB_Barrel
@@ -96,6 +103,7 @@ function tm.physics.ClearAllSpawns() end
 
 --- Get a list of all possible spawnable names
 ---@return string[]
+---@nodiscard
 function tm.physics.SpawnableNames() end
 
 --- Add a mesh to all clients, note this will have to be sent to the client when they join
@@ -166,11 +174,13 @@ function tm.physics.Raycast(origin, direction, hitPositionOut, maxDistance) end
 
 --- Returns the internal name for the current map
 ---@return string name The map name
+---@nodiscard
 function tm.physics.GetMapName() end
 
 --- Returns the wind velocity at a position
 ---@param position ModVector3
 ---@return ModVector3
+---@nodiscard
 function tm.physics.GetWindVelocityAtPosition(position) end
 
 --#endregion
@@ -213,6 +223,7 @@ function tm.players.OnPlayerLeft.remove(Function) end
 
 --- Get all players currently connected to the server
 ---@return ModPlayer[]
+---@nodiscard
 function tm.players.CurrentPlayers() end
 
 --- Forcefully disconnect a given player
@@ -223,16 +234,19 @@ function tm.players.Kick(playerId) end
 --- Get the Transform of a player
 ---@param playerId integer
 ---@return ModTransform
+---@nodiscard
 function tm.players.GetPlayerTransform(playerId) end
 
 --- Get the GameObject of a player
 ---@param playerId integer
 ---@return ModGameObject
+---@nodiscard
 function tm.players.GetPlayerGameObject(playerId) end
 
 --- Returns whether the player is seated or not
 ---@param playerId integer
 ---@return boolean
+---@nodiscard
 function tm.players.IsPlayerInSeat(playerId) end
 
 --- Sets whether the specified player can fly or not
@@ -244,26 +258,31 @@ function tm.players.SetJetpackEnabled(playerId, enabled) end
 --- Get all structure(s) owned by that player
 ---@param playerId integer
 ---@return ModStructure[]
+---@nodiscard
 function tm.players.GetPlayerStructures(playerId) end
 
 --- Get the structure(s) currently in build mode for a player
 ---@param playerId integer
 ---@return ModStructure[]
+---@nodiscard
 function tm.players.GetPlayerStructuresInBuild(playerId) end
 
 --- Get the last select block in the builder for that player
 ---@param playerId integer
 ---@return ModBlock
+---@nodiscard
 function tm.players.GetPlayerSelectBlockInBuild(playerId) end
 
 --- Get the player's name
 ---@param playerId integer
 ---@return string
+---@nodiscard
 function tm.players.GetPlayerName(playerId) end
 
 --- Returns true if the player is in build mode
 ---@param playerId integer
 ---@return boolean
+---@nodiscard
 function tm.players.GetPlayerIsInBuildMode(playerId) end
 
 --#endregion
@@ -341,6 +360,7 @@ function tm.audio.StopAllAudioAtGameobject(modGameObject) end
 
 --- Returns a table of all playable audio names
 ---@return string[]
+---@nodiscard
 function tm.audio.GetAudioNames() end
 
 --#endregion
@@ -394,75 +414,90 @@ tm.vector3 = {}
 ---@param y number
 ---@param z number
 ---@return ModVector3
+---@nodiscard
 function tm.vector3.Create(x, y, z) end
 
 --- Creates a vector3 with values defaulted to zero
 ---@return ModVector3
+---@nodiscard
 function tm.vector3.Create() end
 
 --- Creates a vector3 pointing right (1, 0, 0)
 ---@return ModVector3
+---@nodiscard
 function tm.vector3.Right() end
 
 --- Creates a vector3 pointing left (-1, 0, 0)
 ---@return ModVector3
+---@nodiscard
 function tm.vector3.Left() end
 
 --- Creates a vector3 pointing up (0, 1, 0)
 ---@return ModVector3
+---@nodiscard
 function tm.vector3.Up() end
 
 --- Creates a vector3 pointing down (0, -1, 0)
 ---@return ModVector3
+---@nodiscard
 function tm.vector3.Down() end
 
 --- Creates a vector3 pointing forward (0, 0, 1)
 ---@return ModVector3
+---@nodiscard
 function tm.vector3.Forward() end
 
 --- Creates a vector3 pointing back (0, 0, -1)
 ---@return ModVector3
+---@nodiscard
 function tm.vector3.Back() end
 
 --- Flips all the signs (can be done with the normal `-` operator)
 ---@param vector3 ModVector3
 ---@return ModVector3
+---@nodiscard
 function tm.vector3.op_UnaryNegation(vector3) end
 
 --- Adds first and second together (can be done with the normal `+` operator)
 ---@param first ModVector3
 ---@param second ModVector3
 ---@return ModVector3
+---@nodiscard
 function tm.vector3.op_Addition(first, second) end
 
 --- Subtracts first and second together (can be done with the normal `-` operator)
 ---@param first ModVector3
 ---@param second ModVector3
 ---@return ModVector3
+---@nodiscard
 function tm.vector3.op_Subtraction(first, second) end
 
 --- Multiplies the vector by the scalar (can be done with the normal `*` operator)
 ---@param vector3 ModVector3
 ---@param scalar number
 ---@return ModVector3
+---@nodiscard
 function tm.vector3.op_Multiply(vector3, scalar) end
 
 --- Divides the vector by the divisor (can be done with the normal `/` operator)
 ---@param vector3 ModVector3
 ---@param divisor number
 ---@return ModVector3
+---@nodiscard
 function tm.vector3.op_Division(vector3, divisor) end
 
 --- Returns true if both vectors are the same, false if not (can be done with the normal `==` operator)
 ---@param first ModVector3
 ---@param second ModVector3
 ---@return boolean
+---@nodiscard
 function tm.vector3.op_Equality(first, second) end
 
 --- Returns true if both vectors are not the same, false if not (can be done with the normal `~=` operator)
 ---@param first ModVector3
 ---@param second ModVector3
 ---@return boolean
+---@nodiscard
 function tm.vector3.op_Inequality(first, second) end
 
 --#endregion
@@ -488,6 +523,7 @@ tm.quaternion = {}
 ---@param z number
 ---@param w number
 ---@return ModQuaternion
+---@nodiscard
 function tm.quaternion.Create(x, y, z, w) end
 
 --- Creates a quaternion using euler angle components
@@ -495,17 +531,20 @@ function tm.quaternion.Create(x, y, z, w) end
 ---@param y number
 ---@param z number
 ---@return ModQuaternion
+---@nodiscard
 function tm.quaternion.Create(x, y, z) end
 
 --- Creates a quaternion using a euler angle vector3
 ---@param eulerAngle ModVector3
 ---@return ModQuaternion
+---@nodiscard
 function tm.quaternion.Create(eulerAngle) end
 
 --- Creates a quaternion using an angle and an axis to rotate around
 ---@param angle number
 ---@param axis ModVector3
 ---@return ModQuaternion
+---@nodiscard
 function tm.quaternion.Create(angle, axis) end
 
 --- Returns the resulting quaternion from a slerp between two quaternions
@@ -513,6 +552,7 @@ function tm.quaternion.Create(angle, axis) end
 ---@param secondQuaternion ModQuaternion
 ---@param t number Position in the interpolation (0=firstQuaternion, 1=secondQuaternion)
 ---@return ModQuaternion
+---@nodiscard
 function tm.quaternion.Slerp(firstQuaternion, secondQuaternion, t) end
 
 --#endregion
@@ -536,6 +576,7 @@ function tm.quaternion.Slerp(firstQuaternion, secondQuaternion, t) end
 
 --- Gives the unformated documentation
 ---@return string
+---@nodiscard
 function tm.GetDocs() end
 
 --#endregion
