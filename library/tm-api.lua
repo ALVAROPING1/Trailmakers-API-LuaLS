@@ -63,7 +63,7 @@ function tm.os.GetModTargetDeltaTime() end
 
 --#region
 
---- Everything that can effect physics, like gravity, spawing obejcts, and importing meshes
+--- Everything that can effect physics, like gravity, spawning objects, and importing meshes
 tm.physics = {}
 
 --- Set the physics timescale relative to the default speed (acts as a multiplier of the normal time speed)
@@ -582,7 +582,7 @@ function tm.quaternion.Slerp(firstQuaternion, secondQuaternion, t) end
 
 --#region
 
---- Gives the unformated documentation
+--- Gives the unformatted documentation
 ---@return string
 ---@nodiscard
 function tm.GetDocs() end
