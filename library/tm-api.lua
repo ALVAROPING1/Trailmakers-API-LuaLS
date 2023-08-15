@@ -694,7 +694,7 @@ function tm.GetDocs() end
 
 --#region
 
---- GameObject type
+--- Object representing a 3D object in the game world
 ---
 --- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267704/ModGameObject)
 ---@class ModGameObject
@@ -714,7 +714,7 @@ function tm.GetDocs() end
 
 --#region
 
---- Transform type
+--- Object representing the transform of a `ModGameObject`. Handles its position, rotation and scale
 ---
 --- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218431584/ModTransform)
 ---@class ModTransform
@@ -734,7 +734,7 @@ function tm.GetDocs() end
 
 --#region
 
---- ModBlock type
+--- Object representing a block of a creation in the game
 ---
 --- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218562585/ModBlock)
 ---@class ModBlock
@@ -763,7 +763,7 @@ function tm.GetDocs() end
 
 --#region
 
---- ModStructure type
+--- Object representing a creation in the game
 ---
 --- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218103875/ModStructure)
 ---@class ModStructure
