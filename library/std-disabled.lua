@@ -18,6 +18,16 @@
 ---@return any ...
 function assert(v, message, ...) end
 
+---@alias gcoptions
+---|>"collect"      # Performs a full garbage-collection cycle.
+---| "stop"         # Stops automatic execution.
+---| "restart"      # Restarts automatic execution.
+---| "count"        # Returns the total memory in Kbytes.
+---| "step"         # Performs a garbage-collection step.
+---| "isrunning"    # Returns whether the collector is running.
+---| "setpause"     # Set `pause`.
+---| "setstepmul"   # Set `step multiplier`.
+
 ---This function is a generic interface to the garbage collector. It performs different functions according to its first argument, `opt`.
 ---
 ---[View documents](http://www.lua.org/manual/5.2/manual.html#pdf-assert)
@@ -152,6 +162,29 @@ function rawset(table, index, value) end
 ---@nodiscard
 function select(index, ...) end
 
+---@class metatable
+---@field __mode 'v'|'k'|'kv'|nil
+---@field __metatable any|nil
+---@field __tostring (fun(t):string)|nil
+---@field __gc fun(t)|nil
+---@field __add (fun(t1,t2):any)|nil
+---@field __sub (fun(t1,t2):any)|nil
+---@field __mul (fun(t1,t2):any)|nil
+---@field __div (fun(t1,t2):any)|nil
+---@field __mod (fun(t1,t2):any)|nil
+---@field __pow (fun(t1,t2):any)|nil
+---@field __unm (fun(t):any)|nil
+---@field __concat (fun(t1,t2):any)|nil
+---@field __len (fun(t):integer)|nil
+---@field __eq (fun(t1,t2):boolean)|nil
+---@field __lt (fun(t1,t2):boolean)|nil
+---@field __le (fun(t1,t2):boolean)|nil
+---@field __index table|(fun(t,k):any)|nil
+---@field __newindex table|fun(t,k,v)|nil
+---@field __call (fun(t,...):...)|nil
+---@field __pairs (fun(t):(fun(t,k,v):any,any))|nil
+---@field __ipairs (fun(t):(fun(t,k,v):(integer|nil),any))|nil
+
 ---Sets the metatable for the given table. If `metatable` is `nil`, removes the metatable of the given table. If the original metatable has a `__metatable` field, raises an error.
 ---
 ---This function returns `table`.
@@ -186,6 +219,16 @@ function tonumber(e) end
 ---@return string
 ---@nodiscard
 function tostring(v) end
+
+---@alias type
+---| "nil"
+---| "number"
+---| "string"
+---| "boolean"
+---| "table"
+---| "function"
+---| "thread"
+---| "userdata"
 
 ---Returns the type of its only argument, coded as a string. The possible results of this function are `"nil"` (a string, not the value `nil`), `"number"`, `"string"`, `"boolean"`, `"table"`, `"function"`, `"thread"`, and `"userdata"`.
 ---
@@ -239,6 +282,44 @@ os = {}
 ---@return number
 ---@nodiscard
 function os.clock() end
+
+---@class osdate
+---four digits
+---
+---[View documents](http://www.lua.org/manual/5.1/manual.html#pdf-osdate.year)
+---@field year  integer|string
+---1-12
+---
+---[View documents](http://www.lua.org/manual/5.1/manual.html#pdf-osdate.month)
+---@field month integer|string
+---1-31
+---
+---[View documents](http://www.lua.org/manual/5.1/manual.html#pdf-osdate.day)
+---@field day   integer|string
+---0-23
+---
+---[View documents](http://www.lua.org/manual/5.1/manual.html#pdf-osdate.hour)
+---@field hour  integer|string
+---0-59
+---
+---[View documents](http://www.lua.org/manual/5.1/manual.html#pdf-osdate.min)
+---@field min   integer|string
+---0-61
+---
+---[View documents](http://www.lua.org/manual/5.1/manual.html#pdf-osdate.sec)
+---@field sec   integer|string
+---weekday, 1–7, Sunday is 1
+---
+---[View documents](http://www.lua.org/manual/5.1/manual.html#pdf-osdate.wday)
+---@field wday  integer|string
+---day of the year, 1–366
+---
+---[View documents](http://www.lua.org/manual/5.1/manual.html#pdf-osdate.yday)
+---@field yday  integer|string
+---daylight saving flag, a boolean
+---
+---[View documents](http://www.lua.org/manual/5.1/manual.html#pdf-osdate.isdst)
+---@field isdst boolean
 
 ---Returns a string or a table containing date and time, formatted according to the given string `format`.
 ---
