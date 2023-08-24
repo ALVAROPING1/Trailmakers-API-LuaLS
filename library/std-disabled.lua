@@ -136,7 +136,7 @@ function rawequal(v1, v2) end
 ---@nodiscard
 function rawget(table, index) end
 
---- Returns the length of the object `v`, without invoking the `__len` metamethod.
+---Returns the length of the object `v`, without invoking the `__len` metamethod.
 ---
 ---[View documents](http://www.lua.org/manual/5.2/manual.html#pdf-rawlen)
 ---@param v table|string

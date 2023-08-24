@@ -1,4 +1,4 @@
---- Generates an enum from a list of valid values
+---Generates an enum from a list of valid values
 ---@param list string[] List of valid values
 ---@param docstring string Docstring to add to the enum
 ---@return string
@@ -15,16 +15,16 @@ local header = [[
 ]]
 
 local spawnables = [[
---- Default asset names. Only these names can be used with `tm.physics.SpawnObject()`
+---Default asset names. Only these names can be used with `tm.physics.SpawnObject()`
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267747/Spawnables)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267747/Spawnables)
 ---@alias Spawnable
 ]]
 
 local audio_names = [[
---- Audio names that can be played
+---Audio names that can be played
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219185167/Audio#List-of-Audio-Event-names)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219185167/Audio#List-of-Audio-Event-names)
 ---@alias AudioName
 ]]
 

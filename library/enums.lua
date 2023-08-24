@@ -1,9 +1,9 @@
 ---@meta
 -- Generated automatically with `generate_enums.lua`
 
---- Default asset names. Only these names can be used with `tm.physics.SpawnObject()`
+---Default asset names. Only these names can be used with `tm.physics.SpawnObject()`
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267747/Spawnables)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267747/Spawnables)
 ---@alias Spawnable
 ---| "PFB_SpikyCanyon_1"
 ---| "PFB_PlateCanyon_01"
@@ -411,9 +411,9 @@
 ---| "PFB_FlameThrowerEffect"
 ---| "PFB_TimelinePodLandingClimbIsland"
 
---- Audio names that can be played
+---Audio names that can be played
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219185167/Audio#List-of-Audio-Event-names)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219185167/Audio#List-of-Audio-Event-names)
 ---@alias AudioName
 ---| "Build_rotate_Logic"
 ---| "Global_DearColleagueSpeak"

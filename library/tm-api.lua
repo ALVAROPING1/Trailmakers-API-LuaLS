@@ -4,69 +4,69 @@
 -- Further updated by Vajdani
 -- Improved formatting, fixed types, added missing descriptions to parameters, and converted into an addon to remove disabled lua modules by ALVAROPING1
 
---- Modding API Module
+---Modding API Module
 tm = {}
 
 --------------------- OS ---------------------
 
 --#region
 
---- Everything to do with files and general mod systems
+---Everything to do with files and general mod systems
 tm.os = {}
 
---- Read all text of a file in the mods static data directory. Files in the static data directory can only be read and NOT written to
+---Read all text of a file in the mods static data directory. Files in the static data directory can only be read and NOT written to
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218562600/File+Handling)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218562600/File+Handling)
 ---@param path string Relative file path
 ---@return string Content Content of the file
 ---@nodiscard
 function tm.os.ReadAllText_Static(path) end
 
---- Read all text of a file in the mods dynamic data directory. Files in the dynamic data directory can be both read and written to. The dynamic data directory will NOT be uploaded to the steam workshop when you upload your mod. When a mod is run through the steam workshop, the dynamic data, unlike static data, is not located in the steam workshop directory but is located in the steam user data directory instead
+---Read all text of a file in the mods dynamic data directory. Files in the dynamic data directory can be both read and written to. The dynamic data directory will NOT be uploaded to the steam workshop when you upload your mod. When a mod is run through the steam workshop, the dynamic data, unlike static data, is not located in the steam workshop directory but is located in the steam user data directory instead
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218562600/File+Handling)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218562600/File+Handling)
 ---@param path string Relative file path
 ---@return string Content Content of the file
 ---@nodiscard
 function tm.os.ReadAllText_Dynamic(path) end
 
---- Create or overwrite a file in the mods dynamic data directory. Files in the dynamic data directory can be both read and written to. The dynamic data directory will NOT be uploaded to the steam workshop when you upload your mod. When a mod is run through the steam workshop, the dynamic data, unlike static data, is not located in the steam workshop directory but is located in the steam user data directory instead
+---Create or overwrite a file in the mods dynamic data directory. Files in the dynamic data directory can be both read and written to. The dynamic data directory will NOT be uploaded to the steam workshop when you upload your mod. When a mod is run through the steam workshop, the dynamic data, unlike static data, is not located in the steam workshop directory but is located in the steam user data directory instead
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218562600/File+Handling)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218562600/File+Handling)
 ---@param path string Relative file path
 ---@param stringToWrite string Data to write in the file
 ---@return nil
 function tm.os.WriteAllText_Dynamic(path, stringToWrite) end
 
---- Emit a log message
+---Emit a log message
 ---@param message string | number | boolean | nil | ModVector3 Message to log
 ---@return nil
 function tm.os.Log(message) end
 
---- Get time game has been playing in seconds. Doesn't update within a single mod update cycle
+---Get time game has been playing in seconds. Doesn't update within a single mod update cycle
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267786/Game+Loop+Ticks)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267786/Game+Loop+Ticks)
 ---@return number
 ---@nodiscard
 function tm.os.GetTime() end
 
---- Get the time since last update
+---Get the time since last update
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267786/Game+Loop+Ticks)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267786/Game+Loop+Ticks)
 ---@return number
 ---@nodiscard
 function tm.os.GetModDeltaTime() end
 
---- Determines how often the mod gets updated. `1/60` means 60 times per second. Can't update faster than the game (maximum is 60 times per second)
+---Determines how often the mod gets updated. `1/60` means 60 times per second. Can't update faster than the game (maximum is 60 times per second)
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267786/Game+Loop+Ticks)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267786/Game+Loop+Ticks)
 ---@param targetDeltaTime number
 ---@return nil
 function tm.os.SetModTargetDeltaTime(targetDeltaTime) end
 
---- Returns the target delta time for the mod
+---Returns the target delta time for the mod
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267786/Game+Loop+Ticks)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267786/Game+Loop+Ticks)
 ---@return number
 ---@nodiscard
 function tm.os.GetModTargetDeltaTime() end
@@ -77,74 +77,74 @@ function tm.os.GetModTargetDeltaTime() end
 
 --#region
 
---- Everything that can effect physics, like gravity, spawning objects, and importing meshes
+---Everything that can effect physics, like gravity, spawning objects, and importing meshes
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218169403/Physics)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218169403/Physics)
 tm.physics = {}
 
---- Set the physics timescale relative to the default speed (acts as a multiplier of the normal time speed)
+---Set the physics timescale relative to the default speed (acts as a multiplier of the normal time speed)
 ---@param speed number
 ---@return nil
 function tm.physics.SetTimeScale(speed) end
 
---- Get the physics timescale relative to the default speed (acts as a multiplier of the normal time speed)
+---Get the physics timescale relative to the default speed (acts as a multiplier of the normal time speed)
 ---@return number
 ---@nodiscard
 function tm.physics.GetTimeScale() end
 
---- Set the physics gravity in the down direction. Units are `m/s²`, default is `14 m/s²`
+---Set the physics gravity in the down direction. Units are `m/s²`, default is `14 m/s²`
 ---@param strength number
 ---@return nil
 function tm.physics.SetGravity(strength) end
 
---- Set the physics gravity as per the provided vector. Units are `m/s²`, default is `(0, -14, 0) m/s²`
+---Set the physics gravity as per the provided vector. Units are `m/s²`, default is `(0, -14, 0) m/s²`
 ---@param gravity ModVector3
 ---@return nil
 function tm.physics.SetGravity(gravity) end
 
---- Get the physics gravity. Units are `m/s²`, default is `(0, 14, 0) m/s²`
+---Get the physics gravity. Units are `m/s²`, default is `(0, 14, 0) m/s²`
 ---@return ModVector3
 ---@nodiscard
 function tm.physics.GetGravity() end
 
---- Spawn a spawnable at the position, e.g. PFB_Barrel
+---Spawn a spawnable at the position, e.g. PFB_Barrel
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267704/ModGameObject#Example---Spawning-a-built-in-object)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267704/ModGameObject#Example---Spawning-a-built-in-object)
 ---@param position ModVector3 Position of the object
 ---@param name Spawnable Name of the object. Can only be a default asset name (from the list returned by `tm.physics.SpawnableNames()`)
 ---@return ModGameObject object Game object spawned
 function tm.physics.SpawnObject(position, name) end
 
---- Despawn all spawned objects from this mod
+---Despawn all spawned objects from this mod
 ---@return nil
 function tm.physics.ClearAllSpawns() end
 
---- Get a list of all possible spawnable names
+---Get a list of all possible spawnable names
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267747/Spawnables)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267747/Spawnables)
 ---@return string[]
 ---@nodiscard
 function tm.physics.SpawnableNames() end
 
---- Add a mesh to all clients, note this will have to be sent to the client when they join
+---Add a mesh to all clients, note this will have to be sent to the client when they join
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
 ---@param filename string The name of the mesh in the mod files (Must use the `.obj` format)
 ---@param resourceName string The name that the mesh will use
 ---@return nil
 function tm.physics.AddMesh(filename, resourceName) end
 
---- Add a texture to all clients, note this will have to be sent to the client when they join
+---Add a texture to all clients, note this will have to be sent to the client when they join
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
 ---@param filename string The name of the texture in the mod files (Must use the `.png` format)
 ---@param resourceName string The name that the texture will use
 ---@return nil
 function tm.physics.AddTexture(filename, resourceName) end
 
---- Spawn a custom physics object (Mesh and texture must be created with `.AddMesh()` and `.AddTexture()` first)
+---Spawn a custom physics object (Mesh and texture must be created with `.AddMesh()` and `.AddTexture()` first)
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
 ---@param position ModVector3 The position to spawn the object at
 ---@param meshName string The name of the mesh that the object will use (Has to be added with `tm.physics.AddMesh()` first)
 ---@param textureName string The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
@@ -153,56 +153,56 @@ function tm.physics.AddTexture(filename, resourceName) end
 ---@return ModGameObject object Game object spawned
 function tm.physics.SpawnCustomObjectRigidbody(position, meshName, textureName, isKinematic, mass) end
 
---- Spawn a custom object (Mesh and texture must be created with `.AddMesh()` and `.AddTexture()` first)
+---Spawn a custom object (Mesh and texture must be created with `.AddMesh()` and `.AddTexture()` first)
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
 ---@param position ModVector3 The position to spawn the object at
 ---@param meshName string The name of the mesh that the object will use (Has to be added with `tm.physics.AddMesh()` first)
 ---@param textureName string The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
 ---@return ModGameObject object Game object spawned
 function tm.physics.SpawnCustomObject(position, meshName, textureName) end
 
---- Spawn a custom object with concave collision support (Mesh and texture must be created with `.AddMesh()` and `.AddTexture()` first)
+---Spawn a custom object with concave collision support (Mesh and texture must be created with `.AddMesh()` and `.AddTexture()` first)
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
 ---@param position ModVector3 The position to spawn the object at
 ---@param meshName string The name of the mesh that the object will use (Has to be added with `tm.physics.AddMesh()` first)
 ---@param textureName string The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
 ---@return ModGameObject object Game object spawned
 function tm.physics.SpawnCustomObjectConcave(position, meshName, textureName) end
 
---- Spawn a box trigger that will detect overlap but will not interact with physics
+---Spawn a box trigger that will detect overlap but will not interact with physics
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267704/ModGameObject#Example---Spawning-a-trigger)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267704/ModGameObject#Example---Spawning-a-trigger)
 ---@param position ModVector3 The position to spawn the Box Trigger at
 ---@param size ModVector3 The Box Trigger' size
 ---@return ModGameObject object Game object spawned
 function tm.physics.SpawnBoxTrigger(position, size) end
 
---- Sets the build complexity value. Default value is `700` and values above it can make the game unstable
+---Sets the build complexity value. Default value is `700` and values above it can make the game unstable
 ---@param value integer
 ---@return nil
 function tm.physics.SetBuildComplexity(value) end
 
---- Registers a function to the collision enter callback of a game object
+---Registers a function to the collision enter callback of a game object
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218169403/Physics#Collision-Callbacks)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218169403/Physics#Collision-Callbacks)
 ---@param targetObject ModGameObject Object for which the callback will be registered
 ---@param functionName string Name of the function to register. Must be in the global scope
 ---@return nil
 function tm.physics.RegisterFunctionToCollisionEnterCallback(targetObject, functionName) end
 
---- Registers a function to the collision exit callback of a game object
+---Registers a function to the collision exit callback of a game object
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218169403/Physics#Collision-Callbacks)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218169403/Physics#Collision-Callbacks)
 ---@param targetObject ModGameObject Object for which the callback will be registered
 ---@param functionName string Name of the function to register. Must be in the global scope
 ---@return nil
 function tm.physics.RegisterFunctionToCollisionExitCallback(targetObject, functionName) end
 
---- Returns a bool if raycast hit something. Hit argument gets overwritten with raycast data
+---Returns a bool if raycast hit something. Hit argument gets overwritten with raycast data
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218169403/Physics#Raycast)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218169403/Physics#Raycast)
 ---@param origin ModVector3 Origin of the raycast
 ---@param direction ModVector3 Direction of the raycast in euler angles
 ---@param hitPositionOut ModVector3 Reference to the vector in which the hit position will be stored (only modified if the raycast hit an object)
@@ -210,12 +210,12 @@ function tm.physics.RegisterFunctionToCollisionExitCallback(targetObject, functi
 ---@return boolean hit Whether an object has been hit
 function tm.physics.Raycast(origin, direction, hitPositionOut, maxDistance) end
 
---- Returns the internal name for the current map
+---Returns the internal name for the current map
 ---@return string name The map name
 ---@nodiscard
 function tm.physics.GetMapName() end
 
---- Returns the wind velocity at a position
+---Returns the wind velocity at a position
 ---@param position ModVector3
 ---@return ModVector3
 ---@nodiscard
@@ -227,98 +227,98 @@ function tm.physics.GetWindVelocityAtPosition(position) end
 
 --#region
 
---- Object representing a player in the game
+---Object representing a player in the game
 ---@class ModPlayer
 ---@field playerId integer ID of the player
 
---- Everything to do with players actions and info
+---Everything to do with players actions and info
 tm.players = {}
 
---- Event triggered when a player joins the server. Functions are called with a `ModPlayer` object as argument whose only field is `playerId` (ID of the player who triggered the event)
+---Event triggered when a player joins the server. Functions are called with a `ModPlayer` object as argument whose only field is `playerId` (ID of the player who triggered the event)
 tm.players.OnPlayerJoined = {}
 
---- Add function to event
+---Add function to event
 ---@param Function fun(player: ModPlayer): any
 ---@return nil
 function tm.players.OnPlayerJoined.add(Function) end
 
---- Remove function from event
+---Remove function from event
 ---@param Function fun(player: ModPlayer): any
 ---@return nil
 function tm.players.OnPlayerJoined.remove(Function) end
 
---- Event triggered when a player leaves the server. Functions are called with a `ModPlayer` object as argument whose only field is `playerId` (ID of the player who triggered the event)
+---Event triggered when a player leaves the server. Functions are called with a `ModPlayer` object as argument whose only field is `playerId` (ID of the player who triggered the event)
 tm.players.OnPlayerLeft = {}
 
---- Add function to event
+---Add function to event
 ---@param Function fun(player: ModPlayer): any
 ---@return nil
 function tm.players.OnPlayerLeft.add(Function) end
 
---- Remove function from event
+---Remove function from event
 ---@param Function fun(player: ModPlayer): any
 ---@return nil
 function tm.players.OnPlayerLeft.remove(Function) end
 
---- Get all players currently connected to the server
+---Get all players currently connected to the server
 ---@return ModPlayer[]
 ---@nodiscard
 function tm.players.CurrentPlayers() end
 
---- Forcefully disconnect a given player
+---Forcefully disconnect a given player
 ---@param playerId integer
 ---@return nil
 function tm.players.Kick(playerId) end
 
---- Get the Transform of a player
+---Get the Transform of a player
 ---@param playerId integer
 ---@return ModTransform
 ---@nodiscard
 function tm.players.GetPlayerTransform(playerId) end
 
---- Get the GameObject of a player
+---Get the GameObject of a player
 ---@param playerId integer
 ---@return ModGameObject
 ---@nodiscard
 function tm.players.GetPlayerGameObject(playerId) end
 
---- Returns whether the player is seated or not
+---Returns whether the player is seated or not
 ---@param playerId integer
 ---@return boolean
 ---@nodiscard
 function tm.players.IsPlayerInSeat(playerId) end
 
---- Sets whether the specified player can fly or not
+---Sets whether the specified player can fly or not
 ---@param playerId integer
 ---@param enabled boolean
 ---@return nil
 function tm.players.SetJetpackEnabled(playerId, enabled) end
 
---- Get all structure(s) owned by that player
+---Get all structure(s) owned by that player
 ---@param playerId integer
 ---@return ModStructure[]
 ---@nodiscard
 function tm.players.GetPlayerStructures(playerId) end
 
---- Get the structure(s) currently in build mode for a player
+---Get the structure(s) currently in build mode for a player
 ---@param playerId integer
 ---@return ModStructure[]
 ---@nodiscard
 function tm.players.GetPlayerStructuresInBuild(playerId) end
 
---- Get the last select block in the builder for that player
+---Get the last select block in the builder for that player
 ---@param playerId integer
 ---@return ModBlock
 ---@nodiscard
 function tm.players.GetPlayerSelectBlockInBuild(playerId) end
 
---- Get the player's name
+---Get the player's name
 ---@param playerId integer
 ---@return string
 ---@nodiscard
 function tm.players.GetPlayerName(playerId) end
 
---- Returns true if the player is in build mode
+---Returns true if the player is in build mode
 ---@param playerId integer
 ---@return boolean
 ---@nodiscard
@@ -330,14 +330,14 @@ function tm.players.GetPlayerIsInBuildMode(playerId) end
 
 --#region
 
---- For adding UI to your mod
+---For adding UI to your mod
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI)
 tm.playerUI = {}
 
---- Add a button to the client's mod UI
+---Add a button to the client's mod UI
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-work-with-buttons)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-work-with-buttons)
 ---@param playerId integer ID of the player for which the UI element will be created
 ---@param id string | integer | number | boolean ID of the UI element
 ---@param defaultValue string Text of the button
@@ -346,9 +346,9 @@ tm.playerUI = {}
 ---@return nil
 function tm.playerUI.AddUIButton(playerId, id, defaultValue, callback, data) end
 
---- Add a text field to the client's mod UI
+---Add a text field to the client's mod UI
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-work-with-text-fields)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-work-with-text-fields)
 ---@param playerId integer ID of the player for which the UI element will be created
 ---@param id string | integer | number | boolean ID of the UI element
 ---@param defaultValue string Default text
@@ -357,23 +357,23 @@ function tm.playerUI.AddUIButton(playerId, id, defaultValue, callback, data) end
 ---@return nil
 function tm.playerUI.AddUIText(playerId, id, defaultValue, callback, data) end
 
---- Add a label to the client's mod UI
+---Add a label to the client's mod UI
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-display-values)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-display-values)
 ---@param playerId integer ID of the player for which the UI element will be created
 ---@param id string | integer | number | boolean ID of the UI element
 ---@param defaultValue string Text of the label
 ---@return nil
 function tm.playerUI.AddUILabel(playerId, id, defaultValue) end
 
---- Set the value of a client's UI element
+---Set the value of a client's UI element
 ---@param playerId integer ID of the player for which the UI element will be modified
 ---@param id string | integer | number | boolean ID of the UI element
 ---@param value string New value of the UI element (text shown on the UI element)
 ---@return nil
 function tm.playerUI.SetUIValue(playerId, id, value) end
 
---- Remove all UI elements for a player
+---Remove all UI elements for a player
 ---@param playerId integer ID of the player for which the UI will be cleared
 ---@return nil
 function tm.playerUI.ClearUI(playerId) end
@@ -384,34 +384,34 @@ function tm.playerUI.ClearUI(playerId) end
 
 --#region
 
---- Lets you play audio and effect audio
+---Lets you play audio and effect audio
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219185167/Audio)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219185167/Audio)
 tm.audio = {}
 
---- Play audio at a position. This is more cost friendly but you can not stop or move the sound
+---Play audio at a position. This is more cost friendly but you can not stop or move the sound
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219185167/Audio#Example---Play-an-explosion-sound-at-players-position-every-second)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219185167/Audio#Example---Play-an-explosion-sound-at-players-position-every-second)
 ---@param audioName AudioName Name of the audio to play
 ---@param position ModVector3 Position of the audio
 ---@param keepObjectDuration number Duration of the audio
 ---@return nil
 function tm.audio.PlayAudioAtPosition(audioName, position, keepObjectDuration) end
 
---- Play audio on a GameObject
+---Play audio on a GameObject
 ---@param audioName AudioName Name of the audio to play
 ---@param modGameObject ModGameObject GameObject on which the audio should be played
 ---@return nil
 function tm.audio.PlayAudioAtGameobject(audioName, modGameObject) end
 
---- Stop all audio on a GameObject
+---Stop all audio on a GameObject
 ---@param modGameObject ModGameObject
 ---@return nil
 function tm.audio.StopAllAudioAtGameobject(modGameObject) end
 
---- Get a list of all playable audio names
+---Get a list of all playable audio names
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219185167/Audio#List-of-Audio-Event-names)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219185167/Audio#List-of-Audio-Event-names)
 ---@return string[]
 ---@nodiscard
 function tm.audio.GetAudioNames() end
@@ -422,29 +422,29 @@ function tm.audio.GetAudioNames() end
 
 --#region
 
---- Keys that can have callbacks registered
+---Keys that can have callbacks registered
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267762/Input#List-of-key-names)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267762/Input#List-of-key-names)
 ---@alias InputKey "`" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "0" | "-" | "=" | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" | "[" | "]" | ";" | "'" | "\\" | "," | "." | "/" | "backspace" | "tab" | "enter" | "left shift" | "right shift" | "left control" | "left alt" | "space" | "right alt" | "right control" | "insert" | "home" | "page up" | "delete" | "end" | "page down" | "up" | "down" | "left" | "right" | "numlock" | "[/]" | "[*]" | "[-]" | "[+]" | "[enter]" | "[,]" | "[1]" | "[2]" | "[3]" | "[4]" | "[5]" | "[6]" | "[7]" | "[8]" | "[9]" | "[0]"
 
---- Lets you trigger functions on key press/release by players
---- Keys: "`" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "0" | "-" | "=" | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" | "[" | "]" | ";" | "'" | "\\" | "," | "." | "/" | "backspace" | "tab" | "enter" | "left shift" | "right shift" | "left control" | "left alt" | "space" | "right alt" | "right control" | "insert" | "home" | "page up" | "delete" | "end" | "page down" | "up" | "down" | "left" | "right" | "numlock" | "[/]" | "[*]" | "[-]" | "[+]" | "[enter]" | "[,]" | "[1]" | "[2]" | "[3]" | "[4]" | "[5]" | "[6]" | "[7]" | "[8]" | "[9]" | "[0]"
+---Lets you trigger functions on key press/release by players
+---Keys: "`" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "0" | "-" | "=" | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" | "[" | "]" | ";" | "'" | "\\" | "," | "." | "/" | "backspace" | "tab" | "enter" | "left shift" | "right shift" | "left control" | "left alt" | "space" | "right alt" | "right control" | "insert" | "home" | "page up" | "delete" | "end" | "page down" | "up" | "down" | "left" | "right" | "numlock" | "[/]" | "[*]" | "[-]" | "[+]" | "[enter]" | "[,]" | "[1]" | "[2]" | "[3]" | "[4]" | "[5]" | "[6]" | "[7]" | "[8]" | "[9]" | "[0]"
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267762/Input)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267762/Input)
 tm.input = {}
 
---- Registers a function to the callback of when the given player presses the given key
+---Registers a function to the callback of when the given player presses the given key
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267762/Input)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267762/Input)
 ---@param playerId integer ID of the player for which the function will be registered
 ---@param functionName string Name of the function to register. Must be in the global scope
 ---@param keyName InputKey Name of the key to use. See `tm.input` docs for available key names
 ---@return nil
 function tm.input.RegisterFunctionToKeyDownCallback(playerId, functionName, keyName) end
 
---- Registers a function to the callback of when the given player releases  the given key
+---Registers a function to the callback of when the given player releases  the given key
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267762/Input)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267762/Input)
 ---@param playerId integer ID of the player for which the function will be registered
 ---@param functionName string Name of the function to register. Must be in the global scope
 ---@param keyName InputKey Name of the key to use. See `tm.input` docs for available key names
@@ -457,12 +457,12 @@ function tm.input.RegisterFunctionToKeyUpCallback(playerId, functionName, keyNam
 
 --#region
 
---- For all things vectors, vector3 can store 3 numbers
+---For all things vectors, vector3 can store 3 numbers
 tm.vector3 = {}
 
---- 3D Vector object, can store 3 numbers
+---3D Vector object, can store 3 numbers
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3)
 ---@class ModVector3
 ---@operator mul(number) : ModVector3 Vector-scalar multiplication
 ---@operator div(number) : ModVector3 Vector-scalar division
@@ -478,9 +478,9 @@ tm.vector3 = {}
 ---@field Magnitude fun(): number Returns the magnitude/length
 ---@field ToString fun(): string Returns a formatted string of a vector
 
---- Creates a vector3 with specified values
+---Creates a vector3 with specified values
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
 ---@param x number
 ---@param y number
 ---@param z number
@@ -488,97 +488,97 @@ tm.vector3 = {}
 ---@nodiscard
 function tm.vector3.Create(x, y, z) end
 
---- Creates a vector3 with values defaulted to zero
+---Creates a vector3 with values defaulted to zero
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
 ---@return ModVector3
 ---@nodiscard
 function tm.vector3.Create() end
 
---- Creates a vector3 pointing right (1, 0, 0)
+---Creates a vector3 pointing right (1, 0, 0)
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
 ---@return ModVector3
 ---@nodiscard
 function tm.vector3.Right() end
 
---- Creates a vector3 pointing left (-1, 0, 0)
+---Creates a vector3 pointing left (-1, 0, 0)
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
 ---@return ModVector3
 ---@nodiscard
 function tm.vector3.Left() end
 
---- Creates a vector3 pointing up (0, 1, 0)
+---Creates a vector3 pointing up (0, 1, 0)
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
 ---@return ModVector3
 ---@nodiscard
 function tm.vector3.Up() end
 
---- Creates a vector3 pointing down (0, -1, 0)
+---Creates a vector3 pointing down (0, -1, 0)
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
 ---@return ModVector3
 ---@nodiscard
 function tm.vector3.Down() end
 
---- Creates a vector3 pointing forward (0, 0, 1)
+---Creates a vector3 pointing forward (0, 0, 1)
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
 ---@return ModVector3
 ---@nodiscard
 function tm.vector3.Forward() end
 
---- Creates a vector3 pointing back (0, 0, -1)
+---Creates a vector3 pointing back (0, 0, -1)
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
 ---@return ModVector3
 ---@nodiscard
 function tm.vector3.Back() end
 
---- Flips all the signs (can be done with the normal `-` operator)
+---Flips all the signs (can be done with the normal `-` operator)
 ---@param vector3 ModVector3
 ---@return ModVector3
 ---@nodiscard
 function tm.vector3.op_UnaryNegation(vector3) end
 
---- Adds first and second together (can be done with the normal `+` operator)
+---Adds first and second together (can be done with the normal `+` operator)
 ---@param first ModVector3
 ---@param second ModVector3
 ---@return ModVector3
 ---@nodiscard
 function tm.vector3.op_Addition(first, second) end
 
---- Subtracts first and second together (can be done with the normal `-` operator)
+---Subtracts first and second together (can be done with the normal `-` operator)
 ---@param first ModVector3
 ---@param second ModVector3
 ---@return ModVector3
 ---@nodiscard
 function tm.vector3.op_Subtraction(first, second) end
 
---- Multiplies the vector by the scalar (can be done with the normal `*` operator)
+---Multiplies the vector by the scalar (can be done with the normal `*` operator)
 ---@param vector3 ModVector3
 ---@param scalar number
 ---@return ModVector3
 ---@nodiscard
 function tm.vector3.op_Multiply(vector3, scalar) end
 
---- Divides the vector by the divisor (can be done with the normal `/` operator)
+---Divides the vector by the divisor (can be done with the normal `/` operator)
 ---@param vector3 ModVector3
 ---@param divisor number
 ---@return ModVector3
 ---@nodiscard
 function tm.vector3.op_Division(vector3, divisor) end
 
---- Returns true if both vectors are the same, false if not (can be done with the normal `==` operator)
+---Returns true if both vectors are the same, false if not (can be done with the normal `==` operator)
 ---@param first ModVector3
 ---@param second ModVector3
 ---@return boolean
 ---@nodiscard
 function tm.vector3.op_Equality(first, second) end
 
---- Returns true if both vectors are not the same, false if not (can be done with the normal `~=` operator)
+---Returns true if both vectors are not the same, false if not (can be done with the normal `~=` operator)
 ---@param first ModVector3
 ---@param second ModVector3
 ---@return boolean
@@ -591,12 +591,12 @@ function tm.vector3.op_Inequality(first, second) end
 
 --#region
 
---- Quaternions are for rotations, they get rid of gimbal lock that a vector3 rotation runs into. Quaternions can store 4 numbers
+---Quaternions are for rotations, they get rid of gimbal lock that a vector3 rotation runs into. Quaternions can store 4 numbers
 tm.quaternion = {}
 
---- Quaternion object. Quaternions are for rotations, they get rid of gimbal lock that a vector3 rotation runs into. Quaternions can store 4 numbers
+---Quaternion object. Quaternions are for rotations, they get rid of gimbal lock that a vector3 rotation runs into. Quaternions can store 4 numbers
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion)
 ---@class ModQuaternion
 ---@field x number X value of the quaternion
 ---@field y number Y value of the quaternion
@@ -605,9 +605,9 @@ tm.quaternion = {}
 ---@field GetEuler fun(): ModVector3 Returns a vector3 representing the euler angles of the quaternion
 ---@field Multiply fun(otherQuaternion: ModQuaternion): ModQuaternion Multiplies two quaternions and returns the result
 
---- Creates a quaternion by manually defining its components
+---Creates a quaternion by manually defining its components
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion#Creating-Quaternions)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion#Creating-Quaternions)
 ---@param x number
 ---@param y number
 ---@param z number
@@ -616,9 +616,9 @@ tm.quaternion = {}
 ---@nodiscard
 function tm.quaternion.Create(x, y, z, w) end
 
---- Creates a quaternion using euler angle components
+---Creates a quaternion using euler angle components
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion#Creating-Quaternions)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion#Creating-Quaternions)
 ---@param x number
 ---@param y number
 ---@param z number
@@ -626,26 +626,26 @@ function tm.quaternion.Create(x, y, z, w) end
 ---@nodiscard
 function tm.quaternion.Create(x, y, z) end
 
---- Creates a quaternion using a euler angle vector3
+---Creates a quaternion using a euler angle vector3
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion#Creating-Quaternions)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion#Creating-Quaternions)
 ---@param eulerAngle ModVector3
 ---@return ModQuaternion
 ---@nodiscard
 function tm.quaternion.Create(eulerAngle) end
 
---- Creates a quaternion using an angle and an axis to rotate around
+---Creates a quaternion using an angle and an axis to rotate around
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion#Creating-Quaternions)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion#Creating-Quaternions)
 ---@param angle number
 ---@param axis ModVector3
 ---@return ModQuaternion
 ---@nodiscard
 function tm.quaternion.Create(angle, axis) end
 
---- Returns the resulting quaternion from a slerp between two quaternions
+---Returns the resulting quaternion from a slerp between two quaternions
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion#Working-with-ModQuaternion)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion#Working-with-ModQuaternion)
 ---@param firstQuaternion ModQuaternion
 ---@param secondQuaternion ModQuaternion
 ---@param t number Position in the interpolation (0=firstQuaternion, 1=secondQuaternion)
@@ -659,7 +659,7 @@ function tm.quaternion.Slerp(firstQuaternion, secondQuaternion, t) end
 
 --#region
 
---- These are all the things you can get from the argument that UI elements pass in the function you specify
+---These are all the things you can get from the argument that UI elements pass in the function you specify
 ---@class CallbackData
 ---@field playerId integer Gives you the player that interacted with the element
 ---@field id integer Gives you the id of the interacted element
@@ -673,7 +673,7 @@ function tm.quaternion.Slerp(firstQuaternion, secondQuaternion, t) end
 
 --#region
 
---- Gives the unformatted documentation
+---Gives the unformatted documentation
 ---@return string
 ---@nodiscard
 function tm.GetDocs() end
@@ -684,9 +684,9 @@ function tm.GetDocs() end
 
 --#region
 
---- Object representing a 3D object in the game world
+---Object representing a 3D object in the game world
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267704/ModGameObject)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267704/ModGameObject)
 ---@class ModGameObject
 ---@field Despawn fun(): nil Despawns the object. This can not be done on players
 ---@field GetTransform fun(): ModTransform Returns the GameObject's Transform
@@ -704,9 +704,9 @@ function tm.GetDocs() end
 
 --#region
 
---- Object representing the transform of a `ModGameObject`. Handles its position, rotation and scale
+---Object representing the transform of a `ModGameObject`. Handles its position, rotation and scale
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218431584/ModTransform)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218431584/ModTransform)
 ---@class ModTransform
 ---@field SetPosition (fun(position: ModVector3): nil) | (fun(x: number, y: number, z: number): nil) Sets the position of the Transform
 ---@field GetPosition fun(): ModVector3 Gets the position of the Transform
@@ -724,9 +724,9 @@ function tm.GetDocs() end
 
 --#region
 
---- Object representing a block of a creation in the game
+---Object representing a block of a creation in the game
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218562585/ModBlock)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218562585/ModBlock)
 ---@class ModBlock
 ---@field SetColor fun(r: number, g: number, b: number): nil [In buildmode only] Set the block's primary color
 ---@field SetSecondaryColor fun(r: number, g: number, b: number): nil [In buildmode only] Set the block's secondary color
@@ -753,9 +753,9 @@ function tm.GetDocs() end
 
 --#region
 
---- Object representing a creation in the game
+---Object representing a creation in the game
 ---
---- [View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218103875/ModStructure)
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218103875/ModStructure)
 ---@class ModStructure
 ---@field Destroy fun(): nil Destroy the structure
 ---@field GetBlocks fun(): ModBlock[] Gets all blocks in the structure
