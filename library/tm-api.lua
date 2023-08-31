@@ -237,31 +237,26 @@ function tm.physics.GetWindVelocityAtPosition(position) end
 ---Everything to do with players actions and info
 tm.players = {}
 
----Event triggered when a player joins the server. Functions are called with a `ModPlayer` object as argument whose only field is `playerId` (ID of the player who triggered the event)
+---@class OnPlayerEvent
+local OnPlayerEvent = {}
+
+---Add function to event
+---@param Function fun(player: ModPlayer): any
+---@return nil
+function OnPlayerEvent.add(Function) end
+
+---Remove function from event. The same function object must have been registered with `OnPlayerEvent.add()` first
+---@param Function fun(player: ModPlayer): any
+---@return nil
+function OnPlayerEvent.remove(Function) end
+
+---Event triggered when a player joins the server
+---@type OnPlayerEvent
 tm.players.OnPlayerJoined = {}
 
----Add function to event
----@param Function fun(player: ModPlayer): any
----@return nil
-function tm.players.OnPlayerJoined.add(Function) end
-
----Remove function from event
----@param Function fun(player: ModPlayer): any
----@return nil
-function tm.players.OnPlayerJoined.remove(Function) end
-
----Event triggered when a player leaves the server. Functions are called with a `ModPlayer` object as argument whose only field is `playerId` (ID of the player who triggered the event)
+---Event triggered when a player leaves the server
+---@type OnPlayerEvent
 tm.players.OnPlayerLeft = {}
-
----Add function to event
----@param Function fun(player: ModPlayer): any
----@return nil
-function tm.players.OnPlayerLeft.add(Function) end
-
----Remove function from event
----@param Function fun(player: ModPlayer): any
----@return nil
-function tm.players.OnPlayerLeft.remove(Function) end
 
 ---Get all players currently connected to the server
 ---@return ModPlayer[]
