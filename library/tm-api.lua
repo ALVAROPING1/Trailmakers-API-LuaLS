@@ -227,9 +227,12 @@ function tm.physics.GetWindVelocityAtPosition(position) end
 
 --#region
 
+---ID of a player. It's an integer from 0 to 7, the ID 0 is guaranteed to be the host
+---@alias PlayerID number
+
 ---Object representing a player in the game
 ---@class ModPlayer
----@field playerId number ID of the player
+---@field playerId PlayerID
 
 ---Everything to do with players actions and info
 tm.players = {}
@@ -266,60 +269,60 @@ function tm.players.OnPlayerLeft.remove(Function) end
 function tm.players.CurrentPlayers() end
 
 ---Forcefully disconnect a given player
----@param playerId number
+---@param playerId PlayerID
 ---@return nil
 function tm.players.Kick(playerId) end
 
 ---Get the Transform of a player
----@param playerId number
+---@param playerId PlayerID
 ---@return ModTransform
 ---@nodiscard
 function tm.players.GetPlayerTransform(playerId) end
 
 ---Get the GameObject of a player
----@param playerId number
+---@param playerId PlayerID
 ---@return ModGameObject
 ---@nodiscard
 function tm.players.GetPlayerGameObject(playerId) end
 
 ---Returns whether the player is seated or not
----@param playerId number
+---@param playerId PlayerID
 ---@return boolean
 ---@nodiscard
 function tm.players.IsPlayerInSeat(playerId) end
 
 ---Sets whether the specified player can fly or not
----@param playerId number
+---@param playerId PlayerID
 ---@param enabled boolean
 ---@return nil
 function tm.players.SetJetpackEnabled(playerId, enabled) end
 
 ---Get all structure(s) owned by that player
----@param playerId number
+---@param playerId PlayerID
 ---@return ModStructure[]
 ---@nodiscard
 function tm.players.GetPlayerStructures(playerId) end
 
 ---Get the structure(s) currently in build mode for a player
----@param playerId number
+---@param playerId PlayerID
 ---@return ModStructure[]
 ---@nodiscard
 function tm.players.GetPlayerStructuresInBuild(playerId) end
 
 ---Get the last select block in the builder for that player
----@param playerId number
+---@param playerId PlayerID
 ---@return ModBlock
 ---@nodiscard
 function tm.players.GetPlayerSelectBlockInBuild(playerId) end
 
 ---Get the player's name
----@param playerId number
+---@param playerId PlayerID
 ---@return string
 ---@nodiscard
 function tm.players.GetPlayerName(playerId) end
 
 ---Returns true if the player is in build mode
----@param playerId number
+---@param playerId PlayerID
 ---@return boolean
 ---@nodiscard
 function tm.players.GetPlayerIsInBuildMode(playerId) end
@@ -335,11 +338,14 @@ function tm.players.GetPlayerIsInBuildMode(playerId) end
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI)
 tm.playerUI = {}
 
+---ID of an UI element
+---@alias UIElementID string | number | boolean
+
 ---Add a button to the client's mod UI
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-work-with-buttons)
----@param playerId number ID of the player for which the UI element will be created
----@param id string | number | boolean ID of the UI element
+---@param playerId PlayerID ID of the player for which the UI element will be created
+---@param id UIElementID
 ---@param defaultValue string Text of the button
 ---@param callback fun(UICallbackData) Function to execute when the button is pressed
 ---@param data any Arbitrary data passed to the callback function
@@ -349,8 +355,8 @@ function tm.playerUI.AddUIButton(playerId, id, defaultValue, callback, data) end
 ---Add a text field to the client's mod UI
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-work-with-text-fields)
----@param playerId number ID of the player for which the UI element will be created
----@param id string | number | boolean ID of the UI element
+---@param playerId PlayerID ID of the player for which the UI element will be created
+---@param id UIElementID
 ---@param defaultValue string Default text
 ---@param callback fun(UICallbackData) Function to execute when the button is pressed
 ---@param data any Arbitrary data passed to the callback function
@@ -360,21 +366,21 @@ function tm.playerUI.AddUIText(playerId, id, defaultValue, callback, data) end
 ---Add a label to the client's mod UI
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-display-values)
----@param playerId number ID of the player for which the UI element will be created
----@param id string | number | boolean ID of the UI element
+---@param playerId PlayerID ID of the player for which the UI element will be created
+---@param id UIElementID
 ---@param defaultValue string Text of the label
 ---@return nil
 function tm.playerUI.AddUILabel(playerId, id, defaultValue) end
 
 ---Set the value of a client's UI element
----@param playerId number ID of the player for which the UI element will be modified
----@param id string | number | boolean ID of the UI element
+---@param playerId PlayerID ID of the player for which the UI element will be modified
+---@param id UIElementID
 ---@param value string New value of the UI element (text shown on the UI element)
 ---@return nil
 function tm.playerUI.SetUIValue(playerId, id, value) end
 
 ---Remove all UI elements for a player
----@param playerId number ID of the player for which the UI will be cleared
+---@param playerId PlayerID ID of the player for which the UI will be cleared
 ---@return nil
 function tm.playerUI.ClearUI(playerId) end
 
@@ -436,7 +442,7 @@ tm.input = {}
 ---Registers a function to the callback of when the given player presses the given key
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267762/Input)
----@param playerId number ID of the player for which the function will be registered
+---@param playerId PlayerID ID of the player for which the function will be registered
 ---@param functionName string Name of the function to register. Must be in the global scope
 ---@param keyName InputKey Name of the key to use. See `tm.input` docs for available key names
 ---@return nil
@@ -445,7 +451,7 @@ function tm.input.RegisterFunctionToKeyDownCallback(playerId, functionName, keyN
 ---Registers a function to the callback of when the given player releases  the given key
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267762/Input)
----@param playerId number ID of the player for which the function will be registered
+---@param playerId PlayerID ID of the player for which the function will be registered
 ---@param functionName string Name of the function to register. Must be in the global scope
 ---@param keyName InputKey Name of the key to use. See `tm.input` docs for available key names
 ---@return nil
@@ -661,8 +667,8 @@ function tm.quaternion.Slerp(firstQuaternion, secondQuaternion, t) end
 
 ---These are all the things you can get from the argument that UI elements pass in the function you specify
 ---@class CallbackData
----@field playerId number Gives you the player that interacted with the element
----@field id string | number | boolean Gives you the id of the interacted element
+---@field playerId PlayerID Gives you the player that interacted with the element
+---@field id UIElementID Gives you the ID of the interacted element
 ---@field type string Gives you the type of the interacted element
 ---@field value string Gives you the value of the interacted element. Value is the text shown on the UI element
 ---@field data any Gives you the data of the interacted element. You pass in this data when registering the UI element's callback
