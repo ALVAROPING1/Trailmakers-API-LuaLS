@@ -137,7 +137,7 @@ function tm.physics.AddMesh(filename, resourceName) end
 ---Add a texture to all clients, note this will have to be sent to the client when they join
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
----@param filename string The name of the texture in the mod files (Must use the `.png` format)
+---@param filename string The name of the texture in the mod files (Must use the `.png` or `.jpg` format)
 ---@param resourceName string The name that the texture will use
 ---@return nil
 function tm.physics.AddTexture(filename, resourceName) end
