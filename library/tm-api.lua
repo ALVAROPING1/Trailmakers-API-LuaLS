@@ -18,7 +18,7 @@ tm.os = {}
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218562600/File+Handling)
 ---@param path string Relative file path
----@return string Content Content of the file
+---@return string # Content of the file
 ---@nodiscard
 function tm.os.ReadAllText_Static(path) end
 
@@ -26,7 +26,7 @@ function tm.os.ReadAllText_Static(path) end
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218562600/File+Handling)
 ---@param path string Relative file path
----@return string Content Content of the file
+---@return string # Content of the file
 ---@nodiscard
 function tm.os.ReadAllText_Dynamic(path) end
 
@@ -150,7 +150,7 @@ function tm.physics.AddTexture(filename, resourceName) end
 ---@param textureName string The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
 ---@param isKinematic boolean Whether the object will be affected by physics or not
 ---@param mass number The mass of the object. Units are `5kg`
----@return ModGameObject object Game object spawned
+---@return ModGameObject # Game object spawned
 function tm.physics.SpawnCustomObjectRigidbody(position, meshName, textureName, isKinematic, mass) end
 
 ---Spawn a custom object (Mesh and texture must be created with `.AddMesh()` and `.AddTexture()` first)
@@ -159,7 +159,7 @@ function tm.physics.SpawnCustomObjectRigidbody(position, meshName, textureName, 
 ---@param position ModVector3 The position to spawn the object at
 ---@param meshName string The name of the mesh that the object will use (Has to be added with `tm.physics.AddMesh()` first)
 ---@param textureName string The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
----@return ModGameObject object Game object spawned
+---@return ModGameObject # Game object spawned
 function tm.physics.SpawnCustomObject(position, meshName, textureName) end
 
 ---Spawn a custom object with concave collision support (Mesh and texture must be created with `.AddMesh()` and `.AddTexture()` first)
@@ -168,7 +168,7 @@ function tm.physics.SpawnCustomObject(position, meshName, textureName) end
 ---@param position ModVector3 The position to spawn the object at
 ---@param meshName string The name of the mesh that the object will use (Has to be added with `tm.physics.AddMesh()` first)
 ---@param textureName string The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
----@return ModGameObject object Game object spawned
+---@return ModGameObject # Game object spawned
 function tm.physics.SpawnCustomObjectConcave(position, meshName, textureName) end
 
 ---Spawn a box trigger that will detect overlap but will not interact with physics
@@ -176,7 +176,7 @@ function tm.physics.SpawnCustomObjectConcave(position, meshName, textureName) en
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267704/ModGameObject#Example---Spawning-a-trigger)
 ---@param position ModVector3 The position to spawn the Box Trigger at
 ---@param size ModVector3 The Box Trigger' size
----@return ModGameObject object Game object spawned
+---@return ModGameObject # Game object spawned
 function tm.physics.SpawnBoxTrigger(position, size) end
 
 ---Sets the build complexity value. Default value is `700` and values above it can make the game unstable
@@ -207,11 +207,11 @@ function tm.physics.RegisterFunctionToCollisionExitCallback(targetObject, functi
 ---@param direction ModVector3 Direction of the raycast in euler angles
 ---@param hitPositionOut ModVector3 Reference to the vector in which the hit position will be stored (only modified if the raycast hit an object)
 ---@param maxDistance number Max distance from the origin to check for hits
----@return boolean hit Whether an object has been hit
+---@return boolean # Whether an object has been hit
 function tm.physics.Raycast(origin, direction, hitPositionOut, maxDistance) end
 
 ---Returns the internal name for the current map
----@return string name The map name
+---@return string # The map name
 ---@nodiscard
 function tm.physics.GetMapName() end
 
