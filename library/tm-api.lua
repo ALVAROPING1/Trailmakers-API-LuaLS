@@ -4,6 +4,9 @@
 -- Further updated by Vajdani
 -- Improved formatting, fixed types, added missing descriptions to parameters, and converted into an addon to remove disabled lua modules by ALVAROPING1
 
+---Global function executed on each mod update cycle. Should be redefined to use it
+function update() end
+
 ---Modding API Module
 tm = {}
 
