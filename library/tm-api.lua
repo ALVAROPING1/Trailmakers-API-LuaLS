@@ -256,10 +256,14 @@ function OnPlayerEvent.remove(Function) end
 ---Event triggered when a player joins the server
 ---@type OnPlayerEvent
 tm.players.OnPlayerJoined = {}
+---Alias for `tm.players.OnPlayerJoined`
+tm.players.onPlayerJoined = tm.players.OnPlayerJoined
 
 ---Event triggered when a player leaves the server
 ---@type OnPlayerEvent
 tm.players.OnPlayerLeft = {}
+---Alias for `tm.players.OnPlayerLeft`
+tm.players.onPlayerLeft = tm.players.OnPlayerLeft
 
 ---Get all players currently connected to the server
 ---@return ModPlayer[]
