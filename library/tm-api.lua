@@ -42,7 +42,7 @@ function tm.os.ReadAllText_Dynamic(path) end
 function tm.os.WriteAllText_Dynamic(path, stringToWrite) end
 
 ---Emit a log message
----@param message string | number | boolean | nil | ModVector3 Message to log
+---@param message string | number | boolean | nil | ModVector3 | ModQuaternion | ModGameObject | ModTransform | ModStructure | ModBlock | CallbackData Message to log. API types are logged using their `.ToString()` method
 ---@return nil
 function tm.os.Log(message) end
 
@@ -481,7 +481,8 @@ tm.vector3 = {}
 ---@field Dot fun(otherVector: ModVector3): number Returns the dot product of two vector3
 ---@field Cross fun(otherVector: ModVector3): ModVector3 Returns the cross product of two vector3
 ---@field Magnitude fun(): number Returns the magnitude/length
----@field ToString fun(): string Returns a formatted string of a vector
+---@field ToString fun(): string Returns a formatted string of a vector in the form `(x, y, z)`
+---@field toString fun(): string Returns a formatted string of a vector in the form `(x, y, z)`
 
 ---Creates a vector3 with specified values
 ---
@@ -609,6 +610,8 @@ tm.quaternion = {}
 ---@field w number W value of the quaternion
 ---@field GetEuler fun(): ModVector3 Returns a vector3 representing the euler angles of the quaternion
 ---@field Multiply fun(otherQuaternion: ModQuaternion): ModQuaternion Multiplies two quaternions and returns the result
+---@field ToString fun(): string Always returns `Trailmakers.Mods.Api.Proxies.ModQuaternion`
+---@field toString fun(): string Always returns `Trailmakers.Mods.Api.Proxies.ModQuaternion`
 
 ---Creates a quaternion by manually defining its components
 ---
@@ -671,6 +674,8 @@ function tm.quaternion.Slerp(firstQuaternion, secondQuaternion, t) end
 ---@field type string Gives you the type of the interacted element
 ---@field value string Gives you the value of the interacted element. Value is the text shown on the UI element
 ---@field data any Gives you the data of the interacted element. You pass in this data when registering the UI element's callback
+---@field ToString fun(): string Always returns `Trailmakers.Mods.Api.ModApiPlayerUI+UICallbackData`
+---@field toString fun(): string Always returns `Trailmakers.Mods.Api.ModApiPlayerUI+UICallbackData`
 
 --#endregion
 
@@ -702,6 +707,8 @@ function tm.GetDocs() end
 ---@field GetIsStatic fun(): boolean Returns true if the GameObject and all of its children are static
 ---@field SetIsTrigger fun(isTrigger: boolean): nil Determines whether the GameObject lets other GameObjects pass through its colliders or not
 ---@field Exists fun(): boolean Returns true if the GameObject exists
+---@field ToString fun(): string Always returns `PFB_ModGameObject [Server] (ModGameObject_Server)`
+---@field toString fun(): string Always returns `PFB_ModGameObject [Server] (ModGameObject_Server)`
 
 --#endregion
 
@@ -722,6 +729,8 @@ function tm.GetDocs() end
 ---@field GetScale fun(): ModVector3 Gets the scale of the Transform
 ---@field TransformPoint fun(point: ModVector3): ModVector3 Returns the point's position in world space (Adds the current pos with input vector)
 ---@field TransformDirection fun(direction: ModVector3): ModVector3 Returns the direction's world space direction
+---@field ToString fun(): string Always returns `Trailmakers.Mods.Api.Proxies.ModTransform`
+---@field toString fun(): string Always returns `Trailmakers.Mods.Api.Proxies.ModTransform`
 
 --#endregion
 
@@ -751,6 +760,8 @@ function tm.GetDocs() end
 ---@field SetJetPower fun(power: number): nil Sets Jet power (only works on jet blocks)
 ---@field GetJetPower fun(): number Gets jet power (only works on jet blocks)
 ---@field Exists fun(): boolean Returns true if the block exists. Keep in mind that when you repair your structure, your destroyed blocks will be replaced with different ones, making the old ones useless
+---@field ToString fun(): string Always returns `Trailmakers.Mods.Api.Proxies.ModBlock`
+---@field toString fun(): string Always returns `Trailmakers.Mods.Api.Proxies.ModBlock`
 
 --#endregion
 
@@ -765,5 +776,7 @@ function tm.GetDocs() end
 ---@field Destroy fun(): nil Destroy the structure
 ---@field GetBlocks fun(): ModBlock[] Gets all blocks in the structure
 ---@field AddForce fun(x: number, y: number, z: number): nil Add a force to the given structure as an impulse. Units are `5kg * m/s²`
+---@field ToString fun(): string Always returns `Trailmakers.Mods.Api.Proxies.ModStructure`
+---@field toString fun(): string Always returns `Trailmakers.Mods.Api.Proxies.ModStructure`
 
 --#endregion
