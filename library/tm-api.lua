@@ -186,7 +186,7 @@ function tm.physics.SpawnCustomObjectConcave(position, meshName, textureName) en
 function tm.physics.SpawnBoxTrigger(position, size) end
 
 ---Sets the build complexity value. Default value is `700` and values above it can make the game unstable
----@param value number
+---@param value integer
 ---@return nil
 function tm.physics.SetBuildComplexity(value) end
 
@@ -233,8 +233,8 @@ function tm.physics.GetWindVelocityAtPosition(position) end
 
 --#region
 
----ID of a player. Integer from 0 to 7, the ID 0 is guaranteed to be the host
----@alias PlayerID number
+---ID of a player. Goes from 0 to 7, and the ID 0 is guaranteed to be the host
+---@alias PlayerID integer
 
 ---Object representing a player in the game
 ---@class ModPlayer
@@ -483,7 +483,7 @@ tm.vector3 = {}
 ---@field y number Y value of the vector
 ---@field z number Z value of the vector
 ---@field Equals fun(otherVector: ModVector3): boolean Returns true if both vectors are the same, false if not (can be done with the normal `==` operator)
----@field GetHashCode fun(): number Returns the hash code of the vector
+---@field GetHashCode fun(): integer Returns the hash code of the vector
 ---@field Dot fun(otherVector: ModVector3): number Returns the dot product of two vector3
 ---@field Cross fun(otherVector: ModVector3): ModVector3 Returns the cross product of two vector3
 ---@field Magnitude fun(): number Returns the magnitude/length
