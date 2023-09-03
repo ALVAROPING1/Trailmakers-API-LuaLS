@@ -755,7 +755,7 @@ function tm.GetDocs() end
 ---@field SetSecondaryColor fun(r: number, g: number, b: number): nil [In buildmode only] Set the block's secondary color
 ---@field SetMass fun(mass: number): nil [In buildmode only] Set the block's mass. Units are `5kg`
 ---@field GetMass fun(): number Get the block's mass. Units are `5kg`
----@field SetBuoyancy fun(mass: number): nil [In buildmode only] Set the block's buoyancy
+---@field SetBuoyancy fun(buoyancy: number): nil [In buildmode only] Set the block's buoyancy
 ---@field GetBuoyancy fun(): number Get the block's buoyancy
 ---@field SetHealth fun(hp: number): nil Set the block's health
 ---@field GetStartHealth fun(): number Get the block's start health
