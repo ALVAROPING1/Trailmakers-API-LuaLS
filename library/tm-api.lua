@@ -80,6 +80,9 @@ function tm.os.GetModTargetDeltaTime() end
 
 --#region
 
+---Name referencing a mesh/texture loaded with `tm.physics.AddMesh()`/`tm.physics.AddTexture()`
+---@alias ResourceName string
+
 ---Everything that can effect physics, like gravity, spawning objects, and importing meshes
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218169403/Physics)
@@ -133,7 +136,7 @@ function tm.physics.SpawnableNames() end
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
 ---@param filename string The name of the mesh in the mod files (Must use the `.obj` format)
----@param resourceName string The name that the mesh will use
+---@param resourceName ResourceName The name that the mesh will use
 ---@return nil
 function tm.physics.AddMesh(filename, resourceName) end
 
@@ -141,36 +144,36 @@ function tm.physics.AddMesh(filename, resourceName) end
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
 ---@param filename string The name of the texture in the mod files (Must use the `.png` or `.jpg` format)
----@param resourceName string The name that the texture will use
+---@param resourceName ResourceName The name that the texture will use
 ---@return nil
 function tm.physics.AddTexture(filename, resourceName) end
 
----Spawn a custom physics object (Mesh and texture must be created with `.AddMesh()` and `.AddTexture()` first)
+---Spawn a custom physics object
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
 ---@param position ModVector3 The position to spawn the object at
----@param meshName string The name of the mesh that the object will use (Has to be added with `tm.physics.AddMesh()` first)
----@param textureName string The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
+---@param meshName ResourceName The name of the mesh that the object will use (Has to be added with `tm.physics.AddMesh()` first)
+---@param textureName ResourceName The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
 ---@param isKinematic boolean Whether the object will be affected by physics or not
 ---@param mass number The mass of the object. Units are `5kg`
 ---@return ModGameObject # Game object spawned
 function tm.physics.SpawnCustomObjectRigidbody(position, meshName, textureName, isKinematic, mass) end
 
----Spawn a custom object (Mesh and texture must be created with `.AddMesh()` and `.AddTexture()` first)
+---Spawn a custom object
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
 ---@param position ModVector3 The position to spawn the object at
----@param meshName string The name of the mesh that the object will use (Has to be added with `tm.physics.AddMesh()` first)
----@param textureName string The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
+---@param meshName ResourceName The name of the mesh that the object will use (Has to be added with `tm.physics.AddMesh()` first)
+---@param textureName ResourceName The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
 ---@return ModGameObject # Game object spawned
 function tm.physics.SpawnCustomObject(position, meshName, textureName) end
 
----Spawn a custom object with concave collision support (Mesh and texture must be created with `.AddMesh()` and `.AddTexture()` first)
+---Spawn a custom object with concave collision support
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
 ---@param position ModVector3 The position to spawn the object at
----@param meshName string The name of the mesh that the object will use (Has to be added with `tm.physics.AddMesh()` first)
----@param textureName string The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
+---@param meshName ResourceName The name of the mesh that the object will use (Has to be added with `tm.physics.AddMesh()` first)
+---@param textureName ResourceName The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
 ---@return ModGameObject # Game object spawned
 function tm.physics.SpawnCustomObjectConcave(position, meshName, textureName) end
 
