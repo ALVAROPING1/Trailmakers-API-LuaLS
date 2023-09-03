@@ -212,7 +212,7 @@ function tm.physics.RegisterFunctionToCollisionExitCallback(targetObject, functi
 ---@param origin ModVector3 Origin of the raycast
 ---@param direction ModVector3 Direction of the raycast in euler angles
 ---@param hitPositionOut ModVector3 Reference to the vector in which the hit position will be stored (only modified if the raycast hit an object)
----@param maxDistance number Max distance from the origin to check for hits
+---@param maxDistance number? Max distance from the origin to check for hits. If nil, the distance is infinite
 ---@return boolean # Whether an object has been hit
 function tm.physics.Raycast(origin, direction, hitPositionOut, maxDistance) end
 
