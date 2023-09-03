@@ -472,6 +472,7 @@ tm.vector3 = {}
 ---@operator div(number) : ModVector3 Vector-scalar division
 ---@operator add(ModVector3) : ModVector3 Vector addition
 ---@operator sub(ModVector3) : ModVector3 Vector subtraction
+---@operator unm(ModVector3) : ModVector3 Vector negation
 ---@field x number X value of the vector
 ---@field y number Y value of the vector
 ---@field z number Z value of the vector
