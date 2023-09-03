@@ -117,7 +117,7 @@ function tm.physics.GetGravity() end
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267704/ModGameObject#Example---Spawning-a-built-in-object)
 ---@param position ModVector3 Position of the object
----@param name Spawnable Name of the object. Can only be a default asset name (from the list returned by `tm.physics.SpawnableNames()`)
+---@param name Spawnable Name of the object. Can only be a default asset name (from the list returned by `tm.physics.SpawnableNames()`). See `Spawnable` type alias
 ---@return ModGameObject object Game object spawned
 function tm.physics.SpawnObject(position, name) end
 
@@ -136,7 +136,7 @@ function tm.physics.SpawnableNames() end
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
 ---@param filename string The name of the mesh in the mod files (Must use the `.obj` format)
----@param resourceName ResourceName The name that the mesh will use
+---@param resourceName ResourceName The name that the mesh will use. See `ResourceName` type alias
 ---@return nil
 function tm.physics.AddMesh(filename, resourceName) end
 
@@ -144,7 +144,7 @@ function tm.physics.AddMesh(filename, resourceName) end
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
 ---@param filename string The name of the texture in the mod files (Must use the `.png` or `.jpg` format)
----@param resourceName ResourceName The name that the texture will use
+---@param resourceName ResourceName The name that the texture will use. See `ResourceName` type alias
 ---@return nil
 function tm.physics.AddTexture(filename, resourceName) end
 
@@ -152,8 +152,8 @@ function tm.physics.AddTexture(filename, resourceName) end
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
 ---@param position ModVector3 The position to spawn the object at
----@param meshName ResourceName The name of the mesh that the object will use (Has to be added with `tm.physics.AddMesh()` first)
----@param textureName ResourceName The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
+---@param meshName ResourceName The name of the mesh that the object will use. See `ResourceName` type alias
+---@param textureName ResourceName The name of the texture that the object will use. See `ResourceName` type alias
 ---@param isKinematic boolean Whether the object will be affected by physics or not
 ---@param mass number The mass of the object. Units are `5kg`
 ---@return ModGameObject # Game object spawned
@@ -163,8 +163,8 @@ function tm.physics.SpawnCustomObjectRigidbody(position, meshName, textureName, 
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
 ---@param position ModVector3 The position to spawn the object at
----@param meshName ResourceName The name of the mesh that the object will use (Has to be added with `tm.physics.AddMesh()` first)
----@param textureName ResourceName The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
+---@param meshName ResourceName The name of the mesh that the object will use. See `ResourceName` type alias
+---@param textureName ResourceName The name of the texture that the object will use. See `ResourceName` type alias
 ---@return ModGameObject # Game object spawned
 function tm.physics.SpawnCustomObject(position, meshName, textureName) end
 
@@ -172,8 +172,8 @@ function tm.physics.SpawnCustomObject(position, meshName, textureName) end
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
 ---@param position ModVector3 The position to spawn the object at
----@param meshName ResourceName The name of the mesh that the object will use (Has to be added with `tm.physics.AddMesh()` first)
----@param textureName ResourceName The name of the texture that the object will use (Has to be added with `tm.physics.AddTexture()` first)
+---@param meshName ResourceName The name of the mesh that the object will use. See `ResourceName` type alias
+---@param textureName ResourceName The name of the texture that the object will use. See `ResourceName` type alias
 ---@return ModGameObject # Game object spawned
 function tm.physics.SpawnCustomObjectConcave(position, meshName, textureName) end
 
@@ -233,12 +233,12 @@ function tm.physics.GetWindVelocityAtPosition(position) end
 
 --#region
 
----ID of a player. It's an integer from 0 to 7, the ID 0 is guaranteed to be the host
+---ID of a player. Integer from 0 to 7, the ID 0 is guaranteed to be the host
 ---@alias PlayerID number
 
 ---Object representing a player in the game
 ---@class ModPlayer
----@field playerId PlayerID
+---@field playerId PlayerID See `PlayerID` type alias
 
 ---Everything to do with players actions and info
 tm.players = {}
@@ -274,60 +274,60 @@ tm.players.onPlayerLeft = tm.players.OnPlayerLeft
 function tm.players.CurrentPlayers() end
 
 ---Forcefully disconnect a given player
----@param playerId PlayerID
+---@param playerId PlayerID See `PlayerID` type alias
 ---@return nil
 function tm.players.Kick(playerId) end
 
 ---Get the Transform of a player
----@param playerId PlayerID
+---@param playerId PlayerID See `PlayerID` type alias
 ---@return ModTransform
 ---@nodiscard
 function tm.players.GetPlayerTransform(playerId) end
 
 ---Get the GameObject of a player
----@param playerId PlayerID
+---@param playerId PlayerID See `PlayerID` type alias
 ---@return ModGameObject
 ---@nodiscard
 function tm.players.GetPlayerGameObject(playerId) end
 
 ---Returns whether the player is seated or not
----@param playerId PlayerID
+---@param playerId PlayerID See `PlayerID` type alias
 ---@return boolean
 ---@nodiscard
 function tm.players.IsPlayerInSeat(playerId) end
 
 ---Sets whether the specified player can fly or not
----@param playerId PlayerID
+---@param playerId PlayerID See `PlayerID` type alias
 ---@param enabled boolean
 ---@return nil
 function tm.players.SetJetpackEnabled(playerId, enabled) end
 
 ---Get all structure(s) owned by that player
----@param playerId PlayerID
+---@param playerId PlayerID See `PlayerID` type alias
 ---@return ModStructure[]
 ---@nodiscard
 function tm.players.GetPlayerStructures(playerId) end
 
 ---Get the structure(s) currently in build mode for a player
----@param playerId PlayerID
+---@param playerId PlayerID See `PlayerID` type alias
 ---@return ModStructure[]
 ---@nodiscard
 function tm.players.GetPlayerStructuresInBuild(playerId) end
 
 ---Get the last select block in the builder for that player
----@param playerId PlayerID
+---@param playerId PlayerID See `PlayerID` type alias
 ---@return ModBlock
 ---@nodiscard
 function tm.players.GetPlayerSelectBlockInBuild(playerId) end
 
 ---Get the player's name
----@param playerId PlayerID
+---@param playerId PlayerID See `PlayerID` type alias
 ---@return string
 ---@nodiscard
 function tm.players.GetPlayerName(playerId) end
 
 ---Returns true if the player is in build mode
----@param playerId PlayerID
+---@param playerId PlayerID See `PlayerID` type alias
 ---@return boolean
 ---@nodiscard
 function tm.players.GetPlayerIsInBuildMode(playerId) end
@@ -349,8 +349,8 @@ tm.playerUI = {}
 ---Add a button to the client's mod UI
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-work-with-buttons)
----@param playerId PlayerID ID of the player for which the UI element will be created
----@param id UIElementID
+---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
+---@param id UIElementID See `UIElementID` type alias
 ---@param defaultValue string Text of the button
 ---@param callback fun(UICallbackData) Function to execute when the button is pressed
 ---@param data any Arbitrary data passed to the callback function
@@ -360,8 +360,8 @@ function tm.playerUI.AddUIButton(playerId, id, defaultValue, callback, data) end
 ---Add a text field to the client's mod UI
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-work-with-text-fields)
----@param playerId PlayerID ID of the player for which the UI element will be created
----@param id UIElementID
+---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
+---@param id UIElementID See `UIElementID` type alias
 ---@param defaultValue string Default text
 ---@param callback fun(UICallbackData) Function to execute when the button is pressed
 ---@param data any Arbitrary data passed to the callback function
@@ -371,21 +371,21 @@ function tm.playerUI.AddUIText(playerId, id, defaultValue, callback, data) end
 ---Add a label to the client's mod UI
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-display-values)
----@param playerId PlayerID ID of the player for which the UI element will be created
----@param id UIElementID
+---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
+---@param id UIElementID See `UIElementID` type alias
 ---@param defaultValue string Text of the label
 ---@return nil
 function tm.playerUI.AddUILabel(playerId, id, defaultValue) end
 
 ---Set the value of a client's UI element
----@param playerId PlayerID ID of the player for which the UI element will be modified
----@param id UIElementID
+---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
+---@param id UIElementID See `UIElementID` type alias
 ---@param value string New value of the UI element (text shown on the UI element)
 ---@return nil
 function tm.playerUI.SetUIValue(playerId, id, value) end
 
 ---Remove all UI elements for a player
----@param playerId PlayerID ID of the player for which the UI will be cleared
+---@param playerId PlayerID Player for which the UI element will be cleared. See `PlayerID` type alias
 ---@return nil
 function tm.playerUI.ClearUI(playerId) end
 
@@ -403,14 +403,14 @@ tm.audio = {}
 ---Play audio at a position. This is more cost friendly but you can not stop or move the sound
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219185167/Audio#Example---Play-an-explosion-sound-at-players-position-every-second)
----@param audioName AudioName Name of the audio to play
+---@param audioName AudioName Name of the audio to play. See `AudioName` type alias
 ---@param position ModVector3 Position of the audio
 ---@param keepObjectDuration number Duration of the audio
 ---@return nil
 function tm.audio.PlayAudioAtPosition(audioName, position, keepObjectDuration) end
 
 ---Play audio on a GameObject
----@param audioName AudioName Name of the audio to play
+---@param audioName AudioName Name of the audio to play. See `AudioName` type alias
 ---@param modGameObject ModGameObject GameObject on which the audio should be played
 ---@return nil
 function tm.audio.PlayAudioAtGameobject(audioName, modGameObject) end
@@ -439,7 +439,6 @@ function tm.audio.GetAudioNames() end
 ---@alias InputKey "`" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "0" | "-" | "=" | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" | "[" | "]" | ";" | "'" | "\\" | "," | "." | "/" | "backspace" | "tab" | "enter" | "left shift" | "right shift" | "left control" | "left alt" | "space" | "right alt" | "right control" | "insert" | "home" | "page up" | "delete" | "end" | "page down" | "up" | "down" | "left" | "right" | "numlock" | "[/]" | "[*]" | "[-]" | "[+]" | "[enter]" | "[,]" | "[1]" | "[2]" | "[3]" | "[4]" | "[5]" | "[6]" | "[7]" | "[8]" | "[9]" | "[0]"
 
 ---Lets you trigger functions on key press/release by players
----Keys: "`" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "0" | "-" | "=" | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" | "[" | "]" | ";" | "'" | "\\" | "," | "." | "/" | "backspace" | "tab" | "enter" | "left shift" | "right shift" | "left control" | "left alt" | "space" | "right alt" | "right control" | "insert" | "home" | "page up" | "delete" | "end" | "page down" | "up" | "down" | "left" | "right" | "numlock" | "[/]" | "[*]" | "[-]" | "[+]" | "[enter]" | "[,]" | "[1]" | "[2]" | "[3]" | "[4]" | "[5]" | "[6]" | "[7]" | "[8]" | "[9]" | "[0]"
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267762/Input)
 tm.input = {}
@@ -447,18 +446,18 @@ tm.input = {}
 ---Registers a function to the callback of when the given player presses the given key
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267762/Input)
----@param playerId PlayerID ID of the player for which the function will be registered
+---@param playerId PlayerID Player for which the function will be registered. See `PlayerID` type alias
 ---@param functionName string Name of the function to register. Must be in the global scope
----@param keyName InputKey Name of the key to use. See `tm.input` docs for available key names
+---@param keyName InputKey Name of the key to use. See `InputKey` type alias
 ---@return nil
 function tm.input.RegisterFunctionToKeyDownCallback(playerId, functionName, keyName) end
 
 ---Registers a function to the callback of when the given player releases  the given key
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267762/Input)
----@param playerId PlayerID ID of the player for which the function will be registered
+---@param playerId PlayerID Player for which the function will be registered. See `PlayerID` type alias
 ---@param functionName string Name of the function to register. Must be in the global scope
----@param keyName InputKey Name of the key to use. See `tm.input` docs for available key names
+---@param keyName InputKey Name of the key to use. See `InputKey` type alias
 ---@return nil
 function tm.input.RegisterFunctionToKeyUpCallback(playerId, functionName, keyName) end
 
@@ -676,8 +675,8 @@ function tm.quaternion.Slerp(firstQuaternion, secondQuaternion, t) end
 
 ---These are all the things you can get from the argument that UI elements pass in the function you specify
 ---@class CallbackData
----@field playerId PlayerID Gives you the player that interacted with the element
----@field id UIElementID Gives you the ID of the interacted element
+---@field playerId PlayerID Gives you the player that interacted with the element. See `PlayerID` type alias
+---@field id UIElementID Gives you the ID of the interacted element. See `UIElementID` type alias
 ---@field type string Gives you the type of the interacted element
 ---@field value string Gives you the value of the interacted element. Value is the text shown on the UI element
 ---@field data any Gives you the data of the interacted element. You pass in this data when registering the UI element's callback
