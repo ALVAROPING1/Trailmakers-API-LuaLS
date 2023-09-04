@@ -10,13 +10,13 @@ tm = {}
 
 --#region
 
----Everything to do with files and general mod systems
+---OS-level functionality. Everything to do with files and general mod systems
 ---@class ModApiTmOs
 tm.os = {}
 
 ---Higher-level function to load and run chunk of code from specified filename. Equivalent to the native 'dofile' function in Lua. The file must be directly inside the `data_static folder`, subfolders aren't supported
 ---@param filename string Name of the file without the `.lua` extension
----@return nil # Returning the return value of the module isn't supported
+---@return any # Whatever the file returned when executed as a module
 function tm.os.DoFile(filename) end
 
 ---Read all text of a file in the mods static data directory. Files in the static data directory can only be read and NOT written to
@@ -44,7 +44,7 @@ function tm.os.ReadAllText_Dynamic(path) end
 function tm.os.WriteAllText_Dynamic(path, stringToWrite) end
 
 ---Emit a log message
----@param message string | number | boolean | nil | ModVector3 | ModQuaternion | ModGameObject | ModTransform | ModStructure | ModBlock | ModRaycastHit | ModColor | CallbackData Message to log. API types are logged using their `.ToString()` method
+---@param message string | number | boolean | nil | ModVector3 | ModQuaternion | ModGameObject | ModTransform | ModStructure | ModBlock | ModRaycastHit | ModColor | UICallbackData Message to log. API types are logged using their `.ToString()` method
 ---@return nil
 function tm.os.Log(message) end
 
@@ -93,7 +93,7 @@ function tm.os.GetModTargetDeltaTime() end
 ---Name referencing a texture loaded with `tm.physics.AddTexture()`
 ---@alias TextureName string
 
----Everything that can effect physics, like gravity, spawning objects, and importing meshes
+---Everything that can effect physics, like gravity, spawning objects, and importing meshes. Environment, Physics, Time, Assets and Objects
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218169403/Physics)
 ---@class ModApiPhysics
@@ -320,7 +320,7 @@ function tm.players.GetPlayerTransform(playerId) end
 ---@nodiscard
 function tm.players.GetPlayerGameObject(playerId) end
 
----Returns whether the player is seated or not
+---Returns true if the player is in a seat
 ---@param playerId PlayerID See `PlayerID` type alias
 ---@return boolean
 ---@nodiscard
@@ -343,7 +343,7 @@ function tm.players.CanKillPlayer(playerId) end
 ---@return nil
 function tm.players.SetPlayerIsInvincible(playerId, enabled) end
 
----Sets whether the specified player can fly or not
+---Enables and disables the jetpack
 ---@param playerId PlayerID See `PlayerID` type alias
 ---@param enabled boolean
 ---@return nil
@@ -446,6 +446,30 @@ function tm.players.PlacePlayerInSeat(playerId, structureId) end
 ---@param isEnabled boolean
 ---@return nil
 function tm.players.SetBuilderEnabled(playerId, isEnabled) end
+
+---Set if repairing for a player should be enabled
+---@param playerId PlayerID See `PlayerID` type alias
+---@param isEnabled boolean
+---@return nil
+function tm.players.SetRepairEnabled(playerId, isEnabled) end
+
+---Checks if building is enabled for a player
+---@param playerId PlayerID See `PlayerID` type alias
+---@return boolean
+---@nodiscard
+function tm.players.GetBuilderEnabled(playerId) end
+
+---Checks if repairing is enabled for a player
+---@param playerId PlayerID See `PlayerID` type alias
+---@return boolean
+---@nodiscard
+function tm.players.GetRepairEnabled(playerId) end
+
+---Returns the block the player is seated in
+---@param playerId PlayerID See `PlayerID` type alias
+---@return ModBlock
+---@nodiscard
+function tm.players.GetPlayerSeatBlock(playerId) end
 
 --#endregion
 
@@ -628,10 +652,11 @@ function tm.input.RegisterFunctionToKeyUpCallback(playerId, functionName, keyNam
 
 --#region
 
----For all things vectors, vector3 can store 3 numbers
-tm.vector3 = {}
+---Contains the vector `(0, 0, 0)`
+---@type ModVector3
+tm.vector3 = { x = 0, y = 0, z = 0 }
 
----3D Vector object, can store 3 numbers
+---A 3-axis vector (position, rotation, scale, etc.), can store 3 numbers
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3)
 ---@class ModVector3
@@ -645,16 +670,138 @@ tm.vector3 = {}
 ---@field z number Z value of the vector
 local ModVector3 = {}
 
+---Creates a vector3 from a string. String should be formatted as "(x, y, z)". Example input: "(4.5, 6, 10.8)"
+---@param input string
+---@return ModVector3
+function ModVector3.Create(input) end
+
+---Creates a vector3 with specified values
+---
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
+---@param x number
+---@param y number
+---@param z number
+---@return ModVector3
+---@nodiscard
+function ModVector3.Create(x, y, z) end
+
+---Creates a vector3 with values defaulted to zero
+---
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
+---@return ModVector3
+---@nodiscard
+function ModVector3.Create() end
+
+---Creates a vector3 pointing right (1, 0, 0)
+---
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
+---@return ModVector3
+---@nodiscard
+function ModVector3.Right() end
+
+---Creates a vector3 pointing left (-1, 0, 0)
+---
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
+---@return ModVector3
+---@nodiscard
+function ModVector3.Left() end
+
+---Creates a vector3 pointing up (0, 1, 0)
+---
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
+---@return ModVector3
+---@nodiscard
+function ModVector3.Up() end
+
+---Creates a vector3 pointing down (0, -1, 0)
+---
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
+---@return ModVector3
+---@nodiscard
+function ModVector3.Down() end
+
+---Creates a vector3 pointing forward (0, 0, 1)
+---
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
+---@return ModVector3
+---@nodiscard
+function ModVector3.Forward() end
+
+---Creates a vector3 pointing back (0, 0, -1)
+---
+---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
+---@return ModVector3
+---@nodiscard
+function ModVector3.Back() end
+
+---Flips all the signs (can be done with the normal `-` operator)
+---@param vector3 ModVector3
+---@return ModVector3
+---@nodiscard
+function ModVector3.op_UnaryNegation(vector3) end
+
+---Adds first and second together (can be done with the normal `+` operator)
+---@param first ModVector3
+---@param second ModVector3
+---@return ModVector3
+---@nodiscard
+function ModVector3.op_Addition(first, second) end
+
+---Subtracts first and second together (can be done with the normal `-` operator)
+---@param first ModVector3
+---@param second ModVector3
+---@return ModVector3
+---@nodiscard
+function ModVector3.op_Subtraction(first, second) end
+
+---Multiplies the vector by the scalar (can be done with the normal `*` operator)
+---@param vector3 ModVector3
+---@param scalar number
+---@return ModVector3
+---@nodiscard
+function ModVector3.op_Multiply(vector3, scalar) end
+
+---Divides the vector by the divisor (can be done with the normal `/` operator)
+---@param vector3 ModVector3
+---@param divisor number
+---@return ModVector3
+---@nodiscard
+function ModVector3.op_Division(vector3, divisor) end
+
+---Returns true if both vectors are the same, false if not (can be done with the normal `==` operator)
+---@param first ModVector3
+---@param second ModVector3
+---@return boolean
+---@nodiscard
+function ModVector3.op_Equality(first, second) end
+
 ---Returns true if both vectors are the same, false if not (can be done with the normal `==` operator)
 ---@param otherVector ModVector3
 ---@return boolean
 ---@nodiscard
 function ModVector3.Equals(otherVector) end
 
+---Returns true if both vectors are not the same, false if not (can be done with the normal `~=` operator)
+---@param first ModVector3
+---@param second ModVector3
+---@return boolean
+---@nodiscard
+function ModVector3.op_Inequality(first, second) end
+
 ---Returns the hash code of the vector
 ---@return integer
 ---@nodiscard
 function ModVector3.GetHashCode() end
+
+---Returns a formatted string of a vector in the form `(x, y, z)`
+---@return string
+---@nodiscard
+function ModVector3.ToString() end
+
+---Returns a formatted string of a vector in the form `(x, y, z)`
+---@return string
+---@nodiscard
+function ModVector3.toString() end
 
 ---Returns the dot product of two vector3
 ---@param otherVector ModVector3
@@ -673,144 +820,27 @@ function ModVector3.Cross(otherVector) end
 ---@nodiscard
 function ModVector3.Magnitude() end
 
----Returns a formatted string of a vector in the form `(x, y, z)`
----@return string
----@nodiscard
-function ModVector3.ToString() end
-
----Returns a formatted string of a vector in the form `(x, y, z)`
----@return string
----@nodiscard
-function ModVector3.toString() end
-
----Creates a vector3 with specified values
----
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
----@param x number
----@param y number
----@param z number
----@return ModVector3
----@nodiscard
-function tm.vector3.Create(x, y, z) end
-
----Creates a vector3 with values defaulted to zero
----
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
----@return ModVector3
----@nodiscard
-function tm.vector3.Create() end
-
----Creates a vector3 pointing right (1, 0, 0)
----
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
----@return ModVector3
----@nodiscard
-function tm.vector3.Right() end
-
----Creates a vector3 pointing left (-1, 0, 0)
----
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
----@return ModVector3
----@nodiscard
-function tm.vector3.Left() end
-
----Creates a vector3 pointing up (0, 1, 0)
----
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
----@return ModVector3
----@nodiscard
-function tm.vector3.Up() end
-
----Creates a vector3 pointing down (0, -1, 0)
----
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
----@return ModVector3
----@nodiscard
-function tm.vector3.Down() end
-
----Creates a vector3 pointing forward (0, 0, 1)
----
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
----@return ModVector3
----@nodiscard
-function tm.vector3.Forward() end
-
----Creates a vector3 pointing back (0, 0, -1)
----
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218595371/ModVector3#Creating-ModVector3)
----@return ModVector3
----@nodiscard
-function tm.vector3.Back() end
-
----Flips all the signs (can be done with the normal `-` operator)
----@param vector3 ModVector3
----@return ModVector3
----@nodiscard
-function tm.vector3.op_UnaryNegation(vector3) end
-
----Adds first and second together (can be done with the normal `+` operator)
----@param first ModVector3
----@param second ModVector3
----@return ModVector3
----@nodiscard
-function tm.vector3.op_Addition(first, second) end
-
----Subtracts first and second together (can be done with the normal `-` operator)
----@param first ModVector3
----@param second ModVector3
----@return ModVector3
----@nodiscard
-function tm.vector3.op_Subtraction(first, second) end
-
----Multiplies the vector by the scalar (can be done with the normal `*` operator)
----@param vector3 ModVector3
----@param scalar number
----@return ModVector3
----@nodiscard
-function tm.vector3.op_Multiply(vector3, scalar) end
-
----Divides the vector by the divisor (can be done with the normal `/` operator)
----@param vector3 ModVector3
----@param divisor number
----@return ModVector3
----@nodiscard
-function tm.vector3.op_Division(vector3, divisor) end
-
----Returns true if both vectors are the same, false if not (can be done with the normal `==` operator)
----@param first ModVector3
----@param second ModVector3
----@return boolean
----@nodiscard
-function tm.vector3.op_Equality(first, second) end
-
----Returns true if both vectors are not the same, false if not (can be done with the normal `~=` operator)
----@param first ModVector3
----@param second ModVector3
----@return boolean
----@nodiscard
-function tm.vector3.op_Inequality(first, second) end
-
 ---Calculate a position between the points specified by current and target, moving no farther than the distance specified by maxDistanceDelta
 ---@param vector ModVector3
 ---@param otherVector ModVector3
 ---@param maxDistanceDelta number
 ---@return ModVector3
 ---@nodiscard
-function tm.vector3.MoveTowards(vector, otherVector, maxDistanceDelta) end
+function ModVector3.MoveTowards(vector, otherVector, maxDistanceDelta) end
 
 ---Calculates the angle in degrees between the vector from and another vector
 ---@param vector ModVector3
 ---@param otherVector ModVector3
 ---@return number
 ---@nodiscard
-function tm.vector3.Angle(vector, otherVector) end
+function ModVector3.Angle(vector, otherVector) end
 
 ---Returns the distance between the ModVector and another vector
 ---@param vector ModVector3
 ---@param otherVector ModVector3
 ---@return number
 ---@nodiscard
-function tm.vector3.Distance(vector, otherVector) end
+function ModVector3.Distance(vector, otherVector) end
 
 ---Linearly interpolates between two vectors
 ---@param vector ModVector3
@@ -818,7 +848,7 @@ function tm.vector3.Distance(vector, otherVector) end
 ---@param t number Position in the interpolation (0=vector, 1=otherVector)
 ---@return ModVector3
 ---@nodiscard
-function tm.vector3.Lerp(vector, otherVector, t) end
+function ModVector3.Lerp(vector, otherVector, t) end
 
 --#endregion
 
@@ -826,8 +856,9 @@ function tm.vector3.Lerp(vector, otherVector, t) end
 
 --#region
 
----Quaternions are for rotations, they get rid of gimbal lock that a vector3 rotation runs into. Quaternions can store 4 numbers
-tm.quaternion = {}
+---Contains the quaternion `(0, 0, 0, 0)`
+---@type ModQuaternion
+tm.quaternion = { x = 0, y = 0, z = 0, w = 0 }
 
 ---Quaternion object. Quaternions are for rotations, they get rid of gimbal lock that a vector3 rotation runs into. Quaternions can store 4 numbers
 ---
@@ -838,17 +869,6 @@ tm.quaternion = {}
 ---@field z number Z value of the quaternion
 ---@field w number W value of the quaternion
 local ModQuaternion = {}
-
----Returns a vector3 representing the euler angles of the quaternion
----@return ModVector3
----@nodiscard
-function ModQuaternion.GetEuler() end
-
----Multiplies two quaternions and returns the result
----@param otherQuaternion ModQuaternion
----@return ModQuaternion
----@nodiscard
-function ModQuaternion.Multiply(otherQuaternion) end
 
 ---Always returns `Trailmakers.Mods.Api.Proxies.ModQuaternion`
 ---@return string
@@ -869,7 +889,7 @@ function ModQuaternion.toString() end
 ---@param w number
 ---@return ModQuaternion
 ---@nodiscard
-function tm.quaternion.Create(x, y, z, w) end
+function ModQuaternion.Create(x, y, z, w) end
 
 ---Creates a quaternion using euler angle components
 ---
@@ -879,7 +899,7 @@ function tm.quaternion.Create(x, y, z, w) end
 ---@param z number
 ---@return ModQuaternion
 ---@nodiscard
-function tm.quaternion.Create(x, y, z) end
+function ModQuaternion.Create(x, y, z) end
 
 ---Creates a quaternion using a euler angle vector3
 ---
@@ -887,7 +907,7 @@ function tm.quaternion.Create(x, y, z) end
 ---@param eulerAngle ModVector3
 ---@return ModQuaternion
 ---@nodiscard
-function tm.quaternion.Create(eulerAngle) end
+function ModQuaternion.Create(eulerAngle) end
 
 ---Creates a quaternion using an angle and an axis to rotate around
 ---
@@ -896,7 +916,18 @@ function tm.quaternion.Create(eulerAngle) end
 ---@param axis ModVector3
 ---@return ModQuaternion
 ---@nodiscard
-function tm.quaternion.Create(angle, axis) end
+function ModQuaternion.Create(angle, axis) end
+
+---Returns a vector3 representing the euler angles of the quaternion
+---@return ModVector3
+---@nodiscard
+function ModQuaternion.GetEuler() end
+
+---Multiplies two quaternions and returns the result
+---@param otherQuaternion ModQuaternion
+---@return ModQuaternion
+---@nodiscard
+function ModQuaternion.Multiply(otherQuaternion) end
 
 ---Returns the resulting quaternion from a slerp between two quaternions
 ---
@@ -906,7 +937,7 @@ function tm.quaternion.Create(angle, axis) end
 ---@param t number Position in the interpolation (0=firstQuaternion, 1=secondQuaternion)
 ---@return ModQuaternion
 ---@nodiscard
-function tm.quaternion.Slerp(firstQuaternion, secondQuaternion, t) end
+function ModQuaternion.Slerp(firstQuaternion, secondQuaternion, t) end
 
 --#endregion
 
@@ -984,7 +1015,7 @@ function tm.GetDocs() end
 
 --#region
 
----Object representing a 3D object in the game world
+---GameObjects in the game environment
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267704/ModGameObject)
 ---@class ModGameObject
@@ -1127,7 +1158,7 @@ function ModGameObject.AddTorqueVelocityChange(x, y, z) end
 
 --#region
 
----Object representing the transform of a `ModGameObject`. Handles its position, rotation and scale
+---Represents a Transform (position, rotation, scale) of a GameObject
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218431584/ModTransform)
 ---@class ModTransform
@@ -1247,7 +1278,7 @@ function ModTransform.Right() end
 
 --#region
 
----Object representing a block of a creation in the game
+---Represents a block in a structure
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218562585/ModBlock)
 ---@class ModBlock
@@ -1418,10 +1449,45 @@ function ModBlock.SetJetPower(power) end
 ---@nodiscard
 function ModBlock.GetJetPower() end
 
+---Sets Propeller power (only works on propeller blocks)
+---@param power number
+---@return nil
+function ModBlock.SetPropellerPower(power) end
+
+---Gets propeller power (only works on propeller blocks)
+---@return number
+---@nodiscard
+function ModBlock.GetPropellerPower() end
+
+---Whether a block is an Engine block or not
+---@return boolean
+---@nodiscard
+function ModBlock.IsEngineBlock() end
+
+---Whether a block is an Jet block or not
+---@return boolean
+---@nodiscard
+function ModBlock.IsJetBlock() end
+
+---Whether a block is an Propeller block or not
+---@return boolean
+---@nodiscard
+function ModBlock.IsPropellerBlock() end
+
+---Whether a player is seated on the block
+---@return boolean
+---@nodiscard
+function ModBlock.IsPlayerSeatBlock() end
+
 ---Returns true if the block exists. Keep in mind that when you repair your structure, your destroyed blocks will be replaced with different ones, making the old ones useless
 ---@return boolean
 ---@nodiscard
 function ModBlock.Exists() end
+
+---Returns the structure a block belongs to
+---@return ModStructure
+---@nodiscard
+function ModBlock.GetStructure() end
 
 ---Always returns `Trailmakers.Mods.Api.Proxies.ModBlock`
 ---@return string
@@ -1528,6 +1594,11 @@ function ModStructure.GetVelocity() end
 ---@nodiscard
 function ModStructure.GetSpeed() end
 
+---Get player index who owns this structure. Returns -1 if player is gone
+---@return PlayerID | -1 # See `PlayerID` type alias
+---@nodiscard
+function ModStructure.GetOwnedByPlayerId() end
+
 ---Despawn the structure. Similar to `ModStructure.Destroy()` but the creation is removed instantly without playing the destruction animation
 ---@return nil
 function ModStructure.Dispose() end
@@ -1578,11 +1649,11 @@ function ModRaycastHit.toString() end
 
 --#region
 
----Object representing a color
+---Represents a color
 ---@class ModColor
 local ModColor = {}
 
----Always returns `Trailmakers.Mods.Api.Proxies.ModColor`
+---Returns a formatted string of a color in the form `RGBA(r, g, b, a)`
 ---@return string
 ---@nodiscard
 function ModColor.ToString() end
