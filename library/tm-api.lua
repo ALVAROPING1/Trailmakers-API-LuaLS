@@ -197,7 +197,7 @@ function tm.physics.SetBuildComplexity(value) end
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218169403/Physics#Collision-Callbacks)
 ---@param targetObject ModGameObject Object for which the callback will be registered
----@param functionName string Name of the function to register. Must be in the global scope
+---@param functionName string Name of the function to register. Must be in the global scope. This function will be executed with the `PlayerID` of the player who triggered it as its only parameter
 ---@return nil
 function tm.physics.RegisterFunctionToCollisionEnterCallback(targetObject, functionName) end
 
@@ -205,7 +205,7 @@ function tm.physics.RegisterFunctionToCollisionEnterCallback(targetObject, funct
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218169403/Physics#Collision-Callbacks)
 ---@param targetObject ModGameObject Object for which the callback will be registered
----@param functionName string Name of the function to register. Must be in the global scope
+---@param functionName string Name of the function to register. Must be in the global scope. This function will be executed with the `PlayerID` of the player who triggered it as its only parameter
 ---@return nil
 function tm.physics.RegisterFunctionToCollisionExitCallback(targetObject, functionName) end
 
@@ -450,7 +450,7 @@ tm.input = {}
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267762/Input)
 ---@param playerId PlayerID Player for which the function will be registered. See `PlayerID` type alias
----@param functionName string Name of the function to register. Must be in the global scope
+---@param functionName string Name of the function to register. Must be in the global scope. This function will be executed with the `PlayerID` of the player who triggered it as its only parameter
 ---@param keyName InputKey Name of the key to use. See `InputKey` type alias
 ---@return nil
 function tm.input.RegisterFunctionToKeyDownCallback(playerId, functionName, keyName) end
@@ -459,7 +459,7 @@ function tm.input.RegisterFunctionToKeyDownCallback(playerId, functionName, keyN
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267762/Input)
 ---@param playerId PlayerID Player for which the function will be registered. See `PlayerID` type alias
----@param functionName string Name of the function to register. Must be in the global scope
+---@param functionName string Name of the function to register. Must be in the global scope. This function will be executed with the `PlayerID` of the player who triggered it as its only parameter
 ---@param keyName InputKey Name of the key to use. See `InputKey` type alias
 ---@return nil
 function tm.input.RegisterFunctionToKeyUpCallback(playerId, functionName, keyName) end
