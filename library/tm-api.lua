@@ -148,6 +148,10 @@ function tm.physics.DespawnObject(gameObject) end
 ---@nodiscard
 function tm.physics.SpawnableNames() end
 
+---Removes the physics timescale
+---@return nil
+function tm.physics.RemoveTimeScale() end
+
 ---Add a mesh to all clients, note this will have to be sent to the client when they join
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
@@ -945,7 +949,7 @@ function ModQuaternion.Slerp(firstQuaternion, secondQuaternion, t) end
 
 --#region
 
----These are all the things you can get from the argument that UI elements pass in the function you specify
+---Callback data for when user is interacting with UI elements
 ---@class UICallbackData
 ---@field playerId PlayerID Gives you the player that interacted with the element. See `PlayerID` type alias
 ---@field id UIElementID Gives you the ID of the interacted element. See `UIElementID` type alias
@@ -1164,73 +1168,73 @@ function ModGameObject.AddTorqueVelocityChange(x, y, z) end
 ---@class ModTransform
 local ModTransform = {}
 
----Sets the position of the Transform
+---Sets the position of the Transform (world space)
 ---@param position ModVector3
 ---@return nil
 function ModTransform.SetPosition(position) end
 
----Sets the position of the Transform
+---Sets the position of the Transform (world space)
 ---@param x number
 ---@param y number
 ---@param z number
 ---@return nil
 function ModTransform.SetPosition(x, y, z) end
 
----Gets the position of the Transform
+---Gets the position of the Transform (world space)
 ---@return ModVector3
 ---@nodiscard
 function ModTransform.GetPosition() end
 
----Sets the rotation of the Transform
+---Sets the rotation of the Transform (world space)
 ---@param rotation ModVector3
 ---@return nil
 function ModTransform.SetRotation(rotation) end
 
----Sets the rotation of the Transform
+---Sets the rotation of the Transform (world space)
 ---@param x number
 ---@param y number
 ---@param z number
 ---@return nil
 function ModTransform.SetRotation(x, y, z) end
 
----Sets the rotation of the Transform
----@param rotation ModQuaternion
----@return nil
-function ModTransform.SetRotation(rotation) end
-
----Gets the rotation of the Transform
+---Gets the rotation of the Transform (local space)
 ---@return ModVector3
 ---@nodiscard
 function ModTransform.GetRotation() end
 
----Gets the rotation quaternions of the Transform
+---Sets the rotation of the Transform using a quaternion (world space)
+---@param rotation ModQuaternion
+---@return nil
+function ModTransform.SetRotation(rotation) end
+
+---Gets the rotation quaternions of the Transform (world space)
 ---@return ModQuaternion
 ---@nodiscard
 function ModTransform.GetRotationQuaternion() end
 
----Sets the scale of the Transform. Setting a non-uniform scale may, among other things, break the objects' physics
+---Sets the scale of the Transform (local space). Setting a non-uniform scale may, among other things, break the objects' physics
 ---@param scale ModVector3
 ---@return nil
 function ModTransform.SetScale(scale) end
 
----Sets the scale of the Transform. Setting a non-uniform scale may, among other things, break the objects' physics
+---Sets the scale of the Transform (local space). Setting a non-uniform scale may, among other things, break the objects' physics
 ---@param x number
 ---@param y number
 ---@param z number
 ---@return nil
 function ModTransform.SetScale(x, y, z) end
 
----Sets the scale of the Transform
+---Sets the scale of the Transform (local space)
 ---@param scale number
 ---@return nil
 function ModTransform.SetScale(scale) end
 
----Gets the scale of the Transform
+---Gets the scale of the Transform (local space)
 ---@return ModVector3
 ---@nodiscard
 function ModTransform.GetScale() end
 
----Returns the point's position in world space (Adds the current pos with input vector)
+---Returns the point's local position (world space). Adds the current pos with input vector
 ---@param point ModVector3
 ---@return ModVector3
 ---@nodiscard
@@ -1252,25 +1256,146 @@ function ModTransform.ToString() end
 ---@nodiscard
 function ModTransform.toString() end
 
----Returns a normalized vector Forward in world space
+---Returns a normalized vector Forward (world space)
 ---@return ModVector3
 ---@nodiscard
 function ModTransform.Forward() end
 
----Returns a normalized vector Back in world space
+---Returns a normalized vector Back (world space)
 ---@return ModVector3
 ---@nodiscard
 function ModTransform.Back() end
 
----Returns a normalized vector Left in world space
+---Returns a normalized vector Left (world space)
 ---@return ModVector3
 ---@nodiscard
 function ModTransform.Left() end
 
----Returns a normalized vector Right in world space
+---Returns a normalized vector Right (world space)
 ---@return ModVector3
 ---@nodiscard
 function ModTransform.Right() end
+
+---Gets the position of the Transform (world space)
+---@return ModVector3
+---@nodiscard
+function ModTransform.GetPositionWorld() end
+
+---Gets the euler angles rotation of the Transform (world space)
+---@return ModVector3
+---@nodiscard
+function ModTransform.GetEulerAnglesWorld() end
+
+---Gets the quaternion rotation of the Transform (world space)
+---@return ModQuaternion
+---@nodiscard
+function ModTransform.GetRotationWorld() end
+
+---Sets the position of the Transform (world space)
+---@param position ModVector3
+---@return nil
+function ModTransform.SetPositionWorld(position) end
+
+---Sets the position of the Transform (world space)
+---@param x number
+---@param y number
+---@param z number
+---@return nil
+function ModTransform.SetPositionWorld(x, y, z) end
+
+---Sets the euler angles rotation of the Transform (world space)
+---@param eulerAngles ModVector3
+---@return nil
+function ModTransform.SetEulerAnglesWorld(eulerAngles) end
+
+---Sets the euler angles rotation of the Transform (world space)
+---@param x number
+---@param y number
+---@param z number
+---@return nil
+function ModTransform.SetEulerAnglesWorld(x, y, z) end
+
+---Sets the quaternion rotation of the Transform (world space)
+---@param rotation ModQuaternion
+---@return nil
+function ModTransform.SetRotationWorld(rotation) end
+
+---Sets the quaternion rotation of the Transform (world space)
+---@param x number
+---@param y number
+---@param z number
+---@param w number
+---@return nil
+function ModTransform.SetRotationWorld(x, y, z, w) end
+
+---Gets the position of the Transform (local space)
+---@return ModVector3
+---@nodiscard
+function ModTransform.GetPositionLocal() end
+
+---Gets the euler angles rotation of the Transform (local space)
+---@return ModVector3
+---@nodiscard
+function ModTransform.GetEulerAnglesLocal() end
+
+---Gets the quaternion rotation of the Transform (local space)
+---@return ModQuaternion
+---@nodiscard
+function ModTransform.GetRotationLocal() end
+
+---Gets the scale of the Transform (local space)
+---@return ModVector3
+---@nodiscard
+function ModTransform.GetScaleLocal() end
+
+---Sets the position of the Transform (local space)
+---@param position ModVector3
+---@return nil
+function ModTransform.SetPositionLocal(position) end
+
+---Sets the position of the Transform (local space)
+---@param x number
+---@param y number
+---@param z number
+---@return nil
+function ModTransform.SetPositionLocal(x, y, z) end
+
+---Sets the euler angles rotation of the Transform (local space)
+---@param eulerAngles ModVector3
+---@return nil
+function ModTransform.SetEulerAnglesLocal(eulerAngles) end
+
+---Sets the euler angles rotation of the Transform (local space)
+---@param x number
+---@param y number
+---@param z number
+---@return nil
+function ModTransform.SetEulerAnglesLocal(x, y, z) end
+
+---Sets the quaternion rotation of the Transform (local space)
+---@param rotation ModQuaternion
+---@return nil
+function ModTransform.SetRotationLocal(rotation) end
+
+---Sets the quaternion rotation of the Transform (local space)
+---@param x number
+---@param y number
+---@param z number
+---@param w number
+---@return nil
+function ModTransform.SetRotationLocal(x, y, z, w) end
+
+---Sets the scale of the Transform (local space)
+---@param scale ModVector3
+---@return nil
+function ModTransform.SetScaleLocal(scale) end
+
+---Sets the scale of the Transform (local space)
+---@param x number
+---@param y number
+---@param z number
+---@return nil
+function ModTransform.SetScaleLocal(x, y, z) end
 
 --#endregion
 
@@ -1284,17 +1409,17 @@ function ModTransform.Right() end
 ---@class ModBlock
 local ModBlock = {}
 
----Gets the position of the transform
+---Gets the position of the transform (world space)
 ---@return ModVector3
 ---@nodiscard
 function ModBlock.GetPosition() end
 
----Gets the rotation of the transform
+---Gets the rotation of the transform (world space)
 ---@return ModVector3
 ---@nodiscard
 function ModBlock.GetRotation() end
 
----Gets the scale of the transform
+---Gets the scale of the transform (local space)
 ---@return ModVector3
 ---@nodiscard
 function ModBlock.GetScale() end
@@ -1333,7 +1458,7 @@ function ModBlock.Right() end
 
 ---[In buildmode only] Set the block's primary color
 ---
----[DEPRECATED USE `SetPrimaryColor` INSTEAD]
+---[DEPRECATED USE `.SetPrimaryColor()` INSTEAD]
 ---@deprecated
 ---@param r number
 ---@param g number
@@ -1429,17 +1554,17 @@ function ModBlock.AddForce(x, y, z) end
 ---@return nil
 function ModBlock.AddTorque(x, y, z) end
 
----Sets Engine power (only works on engine blocks)
+---Sets engine power (only works on engine blocks)
 ---@param power number
 ---@return nil
 function ModBlock.SetEnginePower(power) end
 
----Gets Engine power (only works on engine blocks)
+---Gets engine power (only works on engine blocks)
 ---@return number
 ---@nodiscard
 function ModBlock.GetEnginePower() end
 
----Sets Jet power (only works on jet blocks)
+---Sets jet power (only works on jet blocks)
 ---@param power number
 ---@return nil
 function ModBlock.SetJetPower(power) end
@@ -1449,7 +1574,7 @@ function ModBlock.SetJetPower(power) end
 ---@nodiscard
 function ModBlock.GetJetPower() end
 
----Sets Propeller power (only works on propeller blocks)
+---Sets propeller power (only works on propeller blocks)
 ---@param power number
 ---@return nil
 function ModBlock.SetPropellerPower(power) end
@@ -1458,6 +1583,16 @@ function ModBlock.SetPropellerPower(power) end
 ---@return number
 ---@nodiscard
 function ModBlock.GetPropellerPower() end
+
+---Sets gyro power (only works on gyro blocks)
+---@param power number
+---@return nil
+function ModBlock.SetGyroPower(power) end
+
+---Gets gyro power (only works on gyro blocks)
+---@return number
+---@nodiscard
+function ModBlock.GetGyroPower() end
 
 ---Whether a block is an Engine block or not
 ---@return boolean
@@ -1474,10 +1609,15 @@ function ModBlock.IsJetBlock() end
 ---@nodiscard
 function ModBlock.IsPropellerBlock() end
 
----Whether a player is seated on the block
+---Whether a block is a seat block or not
 ---@return boolean
 ---@nodiscard
 function ModBlock.IsPlayerSeatBlock() end
+
+---Whether a block is a gyro block or not
+---@return boolean
+---@nodiscard
+function ModBlock.IsGyroBlock() end
 
 ---Returns true if the block exists. Keep in mind that when you repair your structure, your destroyed blocks will be replaced with different ones, making the old ones useless
 ---@return boolean
@@ -1511,17 +1651,17 @@ function ModBlock.toString() end
 ---@class ModStructure
 local ModStructure = {}
 
----Gets the position of the Transform
+---Gets the position of the Transform (world space)
 ---@return ModVector3
 ---@nodiscard
 function ModStructure.GetPosition() end
 
----Gets the rotation of the Transform
+---Gets the rotation of the Transform (local space)
 ---@return ModVector3
 ---@nodiscard
 function ModStructure.GetRotation() end
 
----Gets the scale of the Transform
+---Gets the scale of the Transform (local space)
 ---@return ModVector3
 ---@nodiscard
 function ModStructure.GetScale() end
@@ -1598,6 +1738,11 @@ function ModStructure.GetSpeed() end
 ---@return PlayerID | -1 # See `PlayerID` type alias
 ---@nodiscard
 function ModStructure.GetOwnedByPlayerId() end
+
+---Returns the number of power cores of the structure
+---@return number
+---@nodiscard
+function ModStructure.GetPowerCores() end
 
 ---Despawn the structure. Similar to `ModStructure.Destroy()` but the creation is removed instantly without playing the destruction animation
 ---@return nil
