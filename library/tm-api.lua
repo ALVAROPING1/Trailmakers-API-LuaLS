@@ -354,7 +354,7 @@ tm.playerUI = {}
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-work-with-buttons)
 ---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
 ---@param id UIElementID See `UIElementID` type alias
----@param defaultValue string Text of the button
+---@param defaultValue string? Text of the button. If `nil`, uses the empty string
 ---@param callback fun(UICallbackData) Function to execute when the button is pressed
 ---@param data any Arbitrary data passed to the callback function
 ---@return nil
@@ -365,7 +365,7 @@ function tm.playerUI.AddUIButton(playerId, id, defaultValue, callback, data) end
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-work-with-text-fields)
 ---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
 ---@param id UIElementID See `UIElementID` type alias
----@param defaultValue string Default text
+---@param defaultValue string? Default text of the field. If `nil`, displays an empty label
 ---@param callback fun(UICallbackData) Function to execute when the button is pressed
 ---@param data any Arbitrary data passed to the callback function
 ---@return nil
@@ -376,13 +376,13 @@ function tm.playerUI.AddUIText(playerId, id, defaultValue, callback, data) end
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-display-values)
 ---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
 ---@param id UIElementID See `UIElementID` type alias
----@param defaultValue string Text of the label
+---@param defaultValue string? Text of the label. If `nil`, uses the empty string
 ---@return nil
 function tm.playerUI.AddUILabel(playerId, id, defaultValue) end
 
 ---Set the value of a client's UI element
 ---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
----@param id UIElementID See `UIElementID` type alias
+---@param id UIElementID See `UIElementID` type alias. If `nil`, the element will become the same as creating the element from scratch with a `nil` default value
 ---@param value string New value of the UI element (text shown on the UI element)
 ---@return nil
 function tm.playerUI.SetUIValue(playerId, id, value) end
