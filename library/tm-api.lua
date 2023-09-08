@@ -541,17 +541,17 @@ function tm.playerUI.ClearUI(playerId) end
 
 ---Adds a subtle message for a specific player
 ---@param playerId PlayerID ID of the player for which the message will be displayed. See `PlayerID` type alias
----@param header string Title of the message. Only the first 32 characters will be displayed
----@param message string Content of the message. Only the first 32 characters will be displayed
----@param duration number? Duration of the message in seconds. If `nil`, a default duration will be used
+---@param header string? Title of the message. Only the first 32 characters will be displayed. If `nil`, uses the empty string
+---@param message string? Content of the message. Only the first 32 characters will be displayed. If `nil`, uses the empty string
+---@param duration number? Duration of the message in seconds. If `nil`, uses a default duration
 ---@param spriteAssetName TextureName? Icon of the message. See `TextureName` type alias
 ---@return nil
 function tm.playerUI.AddSubtleMessageForPlayer(playerId, header, message, duration, spriteAssetName) end
 
 ---Adds a subtle message for ALL player
----@param header string Title of the message. Only the first 32 characters will be displayed
----@param message string Content of the message. Only the first 32 characters will be displayed
----@param duration number? Duration of the message in seconds. If `nil`, a default duration will be used
+---@param header string? Title of the message. Only the first 32 characters will be displayed. If `nil`, uses the empty string
+---@param message string? Content of the message. Only the first 32 characters will be displayed. If `nil`, uses the empty string
+---@param duration number? Duration of the message in seconds. If `nil`, uses a default duration
 ---@param spriteAssetName TextureName? Icon of the message. See `TextureName` type alias
 ---@return nil
 function tm.playerUI.AddSubtleMessageForAllPlayers(header, message, duration, spriteAssetName) end
