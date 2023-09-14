@@ -3,7 +3,7 @@
 ---Global function executed on each mod update cycle. Should be redefined to use it
 function update() end
 
----Modding API Module
+---Trailmakers Modding API
 tm = {}
 
 --------------------- OS ---------------------
@@ -383,6 +383,23 @@ function tm.players.GetPlayerSelectBlockInBuild(playerId) end
 ---@nodiscard
 function tm.players.GetPlayerName(playerId) end
 
+---Get the player's team index
+---@param playerId PlayerID See `PlayerID` type alias
+---@return number TODO: type alias
+---@nodiscard
+function tm.players.GetPlayerTeam(playerId) end
+
+---Set the player's team index
+---@param playerId PlayerID See `PlayerID` type alias
+---@param teamID number TODO: type alias
+---@return nil
+function tm.players.SetPlayerTeam(playerId, teamID) end
+
+---Returns the highest team index allowed
+---@return number TODO: type alias
+---@nodiscard
+function tm.players.GetMaxTeamIndex() end
+
 ---Returns true if the player is in build mode
 ---@param playerId PlayerID See `PlayerID` type alias
 ---@return boolean
@@ -548,7 +565,7 @@ function tm.playerUI.ClearUI(playerId) end
 ---@return nil
 function tm.playerUI.AddSubtleMessageForPlayer(playerId, header, message, duration, spriteAssetName) end
 
----Adds a subtle message for ALL player
+---Adds a subtle message for ALL players
 ---@param header string? Title of the message. Only the first 32 characters will be displayed. If `nil`, uses the empty string
 ---@param message string? Content of the message. Only the first 32 characters will be displayed. If `nil`, uses the empty string
 ---@param duration number? Duration of the message in seconds. If `nil`, uses a default duration
@@ -954,7 +971,7 @@ function ModQuaternion.Slerp(firstQuaternion, secondQuaternion, t) end
 ---@field playerId PlayerID Gives you the player that interacted with the element. See `PlayerID` type alias
 ---@field id UIElementID Gives you the ID of the interacted element. See `UIElementID` type alias
 ---@field type string Gives you the type of the interacted element
----@field value string Gives you the value of the interacted element (text shown for text fields, and a string representation of a vector for mouse position callbacks)
+---@field value string Gives you the value of the interacted element (text shown for text fields, and a string representation of a vector that can be parsed with `tm.vector3.Create()` for mouse position callbacks)
 ---@field data any Gives you the data of the interacted element. You pass in this data when registering the UI element's callback
 local UICallbackData = {}
 
@@ -974,6 +991,7 @@ function UICallbackData.toString() end
 
 --#region
 
+---Represents the current world.
 ---@class ModApiWorld
 tm.world = {}
 
@@ -1080,7 +1098,7 @@ function ModGameObject.ToString() end
 function ModGameObject.toString() end
 
 ---Sets the texture on the GameObject (Custom meshes only)
----@param textureName string
+---@param textureName TextureName See `TextureName` type alias
 ---@return nil
 function ModGameObject.SetTexture(textureName) end
 
@@ -1414,7 +1432,7 @@ local ModBlock = {}
 ---@nodiscard
 function ModBlock.GetPosition() end
 
----Gets the rotation of the transform (world space)
+---Gets the rotation of the transform (local space)
 ---@return ModVector3
 ---@nodiscard
 function ModBlock.GetRotation() end
@@ -1734,7 +1752,7 @@ function ModStructure.GetVelocity() end
 ---@nodiscard
 function ModStructure.GetSpeed() end
 
----Get player index who owns this structure. Returns -1 if player is gone
+---Get player index who owns this structure. Returns `-1` if player is gone
 ---@return PlayerID | -1 # See `PlayerID` type alias
 ---@nodiscard
 function ModStructure.GetOwnedByPlayerId() end
