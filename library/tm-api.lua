@@ -266,6 +266,9 @@ function tm.physics.GetWindVelocityAtPosition(position) end
 ---ID of a player. Goes from 0 to 7, and the ID 0 is guaranteed to be the host
 ---@alias PlayerID integer
 
+---ID of a team. Goes from 0 to 7, with the value selected through the session settings UI being `TeamID + 1`
+---@alias TeamID integer
+
 ---ID of an structure
 ---@alias StructureID string
 
@@ -385,18 +388,18 @@ function tm.players.GetPlayerName(playerId) end
 
 ---Get the player's team index
 ---@param playerId PlayerID See `PlayerID` type alias
----@return number TODO: type alias
+---@return TeamID # See `TeamID` type alias
 ---@nodiscard
 function tm.players.GetPlayerTeam(playerId) end
 
 ---Set the player's team index
 ---@param playerId PlayerID See `PlayerID` type alias
----@param teamID number TODO: type alias
+---@param teamID TeamID See `TeamID` type alias
 ---@return nil
 function tm.players.SetPlayerTeam(playerId, teamID) end
 
----Returns the highest team index allowed
----@return number TODO: type alias
+---Returns the highest team index allowed (always returns `7`)
+---@return TeamID # See `TeamID` type alias
 ---@nodiscard
 function tm.players.GetMaxTeamIndex() end
 
