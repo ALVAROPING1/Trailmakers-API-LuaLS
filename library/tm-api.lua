@@ -110,19 +110,38 @@ function tm.physics.SetTimeScale(speed) end
 function tm.physics.GetTimeScale() end
 
 ---Set the physics gravity in the down direction. Units are `m/s²`, default is `14 m/s²`
+---
+---[DEPRECATED USE `.SetGravityMultiplier()` INSTEAD]
+---@deprecated
 ---@param strength number
 ---@return nil
 function tm.physics.SetGravity(strength) end
 
+---Set the gravity multiplier
+---@param multiplier number
+---@return nil
+function tm.physics.SetGravityMultiplier(multiplier) end
+
 ---Set the physics gravity as per the provided vector. Units are `m/s²`, default is `(0, -14, 0) m/s²`
+---
+---[DEPRECATED FUNCTIONALITY MIGHT NOT WORK AS INTENDED]
+---@deprecated
 ---@param gravity ModVector3
 ---@return nil
 function tm.physics.SetGravity(gravity) end
 
 ---Get the physics gravity. Units are `m/s²`, default is `(0, 14, 0) m/s²`
+---
+---[DEPRECATED FUNCTIONALITY MIGHT NOT WORK AS INTENDED]
+---@deprecated
 ---@return ModVector3
 ---@nodiscard
 function tm.physics.GetGravity() end
+
+---Get the gravity multiplier
+---@return number
+---@nodiscard
+function tm.physics.GetGravityMultiplier() end
 
 ---Spawn a spawnable at the position, e.g. PFB_Barrel
 ---
@@ -471,7 +490,7 @@ function tm.players.PlacePlayerInSeat(playerId, structureId) end
 ---@return nil
 function tm.players.SetBuilderEnabled(playerId, isEnabled) end
 
----Set if repairing for a player should be enabled
+---Set if repairing for a player should be enabled. Also enables/disables transform.
 ---@param playerId PlayerID See `PlayerID` type alias
 ---@param isEnabled boolean
 ---@return nil
