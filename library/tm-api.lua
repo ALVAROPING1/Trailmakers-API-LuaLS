@@ -294,6 +294,17 @@ function tm.physics.GetWindVelocityAtPosition(position) end
 ---Object representing a player in the game
 ---@class Player
 ---@field playerId PlayerID See `PlayerID` type alias
+local Player = {}
+
+---Always returns `Trailmakers.Mods.Api.ModApiPlayers+Player`
+---@return string
+---@nodiscard
+function Player.ToString() end
+
+---Always returns `Trailmakers.Mods.Api.ModApiPlayers+Player`
+---@return string
+---@nodiscard
+function Player.toString() end
 
 ---Everything to do with players actions and info
 ---@class ModApiPlayers
