@@ -299,34 +299,34 @@ function os.clock() end
 ---0-23
 ---
 ---[View documents](http://www.lua.org/manual/5.1/manual.html#pdf-osdate.hour)
----@field hour  integer|string
+---@field hour  integer|string?
 ---0-59
 ---
 ---[View documents](http://www.lua.org/manual/5.1/manual.html#pdf-osdate.min)
----@field min   integer|string
+---@field min   integer|string?
 ---0-61
 ---
 ---[View documents](http://www.lua.org/manual/5.1/manual.html#pdf-osdate.sec)
----@field sec   integer|string
----weekday, 1–7, Sunday is 1
+---@field sec   integer|string?
+---weekday, 1–7, Sunday is 1. Ignored
 ---
 ---[View documents](http://www.lua.org/manual/5.1/manual.html#pdf-osdate.wday)
----@field wday  integer|string
----day of the year, 1–366
+----@field wday  integer|string?
+---day of the year, 1–366. Ignored
 ---
 ---[View documents](http://www.lua.org/manual/5.1/manual.html#pdf-osdate.yday)
----@field yday  integer|string
----daylight saving flag, a boolean
+----@field yday  integer|string?
+---daylight saving flag, a boolean. Ignored
 ---
 ---[View documents](http://www.lua.org/manual/5.1/manual.html#pdf-osdate.isdst)
----@field isdst boolean
+----@field isdst boolean?
 
 ---Returns a string or a table containing date and time, formatted according to the given string `format`.
 ---
 ---[View documents](http://www.lua.org/manual/5.2/manual.html#pdf-os.date)
 ---@param format? string
 ---@param time?   integer
----@return string|osdate
+---@return string
 ---@nodiscard
 function os.date(format, time) end
 
