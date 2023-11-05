@@ -288,7 +288,7 @@ function tm.physics.GetWindVelocityAtPosition(position) end
 ---ID of a team. Goes from 0 to 7, with the value selected through the session settings UI being `TeamID + 1`
 ---@alias TeamID integer
 
----ID of an structure
+---ID referencing a structure spawned with `tm.players.SpawnStructure()`
 ---@alias StructureID string
 
 ---Object representing a player in the game
