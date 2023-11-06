@@ -920,10 +920,10 @@ tm.quaternion = { x = 0, y = 0, z = 0, w = 0 }
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion)
 ---@class ModQuaternion
----@field x number X value of the quaternion
----@field y number Y value of the quaternion
----@field z number Z value of the quaternion
----@field w number W value of the quaternion
+---@field x number X value of the quaternion (i coefficient)
+---@field y number Y value of the quaternion (j coefficient)
+---@field z number Z value of the quaternion (k coefficient)
+---@field w number W value of the quaternion (real part)
 local ModQuaternion = {}
 
 ---Always returns `Trailmakers.Mods.Api.Proxies.ModQuaternion`
