@@ -3,6 +3,9 @@
 ---Global function executed on each mod update cycle. Should be redefined to use it
 function update() end
 
+---Types which can be implicitly converted to a string for logging/displaying on the UI. API types are converted using their `.ToString()` method. If `nil`, the empty string is used
+---@alias PrintableValue string | number | boolean | nil | ModVector3 | ModQuaternion | ModGameObject | ModTransform | ModStructure | ModBlock | ModRaycastHit | ModColor | UICallbackData
+
 ---Trailmakers Modding API
 tm = {}
 
@@ -44,7 +47,7 @@ function tm.os.ReadAllText_Dynamic(path) end
 function tm.os.WriteAllText_Dynamic(path, stringToWrite) end
 
 ---Emit a log message
----@param message string | number | boolean | nil | ModVector3 | ModQuaternion | ModGameObject | ModTransform | ModStructure | ModBlock | ModRaycastHit | ModColor | UICallbackData Message to log. API types are logged using their `.ToString()` method
+---@param message PrintableValue Message to log. See `PrintableValue` type alias
 ---@return nil
 function tm.os.Log(message) end
 
@@ -545,7 +548,7 @@ tm.playerUI = {}
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-work-with-buttons)
 ---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
 ---@param id UIElementID See `UIElementID` type alias
----@param defaultValue string? Text of the button. If `nil`, uses the empty string
+---@param defaultValue PrintableValue Text of the button. See `PrintableValue` type alias
 ---@param callback fun(UICallbackData) Function to execute when the button is pressed
 ---@param data any Arbitrary data passed to the callback function
 ---@return nil
@@ -556,7 +559,7 @@ function tm.playerUI.AddUIButton(playerId, id, defaultValue, callback, data) end
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-work-with-text-fields)
 ---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
 ---@param id UIElementID See `UIElementID` type alias
----@param defaultValue string? Default text of the field. If `nil`, displays an empty label
+---@param defaultValue PrintableValue Default text of the field. See `PrintableValue` type alias
 ---@param callback fun(UICallbackData) Function to execute when the button is pressed
 ---@param data any Arbitrary data passed to the callback function
 ---@return nil
@@ -567,7 +570,7 @@ function tm.playerUI.AddUIText(playerId, id, defaultValue, callback, data) end
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-display-values)
 ---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
 ---@param id UIElementID See `UIElementID` type alias
----@param defaultValue string? Text of the label. If `nil`, uses the empty string
+---@param defaultValue PrintableValue Text of the label. See `PrintableValue` type alias
 ---@return nil
 function tm.playerUI.AddUILabel(playerId, id, defaultValue) end
 
@@ -580,7 +583,7 @@ function tm.playerUI.RemoveUI(playerId, id) end
 ---Set the value of a client's UI element
 ---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
 ---@param id UIElementID See `UIElementID` type alias. If `nil`, the element will become the same as creating the element from scratch with a `nil` default value
----@param value string New value of the UI element (text shown on the UI element)
+---@param value PrintableValue New value of the UI element (text shown on the UI element). See `PrintableValue` type alias
 ---@return nil
 function tm.playerUI.SetUIValue(playerId, id, value) end
 
@@ -591,16 +594,16 @@ function tm.playerUI.ClearUI(playerId) end
 
 ---Adds a subtle message for a specific player
 ---@param playerId PlayerID ID of the player for which the message will be displayed. See `PlayerID` type alias
----@param header string? Title of the message. Only the first 32 characters will be displayed. If `nil`, uses the empty string
----@param message string? Content of the message. Only the first 32 characters will be displayed. If `nil`, uses the empty string
+---@param header PrintableValue Title of the message. Only the first 32 characters will be displayed. See `PrintableValue` type alias
+---@param message PrintableValue Content of the message. Only the first 32 characters will be displayed. See `PrintableValue` type alias
 ---@param duration number? Duration of the message in seconds. If `nil`, uses a default duration
 ---@param spriteAssetName TextureName? Icon of the message. See `TextureName` type alias
 ---@return nil
 function tm.playerUI.AddSubtleMessageForPlayer(playerId, header, message, duration, spriteAssetName) end
 
 ---Adds a subtle message for ALL players
----@param header string? Title of the message. Only the first 32 characters will be displayed. If `nil`, uses the empty string
----@param message string? Content of the message. Only the first 32 characters will be displayed. If `nil`, uses the empty string
+---@param header PrintableValue Title of the message. Only the first 32 characters will be displayed. See `PrintableValue` type alias
+---@param message PrintableValue Content of the message. Only the first 32 characters will be displayed. See `PrintableValue` type alias
 ---@param duration number? Duration of the message in seconds. If `nil`, uses a default duration
 ---@param spriteAssetName TextureName? Icon of the message. See `TextureName` type alias
 ---@return nil
