@@ -4,7 +4,7 @@
 function update() end
 
 ---Types which can be implicitly converted to a string for logging/displaying on the UI. API types are converted using their `.ToString()` method. If `nil`, the empty string is used
----@alias PrintableValue string | number | boolean | nil | ModVector3 | ModQuaternion | ModGameObject | ModTransform | ModStructure | ModBlock | ModRaycastHit | ModColor | UICallbackData
+---@alias PrintableValue (string | number | boolean | ModVector3 | ModQuaternion | ModGameObject | ModTransform | ModStructure | ModBlock | ModRaycastHit | ModColor | UICallbackData)?
 
 ---Trailmakers Modding API
 tm = {}
