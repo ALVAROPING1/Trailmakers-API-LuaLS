@@ -174,7 +174,7 @@ function tm.physics.SpawnableNames() end
 ---@return nil
 function tm.physics.RemoveTimeScale() end
 
----Add a mesh to all clients, note this will have to be sent to the client when they join
+---Add a mesh to all clients, note this mesh will have to be sent to the client when they join (handled automatically)
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
 ---@param filename string The name of the mesh in the mod files (Must use the `.obj` format)
@@ -182,7 +182,7 @@ function tm.physics.RemoveTimeScale() end
 ---@return nil
 function tm.physics.AddMesh(filename, resourceName) end
 
----Add a texture to all clients, note this will have to be sent to the client when they join
+---Add a texture to all clients, note this texture will have to be sent to the client when they join (handled automatically)
 ---
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
 ---@param filename string The name of the texture in the mod files (Must use the `.png` or `.jpg` format)
