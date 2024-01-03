@@ -407,9 +407,11 @@ function tm.players.GetSpawnedStructureById(structureId) end
 ---@nodiscard
 function tm.players.GetPlayerStructuresInBuild(playerId) end
 
----Get the last select block in the builder for that player
+---Get the last selected block in the builder for that player. Returns `nil` if the player hasn't selected a block in the current session
+---
+---Dragging blocks doesn't count as selecting them. When multiple blocks are selected, only the first selected block is returned
 ---@param playerId PlayerID See `PlayerID` type alias
----@return ModBlock
+---@return ModBlock?
 ---@nodiscard
 function tm.players.GetPlayerSelectBlockInBuild(playerId) end
 
