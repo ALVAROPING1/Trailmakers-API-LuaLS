@@ -120,7 +120,7 @@ function tm.physics.GetTimeScale() end
 ---@return nil
 function tm.physics.SetGravity(strength) end
 
----Set the gravity multiplier
+---Set the gravity multiplier. Has no effect in zero G locations. For example, setting the multiplier to 2 doubles gravity
 ---@param multiplier number
 ---@return nil
 function tm.physics.SetGravityMultiplier(multiplier) end
@@ -269,7 +269,7 @@ function tm.physics.Raycast(origin, direction, hitPositionOut, maxDistance, igno
 function tm.physics.RaycastData(origin, direction, maxDistance, ignoreTriggers) end
 
 ---Returns the internal name for the current map
----@return string # The map name
+---@return string
 ---@nodiscard
 function tm.physics.GetMapName() end
 
@@ -293,6 +293,9 @@ function tm.physics.GetWindVelocityAtPosition(position) end
 
 ---ID referencing a structure spawned with `tm.players.SpawnStructure()`
 ---@alias StructureID string
+
+---ID referencing a spawn point location created with `tm.players.SetSpawnPoint()`
+---@alias SpawnLocationID string
 
 ---Object representing a player in the game
 ---@class Player
@@ -506,7 +509,7 @@ function tm.players.PlacePlayerInSeat(playerId, structureId) end
 ---@return nil
 function tm.players.SetBuilderEnabled(playerId, isEnabled) end
 
----Set if repairing for a player should be enabled. Also enables/disables transform.
+---Set if repairing for a player should be enabled. Also enables/disables transform
 ---@param playerId PlayerID See `PlayerID` type alias
 ---@param isEnabled boolean
 ---@return nil
@@ -530,6 +533,33 @@ function tm.players.GetRepairEnabled(playerId) end
 ---@nodiscard
 function tm.players.GetPlayerSeatBlock(playerId) end
 
+---Sets the spawn location the player should use when respawning. Will be overwritten if another spawn location is set, eg checkpoints on the map
+---@param playerId PlayerID See `PlayerID` type alias
+---@param spawnLocationId SpawnLocationID See `SpawnLocationID` type alias
+---@return nil
+function tm.players.SetPlayerSpawnLocation(playerId, spawnLocationId) end
+
+---Sets the position and rotation of the spawn point for a player ID at a given spawn location. Each spawn location is a group of spawn points, one for each player ID. spawnLocationId = id of the spawn location. playerId = player ID for which the spawn point will be used when respawning at the location
+---@param playerIndex PlayerID See `PlayerID` type alias
+---@param spawnLocationId SpawnLocationID See `SpawnLocationID` type alias
+---@param position ModVector3
+---@param rotation ModVector3
+---@return nil
+function tm.players.SetSpawnPoint(playerIndex, spawnLocationId, position, rotation) end
+
+---Teleports a player to the selected spawn point location. To teleport all players use `tm.players.TeleportAllPlayersToSpawnPoint()`. Set `keepStructure` to true and it will try to keep their structure after teleporting (will be repaired)
+---@param playerId PlayerID See `PlayerID` type alias
+---@param spawnLocationId SpawnLocationID See `SpawnLocationID` type alias
+---@param keepStructure boolean Whether it should try to keep the players' structure after teleporting (will be repaired)
+---@return nil
+function tm.players.TeleportPlayerToSpawnPoint(playerId, spawnLocationId, keepStructure) end
+
+---Teleports ALL players to the selected spawn point location. Use this to move up to 8 players to their spawn position. Set `keepStructure` to true and it will try to their structure after teleporting (will be repaired)
+---@param spawnLocationId SpawnLocationID See `SpawnLocationID` type alias
+---@param keepStructure boolean Whether it should try to keep the players' structure after teleporting (will be repaired)
+---@return nil
+function tm.players.TeleportAllPlayersToSpawnPoint(spawnLocationId, keepStructure) end
+
 --#endregion
 
 --------------------- PlayerUI ---------------------
@@ -544,6 +574,9 @@ tm.playerUI = {}
 
 ---ID of an UI element
 ---@alias UIElementID string | number | boolean
+
+---ID of a subtle message
+---@alias SubtleMessageID string
 
 ---Add a button to the client's mod UI
 ---
@@ -600,7 +633,7 @@ function tm.playerUI.ClearUI(playerId) end
 ---@param message PrintableValue Content of the message. Only the first 32 characters will be displayed. See `PrintableValue` type alias
 ---@param duration number? Duration of the message in seconds. If `nil`, uses a default duration
 ---@param spriteAssetName TextureName? Icon of the message. See `TextureName` type alias
----@return nil
+---@return SubtleMessageID
 function tm.playerUI.AddSubtleMessageForPlayer(playerId, header, message, duration, spriteAssetName) end
 
 ---Adds a subtle message for ALL players
@@ -608,8 +641,45 @@ function tm.playerUI.AddSubtleMessageForPlayer(playerId, header, message, durati
 ---@param message PrintableValue Content of the message. Only the first 32 characters will be displayed. See `PrintableValue` type alias
 ---@param duration number? Duration of the message in seconds. If `nil`, uses a default duration
 ---@param spriteAssetName TextureName? Icon of the message. See `TextureName` type alias
----@return nil
+---@return SubtleMessageID
 function tm.playerUI.AddSubtleMessageForAllPlayers(header, message, duration, spriteAssetName) end
+
+---Removes a subtle message for a player
+---@param playerId PlayerID See `PlayerID` type alias
+---@param id SubtleMessageID
+---@return nil
+function tm.playerUI.RemoveSubtleMessageForPlayer(playerId, id) end
+
+---Removes a subtle message for ALL players
+---@param id SubtleMessageID
+---@return nil
+function tm.playerUI.RemoveSubtleMessageForAll(id) end
+
+---Update the header of a subtle message for a player
+---@param playerId PlayerID See `PlayerID` type alias
+---@param id SubtleMessageID
+---@param newHeader PrintableValue New title of the message. Only the first 32 characters will be displayed. See `PrintableValue` type alias
+---@return nil
+function tm.playerUI.SubtleMessageUpdateHeaderForPlayer(playerId, id, newHeader) end
+
+---Update the header of a subtle message for all players
+---@param id SubtleMessageID
+---@param newHeader PrintableValue New title of the message. Only the first 32 characters will be displayed. See `PrintableValue` type alias
+---@return nil
+function tm.playerUI.SubtleMessageUpdateHeaderForAll(id, newHeader) end
+
+---Update the message of a subtle message
+---@param playerId PlayerID See `PlayerID` type alias
+---@param id SubtleMessageID
+---@param newMessage PrintableValue New content of the message. Only the first 32 characters will be displayed. See `PrintableValue` type alias
+---@return nil
+function tm.playerUI.SubtleMessageUpdateMessageForPlayer(playerId, id, newMessage) end
+
+---Update the message of a subtle message for ALL players
+---@param id SubtleMessageID
+---@param newMessage PrintableValue New content of the message. Only the first 32 characters will be displayed. See `PrintableValue` type alias
+---@return nil
+function tm.playerUI.SubtleMessageUpdateMessageForAll(id, newMessage) end
 
 ---Registers a function callback to get the world position of the cursor when left mouse button is clicked
 ---@param playerId PlayerID See `PlayerID` type alias
@@ -1031,7 +1101,7 @@ function UICallbackData.toString() end
 
 --#region
 
----Represents the current world.
+---Represents the current world
 ---@class ModApiWorld
 tm.world = {}
 
