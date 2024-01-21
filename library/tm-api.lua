@@ -1599,6 +1599,8 @@ function ModBlock.GetName() end
 function ModBlock.SetDragAll(f, b, u, d, l, r) end
 
 ---Add a force to the given block as an impulse. Units are `5kg * m/s²`
+---
+---[View documents](https://docs.unity3d.com/ScriptReference/ForceMode.html)
 ---@param x number
 ---@param y number
 ---@param z number
@@ -1606,6 +1608,8 @@ function ModBlock.SetDragAll(f, b, u, d, l, r) end
 function ModBlock.AddForce(x, y, z) end
 
 ---Add a torque to the given block as an impulse
+---
+---[View documents](See https://docs.unity3d.com/ScriptReference/ForceMode.html)
 ---@param x number
 ---@param y number
 ---@param z number
@@ -1766,6 +1770,8 @@ function ModStructure.Destroy() end
 function ModStructure.GetBlocks() end
 
 ---Add a force to the given structure as an impulse. Units are `5kg * m/s²`
+---
+---[View documents](https://docs.unity3d.com/ScriptReference/ForceMode.html)
 ---@param x number
 ---@param y number
 ---@param z number
