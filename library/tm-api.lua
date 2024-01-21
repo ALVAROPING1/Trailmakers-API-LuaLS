@@ -1162,7 +1162,7 @@ function ModGameObject.AddForce(x, y, z) end
 
 ---Add a force to the GameObject as an Acceleration
 ---
----[View documents]See https://docs.unity3d.com/ScriptReference/ForceMode.html)
+---[View documents](https://docs.unity3d.com/ScriptReference/ForceMode.html)
 ---@param x number
 ---@param y number
 ---@param z number
