@@ -575,7 +575,7 @@ tm.playerUI = {}
 ---ID of an UI element
 ---@alias UIElementID string | number | boolean
 
----ID of a subtle message
+---ID of a subtle message, only exists for the players for which the subtle message was created and is different for each one
 ---@alias SubtleMessageID string
 
 ---Add a button to the client's mod UI
