@@ -1,6 +1,8 @@
 ---@meta
 
 ---Global function executed on each mod update cycle. Should be redefined to use it
+---
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Game_Loop_and_Tick)
 function update() end
 
 ---Types which can be implicitly converted to a string for logging/displaying on the UI. API types are converted using their `.ToString()` method. If `nil`, the empty string is used
@@ -24,7 +26,7 @@ function tm.os.DoFile(filename) end
 
 ---Read all text of a file in the mods static data directory. Files in the static data directory can only be read and NOT written to
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218562600/File+Handling)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Files)
 ---@param path string Relative file path
 ---@return string # Content of the file
 ---@nodiscard
@@ -32,7 +34,7 @@ function tm.os.ReadAllText_Static(path) end
 
 ---Read all text of a file in the mods dynamic data directory. Files in the dynamic data directory can be both read and written to. The dynamic data directory will NOT be uploaded to the steam workshop when you upload your mod. When a mod is run through the steam workshop, the dynamic data, unlike static data, is not located in the steam workshop directory but is located in the steam user data directory instead
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218562600/File+Handling)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Files)
 ---@param path string Relative file path
 ---@return string # Content of the file
 ---@nodiscard
@@ -40,7 +42,7 @@ function tm.os.ReadAllText_Dynamic(path) end
 
 ---Create or overwrite a file in the mods dynamic data directory. Files in the dynamic data directory can be both read and written to. The dynamic data directory will NOT be uploaded to the steam workshop when you upload your mod. When a mod is run through the steam workshop, the dynamic data, unlike static data, is not located in the steam workshop directory, but is located in the steam user data directory instead
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218562600/File+Handling)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Files)
 ---@param path string Relative file path
 ---@param stringToWrite string Data to write in the file
 ---@return nil
@@ -53,33 +55,35 @@ function tm.os.Log(message) end
 
 ---Get time game has been playing in seconds. Equivalent to `UnityEngine.Time.time`. Doesn't update within a single mod update cycle
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267786/Game+Loop+Ticks)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Game_Loop_and_Tick)
 ---@return number
 ---@nodiscard
 function tm.os.GetTime() end
 
 ---Get time game has been playing in seconds. Updates within a single mod update cycle
+---
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Game_Loop_and_Tick)
 ---@return number
 ---@nodiscard
 function tm.os.GetRealtimeSinceStartup() end
 
 ---Get the time since last update
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267786/Game+Loop+Ticks)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Game_Loop_and_Tick)
 ---@return number
 ---@nodiscard
 function tm.os.GetModDeltaTime() end
 
 ---Determines how often the mod gets updated. `1/60` means 60 times per second. Can't update faster than the game (maximum is 60 times per second)
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267786/Game+Loop+Ticks)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Game_Loop_and_Tick)
 ---@param targetDeltaTime number
 ---@return nil
 function tm.os.SetModTargetDeltaTime(targetDeltaTime) end
 
 ---Returns the target delta time for the mod
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267786/Game+Loop+Ticks)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Game_Loop_and_Tick)
 ---@return number
 ---@nodiscard
 function tm.os.GetModTargetDeltaTime() end
@@ -148,7 +152,7 @@ function tm.physics.GetGravityMultiplier() end
 
 ---Spawn a spawnable at the position, e.g. PFB_Barrel
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267704/ModGameObject#Example---Spawning-a-built-in-object)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:ModGameObject#Example_-_Spawning_a_built-in_object)
 ---@param position ModVector3 Position of the object
 ---@param name Spawnable Name of the object. Can only be a default asset name (from the list returned by `tm.physics.SpawnableNames()`). See `Spawnable` type alias
 ---@return ModGameObject object Game object spawned
@@ -176,7 +180,7 @@ function tm.physics.RemoveTimeScale() end
 
 ---Add a mesh to all clients, note this mesh will have to be sent to the client when they join (handled automatically)
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Custom_Assets)
 ---@param filename string The name of the mesh in the mod files (Must use the `.obj` format)
 ---@param resourceName MeshName The name that the mesh will use. See `MeshName` type alias
 ---@return nil
@@ -184,7 +188,7 @@ function tm.physics.AddMesh(filename, resourceName) end
 
 ---Add a texture to all clients, note this texture will have to be sent to the client when they join (handled automatically)
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Custom_Assets)
 ---@param filename string The name of the texture in the mod files (Must use the `.png` or `.jpg` format)
 ---@param resourceName TextureName The name that the texture will use. See `TextureName` type alias
 ---@return nil
@@ -192,7 +196,7 @@ function tm.physics.AddTexture(filename, resourceName) end
 
 ---Spawn a custom physics object
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Custom_Assets)
 ---@param position ModVector3 The position to spawn the object at
 ---@param meshName MeshName The name of the mesh that the object will use. See `MeshName` type alias
 ---@param textureName TextureName The name of the texture that the object will use. See `TextureName` type alias
@@ -203,7 +207,7 @@ function tm.physics.SpawnCustomObjectRigidbody(position, meshName, textureName, 
 
 ---Spawn a custom object
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Custom_Assets)
 ---@param position ModVector3 The position to spawn the object at
 ---@param meshName MeshName The name of the mesh that the object will use. See `MeshName` type alias
 ---@param textureName TextureName The name of the texture that the object will use. See `TextureName` type alias
@@ -212,7 +216,7 @@ function tm.physics.SpawnCustomObject(position, meshName, textureName) end
 
 ---Spawn a custom object with concave collision support
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/219283457/Custom+Assets)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Custom_Assets)
 ---@param position ModVector3 The position to spawn the object at
 ---@param meshName MeshName The name of the mesh that the object will use. See `MeshName` type alias
 ---@param textureName TextureName The name of the texture that the object will use. See `TextureName` type alias
@@ -568,7 +572,7 @@ function tm.players.TeleportAllPlayersToSpawnPoint(spawnLocationId, keepStructur
 
 ---For adding UI to your mod
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:PlayerUI)
 ---@class ModApiPlayerUI
 tm.playerUI = {}
 
@@ -580,7 +584,7 @@ tm.playerUI = {}
 
 ---Add a button to the client's mod UI
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-work-with-buttons)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:PlayerUI#How_to_work_with_buttons)
 ---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
 ---@param id UIElementID See `UIElementID` type alias
 ---@param defaultValue PrintableValue Text of the button. See `PrintableValue` type alias
@@ -591,7 +595,7 @@ function tm.playerUI.AddUIButton(playerId, id, defaultValue, callback, data) end
 
 ---Add a text field to the client's mod UI
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-work-with-text-fields)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:PlayerUI#How_to_work_with_text_fields)
 ---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
 ---@param id UIElementID See `UIElementID` type alias
 ---@param defaultValue PrintableValue Default text of the field. See `PrintableValue` type alias
@@ -602,7 +606,7 @@ function tm.playerUI.AddUIText(playerId, id, defaultValue, callback, data) end
 
 ---Add a label to the client's mod UI
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267719/PlayerUI#How-to-display-values)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:PlayerUI#How_to_display_values)
 ---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
 ---@param id UIElementID See `UIElementID` type alias
 ---@param defaultValue PrintableValue Text of the label. See `PrintableValue` type alias
@@ -993,7 +997,7 @@ tm.quaternion = { x = 0, y = 0, z = 0, w = 0 }
 
 ---Quaternion object. Quaternions are for rotations, they get rid of gimbal lock that a vector3 rotation runs into. Quaternions can store 4 numbers
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:ModQuaternion)
 ---@class ModQuaternion
 ---@field x number X value of the quaternion (i coefficient)
 ---@field y number Y value of the quaternion (j coefficient)
@@ -1013,7 +1017,7 @@ function ModQuaternion.toString() end
 
 ---Creates a quaternion by manually defining its components
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion#Creating-Quaternions)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:ModQuaternion#Creating_Quaternions)
 ---@param x number
 ---@param y number
 ---@param z number
@@ -1024,7 +1028,7 @@ function ModQuaternion.Create(x, y, z, w) end
 
 ---Creates a quaternion using euler angle components
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion#Creating-Quaternions)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:ModQuaternion#Creating_Quaternions)
 ---@param x number
 ---@param y number
 ---@param z number
@@ -1034,7 +1038,7 @@ function ModQuaternion.Create(x, y, z) end
 
 ---Creates a quaternion using a euler angle vector3
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion#Creating-Quaternions)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:ModQuaternion#Creating_Quaternions)
 ---@param eulerAngle ModVector3
 ---@return ModQuaternion
 ---@nodiscard
@@ -1042,7 +1046,7 @@ function ModQuaternion.Create(eulerAngle) end
 
 ---Creates a quaternion using an angle and an axis to rotate around
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion#Creating-Quaternions)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:ModQuaternion#Creating_Quaternions)
 ---@param angle number
 ---@param axis ModVector3
 ---@return ModQuaternion
@@ -1062,7 +1066,7 @@ function ModQuaternion.Multiply(otherQuaternion) end
 
 ---Returns the resulting quaternion from a slerp between two quaternions
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218628133/ModQuaternion#Working-with-ModQuaternion)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:ModQuaternion#Working_with_ModQuaternion)
 ---@param firstQuaternion ModQuaternion
 ---@param secondQuaternion ModQuaternion
 ---@param t number Position in the interpolation (0=firstQuaternion, 1=secondQuaternion)
@@ -1149,7 +1153,7 @@ function tm.GetDocs() end
 
 ---GameObjects in the game environment
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267704/ModGameObject)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:ModGameObject)
 ---@class ModGameObject
 local ModGameObject = {}
 
@@ -1292,7 +1296,7 @@ function ModGameObject.AddTorqueVelocityChange(x, y, z) end
 
 ---Represents a Transform (position, rotation, scale) of a GameObject
 ---
----[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218431584/ModTransform)
+---[View documents](https://trailmakers.wiki.gg/wiki/Modding:ModTransform)
 ---@class ModTransform
 local ModTransform = {}
 
