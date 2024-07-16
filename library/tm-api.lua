@@ -471,7 +471,7 @@ function tm.players.SetCameraPosition(playerId, position) end
 
 ---Set camera rotation
 ---@param playerId PlayerID See `PlayerID` type alias
----@param rotation ModVector3
+---@param rotation ModVector3 Direction vector the camera will point in
 ---@return nil
 function tm.players.SetCameraRotation(playerId, rotation) end
 
