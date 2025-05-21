@@ -20,6 +20,7 @@ Unofficial Trailmakers modding API addon for LuaLS. Setups the LuaLS environment
      4. Click "Add Item", enter the path of the addons folder, and click "Ok"
    - Other editors: set the value of the LuaLS setting `Lua.workspace.userThirdParty` to an array with the path of the addons folder. You might want to set this only in the workspace settings of your mods folder
 4. After opening a lua file in the mods folder, you should be prompted to enable the addon. Select "Apply and modify settings". If you aren't prompted to enable the addon, verify that the LuaLS setting `workspace.checkThirdParty` is set to `true`
+   - If the addon isn't enabled, add the path to the `library` folder within your local copy of this repository to the `Lua.workspace.library` LuaLS setting
 5. To remove duplicate documentation, remove the official documentation library file (`trailmakers_docs.lua`) from the mods folder
 
 ## Updating
