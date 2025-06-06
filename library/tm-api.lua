@@ -599,7 +599,7 @@ function tm.playerUI.AddUIButton(playerId, id, defaultValue, callback, data) end
 ---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
 ---@param id UIElementID See `UIElementID` type alias
 ---@param defaultValue PrintableValue Default text of the field. See `PrintableValue` type alias
----@param callback fun(UICallbackData) Function to execute when the button is pressed
+---@param callback fun(UICallbackData) Function to execute when the text is changed
 ---@param data any Arbitrary data passed to the callback function
 ---@return nil
 function tm.playerUI.AddUIText(playerId, id, defaultValue, callback, data) end
