@@ -9,6 +9,7 @@ function update() end
 ---@alias PrintableValue (string | number | boolean | ModVector3 | ModQuaternion | ModGameObject | ModTransform | ModStructure | ModBlock | ModRaycastHit | ModColor | UICallbackData)?
 
 ---Trailmakers Modding API
+---@class ModApi
 tm = {}
 
 --------------------- OS ---------------------
