@@ -532,9 +532,9 @@ function tm.players.GetBuilderEnabled(playerId) end
 ---@nodiscard
 function tm.players.GetRepairEnabled(playerId) end
 
----Returns the block the player is seated in
+---Returns the block the player is seated in, or `nil` if they aren't in a seat (in which case a message will be logged)
 ---@param playerId PlayerID See `PlayerID` type alias
----@return ModBlock
+---@return ModBlock?
 ---@nodiscard
 function tm.players.GetPlayerSeatBlock(playerId) end
 
