@@ -50,6 +50,9 @@ function tm.os.ReadAllText_Dynamic(path) end
 function tm.os.WriteAllText_Dynamic(path, stringToWrite) end
 
 ---Emit a log message
+---
+---The value is converted to a string following the same rules of [tostring](http://www.lua.org/manual/5.2/manual.html#pdf-tostring).
+---The function print is not intended for formatted output, but only as a quick way to show a value, for instance for debugging. For complete control over the output, use [string.format](http://www.lua.org/manual/5.2/manual.html#pdf-string.format).
 ---@param message PrintableValue Message to log. See `PrintableValue` type alias
 ---@return nil
 function tm.os.Log(message) end
