@@ -592,7 +592,7 @@ tm.playerUI = {}
 ---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
 ---@param id UIElementID See `UIElementID` type alias
 ---@param defaultValue PrintableValue Text of the button. See `PrintableValue` type alias
----@param callback fun(UICallbackData) Function to execute when the button is pressed
+---@param callback fun(data: UICallbackData) Function to execute when the button is pressed
 ---@param data any Arbitrary data passed to the callback function
 ---@return nil
 function tm.playerUI.AddUIButton(playerId, id, defaultValue, callback, data) end
@@ -603,7 +603,7 @@ function tm.playerUI.AddUIButton(playerId, id, defaultValue, callback, data) end
 ---@param playerId PlayerID Player for which the UI element will be created. See `PlayerID` type alias
 ---@param id UIElementID See `UIElementID` type alias
 ---@param defaultValue PrintableValue Default text of the field. See `PrintableValue` type alias
----@param callback fun(UICallbackData) Function to execute when the text is changed
+---@param callback fun(data: UICallbackData) Function to execute when the text is changed
 ---@param data any Arbitrary data passed to the callback function
 ---@return nil
 function tm.playerUI.AddUIText(playerId, id, defaultValue, callback, data) end
@@ -691,13 +691,13 @@ function tm.playerUI.SubtleMessageUpdateMessageForAll(id, newMessage) end
 
 ---Registers a function callback to get the world position of the cursor when left mouse button is clicked
 ---@param playerId PlayerID See `PlayerID` type alias
----@param callback fun(UICallbackData) Function to execute when the button is pressed. Data is inside `UICallbackData.value` as a `string` with the form `"(x, y, z)"`
+---@param callback fun(data: UICallbackData) Function to execute when the button is pressed. Data is inside `UICallbackData.value` as a `string` with the form `"(x, y, z)"`
 ---@return nil
 function tm.playerUI.RegisterMouseDownPositionCallback(playerId, callback) end
 
 ---Deregisters a function callback to get the world position of the cursor when left mouse button is clicked
 ---@param playerId PlayerID See `PlayerID` type alias
----@param callback fun(UICallbackData) Function to remove. The same function object must have been registered with `tm.playerUI.RegisterMouseDownPositionCallback()` first
+---@param callback fun(data: UICallbackData) Function to remove. The same function object must have been registered with `tm.playerUI.RegisterMouseDownPositionCallback()` first
 ---@return nil
 function tm.playerUI.DeregisterMouseDownPositionCallback(playerId, callback) end
 
