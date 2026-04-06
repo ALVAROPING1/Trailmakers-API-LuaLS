@@ -20,7 +20,7 @@ tm = {}
 ---@class ModApiTmOs
 tm.os = {}
 
----Higher-level function to load and run chunk of code from specified filename. Equivalent to the native 'dofile' function in Lua. The file must be directly inside the `data_static folder`, subfolders aren't supported
+---Higher-level function to load and run chunk of code from specified filename. Equivalent to the native 'dofile' function in Lua. The file must be within the `data_static` folder (subfolders are allowed)
 ---@param filename string Name of the file without the `.lua` extension
 ---@return any # Whatever the file returned when executed as a module
 function tm.os.DoFile(filename) end
