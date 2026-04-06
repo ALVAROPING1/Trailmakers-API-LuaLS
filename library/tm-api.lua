@@ -1,4 +1,39 @@
 ---@meta
+--- Trailmakers Modding API
+
+---Table of Enum types
+---@class ModApiEnums
+tm.enums = {}
+
+---@enum ModRespawnReason
+---Reason for a player respawning
+tm.enums.respawnReason = {
+    death = "DEATH",
+    respawn = "RESPAWN",
+    killed = "KILLED",
+    ejectedFromSeat = "EJECTEDFROMSEAT",
+    teleport = "TELEPORT",
+}
+
+---@enum ModDamageType
+---Source of damage for a block/player
+tm.enums.damageType = {
+    generic = "Generic",
+    impact = "Impact",
+    explosion = "Explosion",
+    lava = "Lava",
+    projectile = "Projectile",
+    electric = "Electric",
+    jointTear = "JointTear",
+    exitSeat = "ExitSeat",
+    emp = "Emp",
+    spaceBlaster = "SpaceBlaster",
+    mechanicalFailure = "MechanicalFailure",
+    harvestBasic = "HarvestBasic",
+    harvestMineral = "HarvestMineral",
+    harvestMineralTwo = "HarvestMineral2",
+    harvestOrganic = "HarvestOrganic",
+}
 
 ---Global function executed on each mod update cycle. Should be redefined to use it
 ---
@@ -64,7 +99,7 @@ function tm.os.Log(message) end
 ---@nodiscard
 function tm.os.GetTime() end
 
----Get time game has been playing in seconds. Updates within a single mod update cycle
+---Get the time since the game was started in seconds. Equivalent to `UnityEngine.Time.realtimeSinceStartup`. Updates within a single mod update cycle
 ---
 ---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Game_Loop_and_Tick)
 ---@return number
@@ -146,7 +181,7 @@ function tm.physics.SetGravityMultiplier(multiplier) end
 ---@return nil
 function tm.physics.SetGravity(gravity) end
 
----Get the physics gravity. Units are `m/s²`, default is `(0, 14, 0) m/s²`
+---Get the physics gravity. Units are `m/s²`, default is `(0, -14, 0) m/s²`
 ---
 ---[DEPRECATED FUNCTIONALITY MIGHT NOT WORK AS INTENDED]
 ---@deprecated
@@ -183,11 +218,37 @@ function tm.physics.DespawnObject(gameObject) end
 ---@nodiscard
 function tm.physics.SpawnableNames() end
 
+---Metadata information about a block
+---@class ModBlockMetaData
+local ModBlockMetaData = {}
+
+---@alias BlockGuid string Internal block ID
+
+---Gets the user-facing name of the block
+---@nodiscard
+---@return string
+function ModBlockMetaData.GetName() end
+
+---Gets the internal block ID
+---@nodiscard
+---@return BlockGuid
+function ModBlockMetaData.GetGuid() end
+
+---Gets the description of the block
+---@nodiscard
+---@return string
+function ModBlockMetaData.GetDescription() end
+
+---Returns all block metadata
+---@return ModBlockMetaData[]
+---@nodiscard
+function tm.physics.GetAllBlockMetaData() end
+
 ---Removes the physics timescale
 ---@return nil
 function tm.physics.RemoveTimeScale() end
 
----Add a mesh to all clients, note this mesh will have to be sent to the client when they join (handled automatically)
+---Add a mesh to all clients, note this will have to be sent to the client when they join (handled automatically)
 ---
 ---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Custom_Assets)
 ---@param filename string The name of the mesh in the mod files (Must use the `.obj` format)
@@ -195,7 +256,7 @@ function tm.physics.RemoveTimeScale() end
 ---@return nil
 function tm.physics.AddMesh(filename, resourceName) end
 
----Add a texture to all clients, note this texture will have to be sent to the client when they join (handled automatically)
+---Add a texture to all clients, note this will have to be sent to the client when they join (handled automatically)
 ---
 ---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Custom_Assets)
 ---@param filename string The name of the texture in the mod files (Must use the `.png` or `.jpg` format)
@@ -203,7 +264,7 @@ function tm.physics.AddMesh(filename, resourceName) end
 ---@return nil
 function tm.physics.AddTexture(filename, resourceName) end
 
----Spawn a custom physics object
+---Spawn a custom physics object where mesh and texture have to be set by AddMesh and AddTexture
 ---
 ---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Custom_Assets)
 ---@param position ModVector3 The position to spawn the object at
@@ -214,7 +275,7 @@ function tm.physics.AddTexture(filename, resourceName) end
 ---@return ModGameObject # Game object spawned
 function tm.physics.SpawnCustomObjectRigidbody(position, meshName, textureName, isKinematic, mass) end
 
----Spawn a custom object
+---Spawn a custom object where mesh and texture have to be set by AddMesh and AddTexture
 ---
 ---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Custom_Assets)
 ---@param position ModVector3 The position to spawn the object at
@@ -223,7 +284,7 @@ function tm.physics.SpawnCustomObjectRigidbody(position, meshName, textureName, 
 ---@return ModGameObject # Game object spawned
 function tm.physics.SpawnCustomObject(position, meshName, textureName) end
 
----Spawn a custom object with concave collision support
+---Same as `tm.physics.SpawnCustomObject` BUT adds concave collision support.
 ---
 ---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Custom_Assets)
 ---@param position ModVector3 The position to spawn the object at
@@ -313,54 +374,91 @@ function tm.physics.GetWindVelocityAtPosition(position) end
 ---ID referencing a spawn point location created with `tm.players.SetSpawnPoint()`
 ---@alias SpawnLocationID string
 
----Object representing a player in the game
----@class Player
+---Class representing a player
+---@class ModPlayer
+---@field connectionId string ID of the connection of the player
 ---@field playerId PlayerID See `PlayerID` type alias
 ---@field playerProfileId string Player's unique profile id
 ---@field playerName string Name of the player
-local Player = {}
+---@field teamId TeamID See `TeamID` type alias
+local ModPlayer = {}
 
----Always returns `Trailmakers.Mods.Api.ModApiPlayers+Player`
+---Always returns `Trailmakers.Mods.Api.Proxies.ModPlayer`
 ---@return string
 ---@nodiscard
-function Player.ToString() end
+function ModPlayer.ToString() end
 
----Always returns `Trailmakers.Mods.Api.ModApiPlayers+Player`
+---Always returns `Trailmakers.Mods.Api.Proxies.ModPlayer`
 ---@return string
 ---@nodiscard
-function Player.toString() end
+function ModPlayer.toString() end
 
 ---Everything to do with players actions and info
 ---@class ModApiPlayers
 tm.players = {}
 
----@class OnPlayerEvent
-local OnPlayerEvent = {}
-
----Add function to event
----@param Function fun(player: Player): any
----@return nil
-function OnPlayerEvent.add(Function) end
-
----Remove function from event. The same function object must have been registered with `OnPlayerEvent.add()` first
----@param Function fun(player: Player): any
----@return nil
-function OnPlayerEvent.remove(Function) end
-
 ---Event triggered when a player joins the server
----@type OnPlayerEvent
+---@class OnPlayerJoinedEvent
+---@field add fun(callback: fun(player: ModPlayer)): nil Add function to event
+---@field remove fun(callback: fun(player: ModPlayer)): nil Remove function from event. The same function object must have been registered with `.add()` first
 tm.players.OnPlayerJoined = {}
----Alias for `tm.players.OnPlayerJoined`
-tm.players.onPlayerJoined = tm.players.OnPlayerJoined
 
 ---Event triggered when a player leaves the server
----@type OnPlayerEvent
+---@class OnPlayerLeftEvent
+---@field add fun(callback: fun(player: ModPlayer)): nil Add function to event
+---@field remove fun(callback: fun(player: ModPlayer)): nil Remove function from event. The same function object must have been registered with `.add()` first
 tm.players.OnPlayerLeft = {}
----Alias for `tm.players.OnPlayerLeft`
-tm.players.onPlayerLeft = tm.players.OnPlayerLeft
+
+---Event triggered when a player dies
+---@class OnPlayerDiedEvent
+---@field add fun(callback: fun(player: ModPlayer, damage: ModDamage)): nil Add function to event
+---@field remove fun(callback: fun(player: ModPlayer, damage: ModDamage)): nil Remove function from event. The same function object must have been registered with `.add()` first
+tm.players.OnPlayerDied = {}
+
+---Event triggered when a player exits a structure
+---@class OnPlayerExitSeatEvent
+---@field add fun(callback: fun(player: ModPlayer)): nil Add function to event
+---@field remove fun(callback: fun(player: ModPlayer)): nil Remove function from event. The same function object must have been registered with `.add()` first
+tm.players.OnPlayerExitSeat = {}
+
+---Event triggered when a player enters a structure
+---@class OnPlayerEnterSeatEvent
+---@field add fun(callback: fun(player: ModPlayer)): nil Add function to event
+---@field remove fun(callback: fun(player: ModPlayer)): nil Remove function from event. The same function object must have been registered with `.add()` first
+tm.players.OnPlayerEnterSeat = {}
+
+---Event triggered when a player spawns
+---@class OnPlayerSpawnedEvent
+---@field add fun(callback: fun(player: ModPlayer, respawnReason: ModRespawnReason)): nil Add function to event
+---@field remove fun(callback: fun(player: ModPlayer, respawnReason: ModRespawnReason)): nil Remove function from event. The same function object must have been registered with `.add()` first
+tm.players.OnPlayerSpawned = {}
+
+---Event triggered when a player kills another player
+---@class OnPlayerKilledPlayerEvent
+---@field add fun(callback: fun(player: ModPlayer, damage: ModDamage, killedPlayer: ModPlayer)): nil Add function to event
+---@field remove fun(callback: fun(player: ModPlayer, damage: ModDamage, killedPlayer: ModPlayer)): nil Remove function from event. The same function object must have been registered with `.add()` first
+tm.players.OnPlayerKilledPlayer = {}
+
+---Event triggered when a player changes to another team
+---@class OnPlayerTeamChangedEvent
+---@field add fun(callback: fun(player: ModPlayer, newTeamId: number)): nil Add function to event
+---@field remove fun(callback: fun(player: ModPlayer, newTeamId: number)): nil Remove function from event. The same function object must have been registered with `.add()` first
+tm.players.OnPlayerTeamChanged = {}
+
+---Event triggered when a player enters the builder
+---@class OnPlayerEnterBuilder
+---@field add fun(callback: fun(player: ModPlayer)): nil Add function to event
+---@field remove fun(callback: fun(player: ModPlayer)): nil Remove function from event. The same function object must have been registered with `.add()` first
+tm.players.OnPlayerEnterBuilder = {}
+
+---Event triggered when a player exits the builder
+---@class OnPlayerExitBuilder
+---@field add fun(callback: fun(player: ModPlayer)): nil Add function to event
+---@field remove fun(callback: fun(player: ModPlayer)): nil Remove function from event. The same function object must have been registered with `.add()` first
+tm.players.OnPlayerExitBuilder = {}
 
 ---Get all players currently connected to the server
----@return Player[]
+---@return ModPlayer[]
 ---@nodiscard
 function tm.players.CurrentPlayers() end
 
@@ -369,13 +467,19 @@ function tm.players.CurrentPlayers() end
 ---@return nil
 function tm.players.Kick(playerId) end
 
+---Whether the player is an admin
+---@param playerId PlayerID See `PlayerID` type alias
+---@return boolean
+---@nodiscard
+function tm.players.IsPlayerAdministrator(playerId) end
+
 ---Get players' unique profile id
 ---@param playerId PlayerID See `PlayerID` type alias
 ---@return string
 ---@nodiscard
 function tm.players.GetPlayerProfileId(playerId) end
 
----Get the Transform of a player
+---Get the transform of a player
 ---@param playerId PlayerID See `PlayerID` type alias
 ---@return ModTransform
 ---@nodiscard
@@ -392,6 +496,11 @@ function tm.players.GetPlayerGameObject(playerId) end
 ---@return boolean
 ---@nodiscard
 function tm.players.IsPlayerInSeat(playerId) end
+
+---Forces a player to exit their seat
+---@param playerId PlayerID See `PlayerID` type alias
+---@return nil
+function tm.players.ForceExitSeat(playerId) end
 
 ---Returns `ModStructure` of the seat the player is in, or `nil` if not in a seat
 ---@param playerId PlayerID See `PlayerID` type alias
@@ -440,9 +549,7 @@ function tm.players.GetSpawnedStructureById(structureId) end
 ---@nodiscard
 function tm.players.GetPlayerStructuresInBuild(playerId) end
 
----Get the last selected block in the builder for that player. Returns `nil` if the player hasn't selected a block in the current session
----
----Dragging blocks doesn't count as selecting them. When multiple blocks are selected, only the first selected block is returned
+---Get the last selected block in the builder for that player. Returns `nil` if the player hasn't selected a block in the current session. Dragging blocks doesn't count as selecting them. When multiple blocks are selected, only the first selected block is returned
 ---@param playerId PlayerID See `PlayerID` type alias
 ---@return ModBlock?
 ---@nodiscard
@@ -476,6 +583,12 @@ function tm.players.GetMaxTeamIndex() end
 ---@return boolean
 ---@nodiscard
 function tm.players.GetPlayerIsInBuildMode(playerId) end
+
+---Set block limit for a specific block type, 0 means the block will be banned
+---@param blockTypeGuid BlockGuid Internal ID of the block. See `BlockGuid` type alias
+---@param limit number
+---@return nil
+function tm.players.SetBlockLimit(blockTypeGuid, limit) end
 
 ---Add a camera. THERE CAN ONLY BE 1 CAMERA PER PLAYER!
 ---@param playerId PlayerID See `PlayerID` type alias
@@ -615,24 +728,11 @@ function tm.players.GetSecondaryBlockColor(playerId) end
 ---@class ModApiPlayerUI
 tm.playerUI = {}
 
----@class OnChatMessageEvent
-local OnChatMessageEvent = {}
-
----Add function to event
----@param Function fun(senderName: string, message: string, color: ModColor): any
----@return nil
-function OnChatMessageEvent.add(Function) end
-
----Remove function from event. The same function object must have been registered with `OnPlayerEvent.add()` first
----@param Function fun(senderName: string, message: string, color: ModColor): any
----@return nil
-function OnChatMessageEvent.remove(Function) end
-
 ---Event triggered when a player sends a chat message
----@type OnChatMessageEvent
+---@class OnChatMessageEvent
+---@field add fun(callback: fun(senderName: string, message: string, color: ModColor)): nil Add function to event
+---@field remove fun(callback: fun(senderName: string, message: string, color: ModColor)): nil Remove function from event. The same function object must have been registered with `.add()` first
 tm.playerUI.OnChatMessage = {}
----Alias for `tm.players.OnPlayerJoined`
-tm.playerUI.onChatMessage = tm.playerUI.OnChatMessage
 
 ---Send a message to chat. The message will be sent to all players in the game. Ignored in singleplayer
 ---@param senderName PrintableValue
@@ -696,7 +796,7 @@ function tm.playerUI.SetUIValue(playerId, id, value) end
 ---@return nil
 function tm.playerUI.ClearUI(playerId) end
 
----Adds a subtle message for a specific player
+---Adds a subtle message for a specific player. Optional duration of the message and custom sprite icon can be added. String limits 32 characters.
 ---@param playerId PlayerID ID of the player for which the message will be displayed. See `PlayerID` type alias
 ---@param header PrintableValue Title of the message. Only the first 32 characters will be displayed. See `PrintableValue` type alias
 ---@param message PrintableValue Content of the message. Only the first 32 characters will be displayed. See `PrintableValue` type alias
@@ -705,7 +805,7 @@ function tm.playerUI.ClearUI(playerId) end
 ---@return SubtleMessageID
 function tm.playerUI.AddSubtleMessageForPlayer(playerId, header, message, duration, spriteAssetName) end
 
----Adds a subtle message for ALL players
+---Adds a subtle message for ALL players.  Optional duration of the message and custom sprite icon can be added. String limits 32 characters.
 ---@param header PrintableValue Title of the message. Only the first 32 characters will be displayed. See `PrintableValue` type alias
 ---@param message PrintableValue Content of the message. Only the first 32 characters will be displayed. See `PrintableValue` type alias
 ---@param duration number? Duration of the message in seconds. If `nil`, uses a default duration
@@ -842,6 +942,18 @@ function tm.audio.GetAudioNames() end
 ---[View documents](https://flashbulb.atlassian.net/wiki/spaces/TMMOD/pages/218267762/Input)
 ---@class ModApiInput
 tm.input = {}
+
+---Event triggered when a player presses a key
+---@class OnPlayerKeyDownEvent
+---@field add fun(callback: fun(player: ModPlayer, keyName: string)): nil Add function to event
+---@field remove fun(callback: fun(player: ModPlayer, keyName: string)): nil Remove function from event. The same function object must have been registered with `.add()` first
+tm.input.OnPlayerKeyDown = {}
+
+---Event triggered when a player releases a key
+---@class OnPlayerKeyUpEvent
+---@field add fun(callback: fun(player: ModPlayer, keyName: string)): nil Add function to event
+---@field remove fun(callback: fun(player: ModPlayer, keyName: string)): nil Remove function from event. The same function object must have been registered with `.add()` first
+tm.input.OnPlayerKeyUp = {}
 
 ---Registers a function to the callback of when the given player presses the given key
 ---
@@ -1128,7 +1240,7 @@ function ModQuaternion.Create(angle, axis) end
 ---@nodiscard
 function ModQuaternion.GetEuler() end
 
----Multiplies two quaternions and returns the result
+---Multiplies this quaternion with another quaternion and returns the resulting rotation
 ---@param otherQuaternion ModQuaternion
 ---@return ModQuaternion
 ---@nodiscard
@@ -1152,25 +1264,64 @@ function ModQuaternion.Lerp(firstQuaternion, secondQuaternion, t) end
 ---@nodiscard
 function ModQuaternion.Slerp(firstQuaternion, secondQuaternion, t) end
 
+---Returns a quaternion with all components negated
+---@return ModQuaternion
+---@nodiscard
+function ModQuaternion.Negate() end
+
+---Adds together two quaternions component-wise
+---@param other ModQuaternion
+---@return ModQuaternion
+---@nodiscard
+function ModQuaternion.Add(other) end
+
+---Subtracts two quaternions from each other component-wise
+---@param other ModQuaternion
+---@return ModQuaternion
+---@nodiscard
+function ModQuaternion.Subtract(other) end
+
+---Multiplies all quaternion components by a scalar
+---@param scalar number
+---@return ModQuaternion
+---@nodiscard
+function ModQuaternion.Multiply(scalar) end
+
+---Divides all quaternion components by a scalar
+---@param scalar number
+---@return ModQuaternion
+---@nodiscard
+function ModQuaternion.Divide(scalar) end
+
+---Returns the inverse rotation of this quaternion
+---@return ModQuaternion
+---@nodiscard
+function ModQuaternion.Inverse() end
+
+---Converts this quaternion to a quaternion with the same orientation but with a magnitude of 1.0.
+---@return ModQuaternion
+---@nodiscard
+function ModQuaternion.Normalize() end
+
 ---Returns true if both quaternions are the same, false if not (can be done with the normal `==` operator)
----@param first ModQuaternion
----@param second ModQuaternion
+---@param a ModQuaternion
+---@param b ModQuaternion
 ---@return boolean
 ---@nodiscard
-function ModQuaternion.op_Equality(first, second) end
+function ModQuaternion.op_Equality(a, b) end
+
+---Returns true if both quaternions are not the same, false if not (can be done with the normal `~=` operator)
+---@param a ModQuaternion
+---@param b ModQuaternion
+---@return boolean
+---@nodiscard
+function ModQuaternion.op_Inequality(a, b) end
 
 ---Returns true if both quaternions are the same, false if not (can be done with the normal `==` operator)
 ---@param otherQuaternion ModQuaternion
 ---@return boolean
 ---@nodiscard
 function ModQuaternion.Equals(otherQuaternion) end
-
----Returns true if both quaternions are not the same, false if not (can be done with the normal `~=` operator)
----@param first ModQuaternion
----@param second ModQuaternion
----@return boolean
----@nodiscard
-function ModQuaternion.op_Inequality(first, second) end
 
 ---Returns the hash code of the quaternion
 ---@return number
@@ -1735,6 +1886,11 @@ function ModBlock.Up() end
 ---@nodiscard
 function ModBlock.Down() end
 
+---Get the internal name of the block's type
+---@return string
+---@nodiscard
+function ModBlock.GetName() end
+
 ---[In buildmode only] Set the block's primary color
 ---
 ---[DEPRECATED USE `.SetPrimaryColor()` INSTEAD]
@@ -1800,24 +1956,71 @@ function ModBlock.SetBuoyancy(buoyancy) end
 function ModBlock.GetBuoyancy() end
 
 ---Set the block's health
+---
+---[DEPRECATED USE `.SetStartHealth()` INSTEAD]
+---@deprecated
 ---@param hp number
 ---@return nil
 function ModBlock.SetHealth(hp) end
+
+---Set the block's start health
+---@param hp number
+---@return nil
+function ModBlock.SetStartHealth(hp) end
+
+---Reset the block's start health to its original value
+---@return nil
+function ModBlock.ResetStartHealth() end
 
 ---Get the block's start health
 ---@return number
 ---@nodiscard
 function ModBlock.GetStartHealth() end
 
+---Get the blocks full health
+---@return number
+---@nodiscard
+function ModBlock.GetFullHealth() end
+
+---Fully revives the block to its full health
+---@return nil
+function ModBlock.Revive() end
+
+---Give damage to a block
+---@param damageAmount number The amount of damage to deal
+---@param damageDealerPlayerId PlayerID | -1 The player that dealt the damage, -1 for no player. See `PlayerID` type alias
+---@param damageType ModDamageType? The type of damage to deal, defaults to `Generic`
+---@return nil
+function ModBlock.DoDamageAmount(damageAmount, damageDealerPlayerId, damageType) end
+
+---Instant kill the block
+---@return nil
+function ModBlock.InstantKill() end
+
+---Returns true if the block has been damaged
+---@return boolean
+---@nodiscard
+function ModBlock.IsDamaged() end
+
+---Returns true if the block is dead
+---@return boolean
+---@nodiscard
+function ModBlock.IsDead() end
+
 ---Get the block's current health
 ---@return number
 ---@nodiscard
 function ModBlock.GetCurrentHealth() end
 
----Get the name of the block's type
----@return string
+---Get the block health fraction normalised from 0 to its full health
+---@return number
 ---@nodiscard
-function ModBlock.GetName() end
+function ModBlock.GetHealthFraction() end
+
+---Get the block's BlockMetaData
+---@return ModBlockMetaData
+---@nodiscard
+function ModBlock.GetBlockMetaData() end
 
 ---Aerodynamic drag box
 ---@class AerodynamicBox
@@ -1834,7 +2037,6 @@ local AerodynamicBox = {}
 ---@return AerodynamicBox
 ---@nodiscard
 function ModBlock.GetDrag(aerodynamicBoxIndex) end
-
 
 ---Get the drag values for all aerodynamic boxes
 ---@return AerodynamicBox[]
@@ -1979,6 +2181,12 @@ function ModBlock.Exists() end
 ---@return ModStructure
 ---@nodiscard
 function ModBlock.GetStructure() end
+
+---Returns true if both blocks are the same (same block reference), false if not (can be done with the normal `==` operator)
+---@param other ModBlock
+---@return boolean
+---@nodiscard
+function ModBlock.Equals(other) end
 
 ---Always returns `Trailmakers.Mods.Api.Proxies.ModBlock`
 ---@return string
@@ -2199,77 +2407,77 @@ function ModColor.ToString() end
 ---@nodiscard
 function ModColor.toString() end
 
----Returns the red channel value of the color
+---Returns the red channel of the ModColor
 ---@return number
 ---@nodiscard
 function ModColor.R() end
 
----Returns the green channel value of the color
+---Returns the green channel of the ModColor
 ---@return number
 ---@nodiscard
 function ModColor.G() end
 
----Returns the blue channel value of the color
+---Returns the blue channel of the ModColor
 ---@return number
 ---@nodiscard
 function ModColor.B() end
 
----Returns the alpha channel value of the color
+---Returns the alpha channel of the ModColor
 ---@return number
 ---@nodiscard
 function ModColor.A() end
 
----Returns the color `RGBA(1.000, 1.000, 1.000, 1.000)`
+---Returns a ModColor set to white `RGBA(1.000, 1.000, 1.000, 1.000)`
 ---@return ModColor
 ---@nodiscard
 function ModColor.White() end
 
----Returns the color `RGBA(0.000, 0.000, 0.000, 1.000)`
+---Returns a ModColor set to black `RGBA(0.000, 0.000, 0.000, 1.000)`
 ---@return ModColor
 ---@nodiscard
 function ModColor.Black() end
 
----Returns the color `RGBA(1.000, 0.000, 0.000, 1.000)`
+---Returns a ModColor set to red `RGBA(1.000, 0.000, 0.000, 1.000)`
 ---@return ModColor
 ---@nodiscard
 function ModColor.Red() end
 
----Returns the color `RGBA(0.000, 1.000, 0.000, 1.000)`
+---Returns a ModColor set to green `RGBA(0.000, 1.000, 0.000, 1.000)`
 ---@return ModColor
 ---@nodiscard
 function ModColor.Green() end
 
----Returns the color `RGBA(0.000, 0.000, 1.000, 1.000)`
+---Returns a ModColor set to blue `RGBA(0.000, 0.000, 1.000, 1.000)`
 ---@return ModColor
 ---@nodiscard
 function ModColor.Blue() end
 
----Returns the color `RGBA(1.000, 0.922, 0.016, 1.000)`
+---Returns a ModColor set to yellow `RGBA(1.000, 0.922, 0.016, 1.000)`
 ---@return ModColor
 ---@nodiscard
 function ModColor.Yellow() end
 
----Returns the color `RGBA(0.000, 1.000, 1.000, 1.000)`
+---Returns a ModColor set to cyan `RGBA(0.000, 1.000, 1.000, 1.000)`
 ---@return ModColor
 ---@nodiscard
 function ModColor.Cyan() end
 
----Returns the color `RGBA(1.000, 0.000, 1.000, 1.000)`
+---Returns a ModColor set to magenta `RGBA(1.000, 0.000, 1.000, 1.000)`
 ---@return ModColor
 ---@nodiscard
 function ModColor.Magenta() end
 
----Returns the color `RGBA(0.500, 0.500, 0.500, 1.000)`
+---Returns a ModColor set to gray `RGBA(0.500, 0.500, 0.500, 1.000)`
 ---@return ModColor
 ---@nodiscard
 function ModColor.Gray() end
 
----Returns the color ` RGBA(0.000, 0.000, 0.000, 0.000)`
+---Returns a ModColor set to clear `RGBA(0.000, 0.000, 0.000, 0.000)`
 ---@return ModColor
 ---@nodiscard
 function ModColor.Clear() end
 
----Returns the resulting color from a lerp between two colors (component-wise)
+---Linear interpolation between two ModColor
 ---@param a ModColor
 ---@param b ModColor
 ---@param t number Position in the interpolation (0=a, 1=b)
@@ -2284,13 +2492,6 @@ function ModColor.Lerp(a, b, t) end
 ---@return ModColor
 ---@nodiscard
 function ModColor.HSVToRGB(hue, saturation, value) end
-
----Converts a color in RGB to HSV. NOTE: this is currently broken
----@param r number
----@param g number
----@param b number
----@return ModColor
-function ModColor.RGBToHSV(r, g, b) end
 
 ---Returns true if both colors are the same, false if not (can be done with the normal `==` operator)
 ---@param first ModColor
@@ -2319,3 +2520,11 @@ function ModColor.GetHashCode() end
 
 --#endregion
 
+---Some type and amount of damage that has been dealt by a player at given position and direction
+---@class ModDamage
+---@field damageType ModDamageType
+---@field damageAmount number
+---@field damagePosition ModVector3
+---@field damageDirection ModVector3
+---@field damageDealerPlayer ModPlayer
+local ModDamage = {}
