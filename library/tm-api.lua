@@ -433,6 +433,18 @@ tm.players.OnPlayerEnterSeat = {}
 ---@field remove fun(callback: fun(player: ModPlayer, respawnReason: ModRespawnReason)): nil Remove function from event. The same function object must have been registered with `.add()` first
 tm.players.OnPlayerSpawned = {}
 
+---Event triggered when a player flips a structure
+---@class OnPlayerFlipStructureEvent
+---@field add fun(callback: fun(player: ModPlayer, structure: ModStructure)): nil Add function to event
+---@field remove fun(callback: fun(player: ModPlayer, structure: ModStructure)): nil Remove function from event. The same function object must have been registered with `.add()` first
+tm.players.OnPlayerFlipStructure = {}
+
+---Event triggered when a player repairs a structure
+---@class OnPlayerRepairStructureEvent
+---@field add fun(callback: fun(player: ModPlayer, structure: ModStructure)): nil Add function to event
+---@field remove fun(callback: fun(player: ModPlayer, structure: ModStructure)): nil Remove function from event. The same function object must have been registered with `.add()` first
+tm.players.OnPlayerRepairStructure = {}
+
 ---Event triggered when a player kills another player
 ---@class OnPlayerKilledPlayerEvent
 ---@field add fun(callback: fun(player: ModPlayer, damage: ModDamage, killedPlayer: ModPlayer)): nil Add function to event
