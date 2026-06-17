@@ -35,6 +35,27 @@ tm.enums.damageType = {
     harvestOrganic = "HarvestOrganic",
 }
 
+---@enum ModPhysicalMaterial
+---Custom asset physics material type. Determines things like wheel grip
+tm.enums.physicsMaterial = {
+    metal = "Metal",
+    sand = "Sand",
+    stone = "Stone",
+    gravel = "Gravel",
+    grass = "Grass",
+    mud = "Mud",
+    lava = "Lava",
+    asphalt = "Asphalt",
+    snow = "Snow",
+    wood = "Wood",
+    yellowSand = "YellowSand",
+    witheredGrass = "WitheredGrass",
+    iceSlippery = "IceSlippery",
+    tundra = "Tundra",
+    snowHard = "SnowHard",
+    grassYellow = "GrassYellow"
+}
+
 ---Global function executed on each mod update cycle. Should be redefined to use it
 ---
 ---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Game_Loop_and_Tick)
@@ -55,7 +76,7 @@ tm = {}
 ---@class ModApiTmOs
 tm.os = {}
 
----Higher-level function to load and run chunk of code from specified filename. Equivalent to the native 'dofile' function in Lua. The file must be within the `data_static` folder (subfolders are allowed)
+---Loads and executes a Lua file from the mod's static data directory (data_static) using Lua's native dofile. The filename must NOT include the .lua extension. Subdirectory paths are not supported.
 ---@param filename string Name of the file without the `.lua` extension
 ---@return any # Whatever the file returned when executed as a module
 function tm.os.DoFile(filename) end
@@ -272,8 +293,9 @@ function tm.physics.AddTexture(filename, resourceName) end
 ---@param textureName TextureName The name of the texture that the object will use. See `TextureName` type alias
 ---@param isKinematic boolean Whether the object will be affected by physics or not
 ---@param mass number The mass of the object. Units are `5kg`
+---@param physicsMaterial ModPhysicalMaterial|nil The physics material of the object. If `nil`, uses `asphalt`
 ---@return ModGameObject # Game object spawned
-function tm.physics.SpawnCustomObjectRigidbody(position, meshName, textureName, isKinematic, mass) end
+function tm.physics.SpawnCustomObjectRigidbody(position, meshName, textureName, isKinematic, mass, physicsMaterial) end
 
 ---Spawn a custom object where mesh and texture have to be set by AddMesh and AddTexture
 ---
@@ -281,8 +303,9 @@ function tm.physics.SpawnCustomObjectRigidbody(position, meshName, textureName, 
 ---@param position ModVector3 The position to spawn the object at
 ---@param meshName MeshName The name of the mesh that the object will use. See `MeshName` type alias
 ---@param textureName TextureName The name of the texture that the object will use. See `TextureName` type alias
+---@param physicsMaterial ModPhysicalMaterial|nil The physics material of the object. If `nil`, uses `asphalt`
 ---@return ModGameObject # Game object spawned
-function tm.physics.SpawnCustomObject(position, meshName, textureName) end
+function tm.physics.SpawnCustomObject(position, meshName, textureName, physicsMaterial) end
 
 ---Same as `tm.physics.SpawnCustomObject` BUT adds concave collision support.
 ---
@@ -290,8 +313,9 @@ function tm.physics.SpawnCustomObject(position, meshName, textureName) end
 ---@param position ModVector3 The position to spawn the object at
 ---@param meshName MeshName The name of the mesh that the object will use. See `MeshName` type alias
 ---@param textureName TextureName The name of the texture that the object will use. See `TextureName` type alias
+---@param physicsMaterial ModPhysicalMaterial|nil The physics material of the object. If `nil`, uses `asphalt`
 ---@return ModGameObject # Game object spawned
-function tm.physics.SpawnCustomObjectConcave(position, meshName, textureName) end
+function tm.physics.SpawnCustomObjectConcave(position, meshName, textureName, physicsMaterial) end
 
 ---Spawn a box trigger that will detect overlap but will not interact with physics
 ---
@@ -328,7 +352,7 @@ function tm.physics.RegisterFunctionToCollisionExitCallback(targetObject, functi
 ---@param origin ModVector3 Origin of the raycast
 ---@param direction ModVector3 Direction of the raycast in euler angles
 ---@param hitPositionOut ModVector3 Reference to the vector in which the hit position will be stored (only modified if the raycast hit an object)
----@param maxDistance number? Max distance from the origin to check for hits. If nil, the distance is infinite
+---@param maxDistance number? Max distance from the origin to check for hits. If `nil`, the distance is infinite
 ---@param ignoreTriggers boolean? Whether to ignore trigger objects
 ---@return boolean # Whether an object has been hit
 function tm.physics.Raycast(origin, direction, hitPositionOut, maxDistance, ignoreTriggers) end
@@ -602,6 +626,11 @@ function tm.players.GetPlayerIsInBuildMode(playerId) end
 ---@return nil
 function tm.players.SetBlockLimit(blockTypeGuid, limit) end
 
+---Remove any ban and limit for a specific block type, restoring it to unlimited
+---@param blockTypeGuid BlockGuid Internal ID of the block. See `BlockGuid` type alias
+---@return nil
+function tm.players.UnbanBlock(blockTypeGuid) end
+
 ---Add a camera. THERE CAN ONLY BE 1 CAMERA PER PLAYER!
 ---@param playerId PlayerID See `PlayerID` type alias
 ---@param position ModVector3
@@ -727,6 +756,12 @@ function tm.players.GetPrimaryBlockColor(playerId) end
 ---@return ModColor
 ---@nodiscard
 function tm.players.GetSecondaryBlockColor(playerId) end
+
+---Returns the structure the player is currently targeting or standing near. Returns nil if no structure
+---@param playerId PlayerID See `PlayerID` type alias
+---@return ModStructure|nil
+---@nodiscard
+function tm.players.GetPlayerSelectedStructure(playerId) end
 
 --#endregion
 
