@@ -35,6 +35,15 @@ tm.enums.damageType = {
     harvestOrganic = "HarvestOrganic",
 }
 
+---@enum ModForceType
+---Type of force to apply
+tm.enums.forceType = {
+    force = "Force",
+    impulse = "Impulse",
+    acceleration = "Acceleration",
+    velocityChange = "VelocityChange",
+}
+
 ---@enum ModPhysicalMaterial
 ---Custom asset physics material type. Determines things like wheel grip
 tm.enums.physicsMaterial = {
@@ -53,7 +62,7 @@ tm.enums.physicsMaterial = {
     iceSlippery = "IceSlippery",
     tundra = "Tundra",
     snowHard = "SnowHard",
-    grassYellow = "GrassYellow"
+    grassYellow = "GrassYellow",
 }
 
 ---Global function executed on each mod update cycle. Should be redefined to use it
@@ -171,6 +180,12 @@ function tm.os.IsSingleplayer() end
 ---@class ModApiPhysics
 tm.physics = {}
 
+---Event triggered when a custom resource transfer finishes
+---@class OnResourceTransferCompletedEvent
+---@field add fun(callback: fun(resourceName: string, playerId: number)): nil Add function to event
+---@field remove fun(callback: fun(resourceName: string, playerId: number)): nil Remove function from event. The same function object must have been registered with `.add()` first
+tm.physics.OnResourceTransferCompleted = {}
+
 ---Set the physics timescale relative to the default speed (acts as a multiplier of the normal time speed)
 ---@param speed number
 ---@return nil
@@ -269,7 +284,7 @@ function tm.physics.GetAllBlockMetaData() end
 ---@return nil
 function tm.physics.RemoveTimeScale() end
 
----Add a mesh to all clients, note this will have to be sent to the client when they join (handled automatically)
+---Add a mesh to all clients, note this will have to be sent to the client when they join (handled automatically). Use `tm.physics.OnResourceTransferCompleted` event for completion notification
 ---
 ---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Custom_Assets)
 ---@param filename string The name of the mesh in the mod files (Must use the `.obj` format)
@@ -277,7 +292,7 @@ function tm.physics.RemoveTimeScale() end
 ---@return nil
 function tm.physics.AddMesh(filename, resourceName) end
 
----Add a texture to all clients, note this will have to be sent to the client when they join (handled automatically)
+---Add a texture to all clients, note this will have to be sent to the client when they join (handled automatically). Use `tm.physics.OnResourceTransferCompleted` event for completion notification
 ---
 ---[View documents](https://trailmakers.wiki.gg/wiki/Modding:Custom_Assets)
 ---@param filename string The name of the texture in the mod files (Must use the `.png` or `.jpg` format)
@@ -500,8 +515,9 @@ function tm.players.CurrentPlayers() end
 
 ---Forcefully disconnect a given player
 ---@param playerId PlayerID See `PlayerID` type alias
+---@param reason string Reason for kicking the player
 ---@return nil
-function tm.players.Kick(playerId) end
+function tm.players.Kick(playerId, reason) end
 
 ---Whether the player is an admin
 ---@param playerId PlayerID See `PlayerID` type alias
@@ -668,8 +684,8 @@ function tm.players.ActivateCamera(playerId, fadeInDuration) end
 ---@return nil
 function tm.players.DeactivateCamera(playerId, fadeOutDuration) end
 
----Spawn a structure for a player with given blueprint, position and rotation
----@param playerId PlayerID Player to which the blueprint will belong. See `PlayerID` type alias
+---Spawn a structure for a player with given blueprint, position and rotation. Pass -1 for `playerId` to spawn as ownerless (no owner, shared)
+---@param playerId PlayerID | -1 Player to which the blueprint will belong. See `PlayerID` type alias
 ---@param blueprint TextureName Name of the blueprint to spawn. See `TextureName` type alias
 ---@param structureId StructureID ID that will be used to reference the structure. See `StructureID` type alias
 ---@param position ModVector3 Position of the spawned structure
@@ -779,14 +795,51 @@ tm.playerUI = {}
 ---@class OnChatMessageEvent
 ---@field add fun(callback: fun(senderName: string, message: string, color: ModColor)): nil Add function to event
 ---@field remove fun(callback: fun(senderName: string, message: string, color: ModColor)): nil Remove function from event. The same function object must have been registered with `.add()` first
+---@deprecated Use `OnPlayerChatMessage` instead, which provides `senderInfo` and `messageType`
 tm.playerUI.OnChatMessage = {}
+
+---Event triggered when a player sends a chat message via the chat input
+---@class PlayerChatMessage
+---@field message string Contents of the message
+---@field senderInfo PlayerChatSenderInfo Information about who sent the message
+---@field messageType string Type of the message
+local PlayerChatMessage = {}
+
+---@class PlayerChatSenderInfo
+---@field userName string Name of the user
+---@field playerId PlayerID ID of the player who sent the message. See `PlayerID` type alias
+local PlayerChatSenderInfo = {}
+
+---@class OnPlayerChatMessageEvent
+---@field add fun(callback: fun(event: PlayerChatMessage)): nil Add function to event
+---@field remove fun(callback: fun(event: PlayerChatMessage)): nil Remove function from event. The same function object must have been registered with `.add()` first
+tm.playerUI.OnPlayerChatMessage = {}
 
 ---Send a message to chat. The message will be sent to all players in the game. Ignored in singleplayer
 ---@param senderName PrintableValue
 ---@param message PrintableValue
----@param color ModColor? Color of the sender name and message contents. If `nil`, white is used
 ---@return nil
-function tm.playerUI.SendChatMessage(senderName, message, color) end
+function tm.playerUI.SendChatMessage(senderName, message) end
+
+---Send a message to chat. Only the specified player will see it. Ignored in singleplayer
+---@param playerId PlayerID See `PlayerID` type alias
+---@param senderName PrintableValue
+---@param message PrintableValue
+---@return nil
+function tm.playerUI.SendChatMessageToPlayer(playerId, senderName, message) end
+
+---Register a chat command that players can invoke via the chat. The callback receives the player who sent the command and an array of arguments
+---@param callback fun(sender: ModPlayer, args: string[]): nil
+---@param name string The main command name (without `/`)
+---@param aliases string[] Alternative slash aliases
+---@param usage string Usage text shown in help
+---@return nil
+function tm.playerUI.RegisterChatCommand(name, aliases, usage, callback) end
+
+---Unregister a chat command that was previously registered via RegisterChatCommand
+---@param name string - The main command name (without `/`)
+---@return nil
+function tm.playerUI.UnregisterChatCommand(name) end
 
 ---ID of an UI element
 ---@alias UIElementID string | number | boolean
@@ -1982,6 +2035,11 @@ function ModBlock.SetMass(mass) end
 ---@nodiscard
 function ModBlock.GetMass() end
 
+---Get the block size in builder grid units (x, y, z)
+---@return ModVector3
+---@nodiscard
+function ModBlock.GetSize() end
+
 ---Get the block's primary color
 ---@return ModColor
 ---@nodiscard
@@ -2314,23 +2372,33 @@ function ModStructure.Up() end
 ---@nodiscard
 function ModStructure.Down() end
 
----Destroy the structure
+---Destroys the structure via the root block
 ---@return nil
 function ModStructure.Destroy() end
+
+---Destroys all blocks in the structure
+---@return nil
+function ModStructure.DestroyAll() end
 
 ---Gets all blocks in structure
 ---@return ModBlock[]
 ---@nodiscard
 function ModStructure.GetBlocks() end
 
----Add a force to the given structure as an impulse. Units are `5kg * m/s²`
+---Add a force to the given structure. Units are `5kg * m/s²`
 ---
 ---[View documents](https://docs.unity3d.com/ScriptReference/ForceMode.html)
 ---@param x number
 ---@param y number
 ---@param z number
+---@param forceType ModForceType? Type of the force. If `nil`, `Impulse` is used
 ---@return nil
-function ModStructure.AddForce(x, y, z) end
+function ModStructure.AddForce(x, y, z, forceType) end
+
+---Gets the total mass of the structure
+---@return number
+---@nodiscard
+function ModStructure.GetTotalMass() end
 
 ---Always returns `Trailmakers.Mods.Api.Proxies.ModStructure`
 ---@return string
